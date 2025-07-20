@@ -28,27 +28,29 @@
     </form>
   </div>
 
+ <!-- Load config.js first -->
+ <script src="config.js"></script>
  <script>
-async function loginUser(event) {
-  event.preventDefault();
+  async function loginUser(event) {
+    event.preventDefault();
 
-  const username = document.getElementById("username").value;
-  const password = document.getElementById("password").value;
-  const res = await fetch("https://1b79852bfb29.ngrok-free.app/webhook/login", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ username, password })
-  });
+    const username = document.getElementById("username").value;
+    const password = document.getElementById("password").value;
+    const res = await fetch(`${API_BASE_URL}/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username, password })
+    });
 
-  const data = await res.json();
+    const data = await res.json();
 
-  if (data.success) {
-    localStorage.setItem("token", data.token); // optional
-    window.location.href = "master.html";
-  } else {
-    alert(data.message || "Login failed.");
+    if (data.success) {
+      localStorage.setItem("token", data.token); // optional
+      window.location.href = "master.html";
+    } else {
+      alert(data.message || "Login failed.");
+    }
   }
-}
 </script>
 </body>
 </html>

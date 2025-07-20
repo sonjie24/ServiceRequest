@@ -4,59 +4,75 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Master List</title>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style/main.css" />
 </head>
 <body>
-  <div class="table-container">
-    <div class="header">
-      <h3>Table</h3>
-      <div class="actions">
-        <input type="text" placeholder="Search content here..." />
-        <button onclick="openEntryModal()">Add New</button>
-      </div>
-    </div>
+  <h1>Service Request Approval</h1>
+  <input type="text" id="searchInput" placeholder="Search by project name..." />
+  <table id="projectsTable">
+    <thead>
+      <tr>
+        <th onclick="sortTable(0)" width="160px">Request No ⬍</th>
+        <th width="120px">Requested Date</th>
+        <th width="250px">Module</th>
+        <th width="300px">Form</th>
+        <th width="500px">Concern</th>
+        <th>Action</th>
+        
+      </tr>
+    </thead>
+    <tbody id="projectBody"></tbody>
+  </table>
+  <script>
+    const data = [{"row_number":6,"id":5,"type":"actual","uuid":"0684bf51-979c-4224-9a09-fd5f1a4d002d","project":"CBMIS","date_requested":"2025-07-17","service_request_no":"CBMIS-2025-07-0001","status":"Pending","department":"Treasury Office","module":"Business Tax","form_no":1,"system_form_name":"Tax Assessment","concern_type_new":"Yes","concern_type_rev":"No","concern_type_del":"No","concern_type_cos":"No","priority_set":"No","committed_date":"","priority_immediate":"No","priority_add":"No","data_point1":"Revised Report","ref_field1":"BTA 00001","data_point2":"","ref_field2":"","data_point3":"","ref_field3":"","data_point4":"","ref_field4":"","data_point5":"","ref_field5":"","user":"Emma Saycon","department_head":"Trina Litorja","it_head":"Boyem Empleo","integrator":"Mark Jayson Ubas","developer":"N/A","qa":"N/A","print_option_as_req":"No","print_out_date":"","print_option_sys_print":"No","system_print_date":"","print_option_modified":"No","patch_date":""},{"row_number":7,"id":6,"type":"actual","uuid":"480c1890-9301-4928-aec2-f6498292060f","project":"CBMIS","date_requested":"2025-07-18","service_request_no":"CBMIS-2025-07-0002","status":"Pending","department":"MAYOR'S OFFICE","module":"ASSISTANCE MODULE","form_no":"FRMAICS-001","system_form_name":"AICS FORM","concern_type_new":"No","concern_type_rev":"No","concern_type_del":"No","concern_type_cos":"Yes","priority_set":"Yes","committed_date":"2025-07-18","priority_immediate":"No","priority_add":"No","data_point1":"Change Font to Century Gothic","ref_field1":"Name Field","data_point2":"Add Bagong Pilipinas Logo","ref_field2":"Header - Upper Right Corner","data_point3":"Change Signatory Title","ref_field3":"Approved By Signatory Field","data_point4":"Change Name Masking to Uppercase","ref_field4":"Applicant Name Field","data_point5":"","ref_field5":"","user":"Irish Abella","department_head":"Valdemar Chiong","it_head":"Romeo B. Empleo Jr.","integrator":"Mark Jayson Ubas","developer":"Mark Jayson Ubas","qa":"Michael Tan","print_option_as_req":"Yes","print_out_date":"2025-07-18","print_option_sys_print":"No","system_print_date":"","print_option_modified":"No","patch_date":""},{"row_number":8,"id":7,"type":"actual","uuid":"c4687ba5-d406-4fde-b0b6-5b030f326ab2","project":"CBMIS","date_requested":"2025-07-18","service_request_no":"CBMIS-2025-07-0003","status":"Pending","department":"MAYOR'S OFFICE","module":"ASSISTANCE MODULE","form_no":"FRMAICS-001","system_form_name":"AICS FORM","concern_type_new":"No","concern_type_rev":"No","concern_type_del":"No","concern_type_cos":"Yes","priority_set":"Yes","committed_date":"2025-07-18","priority_immediate":"No","priority_add":"No","data_point1":"Change Font to Century Gothic","ref_field1":"Name Field","data_point2":"Add Bagong Pilipinas Logo","ref_field2":"Header - Upper Right Corner","data_point3":"Change Signatory Title","ref_field3":"Approved By Signatory Field","data_point4":"Change Name Masking to Uppercase","ref_field4":"Applicant Name Field","data_point5":"","ref_field5":"","user":"Irish Abella","department_head":"Valdemar Chiong","it_head":"Romeo B. Empleo Jr.","integrator":"Mark Jayson Ubas","developer":"Mark Jayson Ubas","qa":"Michael Tan","print_option_as_req":"Yes","print_out_date":"2025-07-18","print_option_sys_print":"No","system_print_date":"","print_option_modified":"No","patch_date":""},{"row_number":9,"id":8,"type":"actual","uuid":"cedbe39e-7acd-44f7-803d-9845fde81fe2","project":"CBMIS","date_requested":"2025-07-19","service_request_no":"CBMIS-2025-07-0004","status":"Pending","department":"[\"Treasury\",\"Business Tax\"]","module":"","form_no":"FRM000004","system_form_name":"FRM000004","concern_type_new":"Yes","concern_type_rev":"No","concern_type_del":"No","concern_type_cos":"No","priority_set":"No","committed_date":"","priority_immediate":"No","priority_add":"No","data_point1":"dfsfds","ref_field1":"fdsfdsf","data_point2":"fdsfdf","ref_field2":"fdsf","data_point3":"","ref_field3":"","data_point4":"","ref_field4":"","data_point5":"","ref_field5":"","user":"fdsfds","department_head":"fdsf","it_head":"fdsfds","integrator":"Mark Jayson Ubas","developer":"N/A","qa":"N/A","print_option_as_req":"No","print_out_date":"","print_option_sys_print":"No","system_print_date":"","print_option_modified":"No","patch_date":""},{"row_number":10,"id":9,"type":"actual","uuid":"e7cc0b6a-69aa-4cd4-9b13-849e3ae7a223","project":"CBMIS","date_requested":"2025-07-19","service_request_no":"CBMIS-2025-07-0005","status":"Pending","department":"Treasury","module":"","form_no":"","system_form_name":"","concern_type_new":"Yes","concern_type_rev":"No","concern_type_del":"No","concern_type_cos":"No","priority_set":"Yes","committed_date":"","priority_immediate":"No","priority_add":"No","data_point1":"","ref_field1":"","data_point2":"","ref_field2":"","data_point3":"","ref_field3":"","data_point4":"","ref_field4":"","data_point5":"","ref_field5":"","user":"dasdsad","department_head":"sadsa","it_head":"dsadas","integrator":"Mark Jayson Ubas","developer":"N/A","qa":"N/A","print_option_as_req":"No","print_out_date":"","print_option_sys_print":"No","system_print_date":"","print_option_modified":"No","patch_date":""}];
 
-    <table>
-      <thead>
-        <tr>
-          <th>Title</th>
-          <th>Category</th>
-          <th>Teacher</th>
-          <th>Lesson</th>
-          <th>Enrolled</th>
-          <th>Price</th>
-          <th>Status</th>
-        </tr>
-      </thead>
-      <tbody>
-        <!-- Repeatable Rows -->
-        <tr>
-          <td>title here 1</td>
-          <td>Category name</td>
-          <td>Teacher James</td>
-          <td>Lessons name</td>
-          <td>16</td>
-          <td>$25.00</td>
-          <td><span class="status-active">Active</span></td>
-        </tr>
-        <!-- Add more rows dynamically if needed -->
-      </tbody>
-    </table>
+    const statusClasses = {
+      "Yes": "in-progress",
+      "No": "not-started",
+      "": "on-hold"
+    };
 
-    <div class="pagination">
-      <button disabled>&lt;</button>
-      <button class="active">1</button>
-      <button>2</button>
-      <button>&gt;</button>
-    </div>
-  </div>
-  <!-- Modal Wrapper -->
-<div class="modal" id="entryModal">
-  <div class="modal-content" id="entryFormContainer">
-    <span class="close" onclick="closeModal()">&times;</span>
-    <!-- Form gets injected here -->
-  </div>
-</div>
+    function renderTable(filter = "") {
+      const body = document.getElementById("projectBody");
+      body.innerHTML = "";
+      data
+        .filter(d => d.project.toLowerCase().includes(filter.toLowerCase()))
+        .forEach((d, i) => {
+          const statusLabel = d.priority_set || "Not Started";
+          const row = document.createElement("tr");
+          row.innerHTML = `
+            <td>${d.service_request_no }</td>
+            <td>${d.date_requested || ""}</td>
+            <td>${d.module || ""}</td>
+            <td>${d.system_form_name || ""}</td>
+            <td>
+                ${d.data_point1 || ""} </br> ${d.ref_field1 || ""} </br></br> 
+            </td>
+            <td>
+              <button onclick="handleView('')" class="btn btn-view">Approve</button>
+            </td>          
+          
+          `;
+          body.appendChild(row);
+        });
+    }
+
+    function sortTable(colIndex) {
+      const keyMap = {
+        0: 'project',
+        5: 'priority_set'
+      };
+      const key = keyMap[colIndex];
+      data.sort((a, b) => (a[key] || "").localeCompare(b[key] || ""));
+      renderTable(document.getElementById("searchInput").value);
+    }
+
+    document.getElementById("searchInput").addEventListener("input", (e) => {
+      renderTable(e.target.value);
+    });
+
+    renderTable();
+  </script>
 </body>
 
 <script>
