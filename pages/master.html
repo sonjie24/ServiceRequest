@@ -39,10 +39,15 @@
   </div>
 
   <script src="/js/config.js"></script>
+  <script src="/js/session.js"></script>
+
   <script>
     async function loadMasterList() {
       try {
-        const projectName = "CBMIS";
+
+        const user = getUserSession();
+
+        const projectName = user.project;
         const response = await fetch(`${API_BASE_URL}/get-all`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -110,10 +115,7 @@
       }
     }
 
-    document.getElementById("createBtn").addEventListener("click", function () {
-      alert("Redirect to create new request form.");
-      // window.location.href = "/create-form.html";
-    });
+    
 
     window.addEventListener("DOMContentLoaded", () => {
       loadMasterList();

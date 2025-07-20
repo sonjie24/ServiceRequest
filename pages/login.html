@@ -30,6 +30,7 @@
 
  <!-- Load config.js first -->
  <script src="/js/config.js"></script>
+ <script src="/js/session.js"></script>
  <script>
   async function loginUser(event) {
     event.preventDefault();
@@ -41,11 +42,21 @@
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ username, password })
     });
-
     const data = await res.json();
 
-    if (data.success) {
-      localStorage.setItem("token", data.token); // optional
+    // Check if login data was returned
+    if (data.data && data.data.length > 0) {
+      const user = data.data[0]; // first matched user
+
+      const userData = {
+        userId: user.ID,
+        name: user.EmployeeName,
+        email: user.email_address,
+        department: user.Department,
+        project: user.Project
+      };
+
+      saveUserSession(userData);
       window.location.href = "master.html";
     } else {
       alert(data.message || "Login failed.");
