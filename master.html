@@ -30,7 +30,11 @@
     async function loadMasterList() {
       try {
         const projectName = "CBMIS";
-        const response = await fetch(`${API_BASE_URL}/get-all?project=${projectName}`);
+        const response = await fetch(`${API_BASE_URL}/get-all`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({  projectName })
+        });
         const json = await response.json();
 
         const records = json.data;
