@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Master List</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="table-container">
+    <div class="header">
+      <h3>Table</h3>
+      <div class="actions">
+        <input type="text" placeholder="Search content here..." />
+        <button onclick="openEntryModal()">Add New</button>
+      </div>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Category</th>
+          <th>Teacher</th>
+          <th>Lesson</th>
+          <th>Enrolled</th>
+          <th>Price</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Repeatable Rows -->
+        <tr>
+          <td>title here 1</td>
+          <td>Category name</td>
+          <td>Teacher James</td>
+          <td>Lessons name</td>
+          <td>16</td>
+          <td>$25.00</td>
+          <td><span class="status-active">Active</span></td>
+        </tr>
+        <!-- Add more rows dynamically if needed -->
+      </tbody>
+    </table>
+
+    <div class="pagination">
+      <button disabled>&lt;</button>
+      <button class="active">1</button>
+      <button>2</button>
+      <button>&gt;</button>
+    </div>
+  </div>
+  <!-- Modal Wrapper -->
+<div class="modal" id="entryModal">
+  <div class="modal-content" id="entryFormContainer">
+    <span class="close" onclick="closeModal()">&times;</span>
+    <!-- Form gets injected here -->
+  </div>
+</div>
+</body>
+
+<script>
+
+function openEntryModal() {
+  document.getElementById("entryModal").style.display = "block";
+
+  fetch("entry.html")
+    .then(res => res.text())
+    .then(html => {
+      document.getElementById("entryFormContainer").innerHTML = `
+        <span class="close" onclick="closeModal()">&times;</span>
+        ${html}
+      `;
+      attachEntryFormHandler();
+    })
+    .catch(err => {
+      console.error("Failed to load form:", err);
+    });
+}
+
+function closeModal() {
+  document.getElementById("entryModal").style.display = "none";
+  document.getElementById("entryFormContainer").innerHTML = '<span class="close" onclick="closeModal()">&times;</span>';
+}
+
+function attachEntryFormHandler() {
+  const form = document.getElementById("entryForm");
+  if (!form) return;
+
+  form.addEventListener("submit", async function (e) {
+    e.preventDefault();
+    const token = localStorage.getItem("token");
+    const formData = Object.fromEntries(new FormData(form));
+
+    const res = await fetch("http://localhost/api/add_entry.php", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + token
+      },
+      body: JSON.stringify(formData)
+    });
+
+    const result = await res.json();
+    if (result.success) {
+      alert("Entry added!");
+      closeModal();
+      window.location.reload(); // Reload data
+    } else {
+      alert("Failed to add entry.");
+    }
+  });
+}
+</script>
+
+</html>
