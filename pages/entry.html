@@ -1,0 +1,149 @@
+<div class="form-container">
+  <h2>SERVICE REQUEST FORM</h2>
+  <form action="https://1b79852bfb29.ngrok-free.app/webhook/2a732598-6012-4ccd-a30c-957a859b279a" method="POST" enctype="multipart/form-data">
+    
+    <!-- Hidden Fields -->
+    <div style="display: none;">
+      <strong>UUID:</strong> <input type="text" name="uuid" id="uuid">
+    </div>
+    <div style="display: none;">
+      <strong>type:</strong> <input type="text" name="type" value="actual">
+    </div>
+
+    <!-- Project, Date Requested, Request No -->
+    <table>
+      <tr>
+        <td><strong>PROJECT:</strong> <input type="text" name="project" readonly value="CBMIS"></td>
+        <td><strong>DATE REQUESTED:</strong> <input type="date" required name="date_requested"></td>
+        <td><strong>SERVICE REQUEST #:</strong> <input type="text" name="service_request_no" readonly value="Generating"></td>
+      </tr>
+    </table>
+
+    <!-- Department, Module, System Form Name -->
+    <table>
+      <tr>
+        <td colspan="2">
+          <strong>DEPARTMENT:</strong>
+          <select id="systemSelect" name="department" required style="width: 100%; height: 30px;">
+            <option value="" disabled selected>Select System</option>
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2">
+          <strong>MODULE:</strong>
+          <select id="moduleSelect" disabled name="department" required style="width: 100%; height: 30px;">
+            <option value="" disabled selected>Select Module</option>
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <strong>SYSTEM FORM NAME:</strong>
+          <select id="formSelect" disabled name="system_form_name" required style="width: 100%; height: 30px;">
+            <option value="" disabled selected>Select Form</option>
+          </select>
+        </td>
+        <td>
+          <strong>FORM #:</strong>
+          <input type="text" name="form_no" id="formNo" disabled>
+        </td>
+      </tr>
+    </table>
+
+    <!-- Concern and Priority -->
+    <table>
+      <tr>
+        <td class="section-title">CONCERN TYPE:</td>
+        <td class="section-title">LEVEL OF PRIORITY:</td>
+      </tr>
+      <tr>
+        <td>
+          <label><input type="checkbox" name="concern_type_new" value="Yes"> New</label>
+          <label><input type="checkbox" name="concern_type_rev" value="Yes"> Revision</label>
+          <label><input type="checkbox" name="concern_type_del" value="Yes"> Delete</label>
+          <label><input type="checkbox" name="concern_type_cos" value="Yes"> Cosmetic</label>
+        </td>
+        <td>
+          <label><input type="checkbox" name="priority_set" value="Yes"> Set Committed Date:</label>
+          <input type="date" name="committed_date"><br>
+          <label><input type="checkbox" name="priority_immediate" value="Yes"> Immediate</label><br>
+          <label><input type="checkbox" name="priority_add" value="Yes"> Addtl Customization/Outside Scope</label>
+        </td>
+      </tr>
+    </table>
+
+    <!-- Data Table -->
+    <table id="dataTable">
+      <thead>
+        <tr>
+          <th>DATA POINTS</th>
+          <th>REFERENCE DATA FIELD</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><input type="text" name="data_point[]"></td>
+          <td><input type="text" name="reference_field[]"></td>
+        </tr>
+      </tbody>
+    </table>
+    <button class="add-btn" onclick="addRow()">Add Row</button>
+
+    <p><em>Note: Additional concerns may be written on the back page.</em></p>
+
+    <!-- Signatories -->
+    <table>
+      <tr class="section-title">
+        <td>USER</td><td>DEPARTMENT HEAD</td><td>IT HEAD</td>
+      </tr>
+      <tr>
+        <td><input type="text" required name="user"></td>
+        <td><input type="text" required name="department_head"></td>
+        <td><input type="text" required name="it_head"></td>
+      </tr>
+      <tr class="section-title">
+        <td>INTEGRATOR</td><td>DEVELOPER</td><td>QA</td>
+      </tr>
+      <tr>
+        <td><input type="text" required name="integrator" readonly value="Mark Jayson Ubas"></td>
+        <td><input type="text" name="developer"></td>
+        <td><input type="text" name="qa"></td>
+      </tr>
+    </table>
+
+    <!-- Print Options -->
+    <table>
+      <tr>
+        <td><input type="checkbox" name="print_option_as_req" value="Yes"> Print Out as per User Request</td>
+        <td>Date: <input type="date" name="print_out_date"></td>
+      </tr>
+      <tr>
+        <td><input type="checkbox" name="print_option_sys_print" value="Yes"> Current System Print Out</td>
+        <td>Date: <input type="date" name="system_print_date"></td>
+      </tr>
+      <tr>
+        <td><input type="checkbox" name="print_option_modified" value="Yes"> Modified/Revised Print Out</td>
+        <td>Patch Installed On: <input type="date" name="patch_date"></td>
+      </tr>
+    </table>
+
+    <!-- File Upload -->
+    <table>
+      <tr class="section-title">
+        <td colspan="2">UPLOAD FILES</td>
+      </tr>
+      <tr>
+        <td colspan="2">
+          <input type="file" name="attachments" multiple required accept=".jpg,.jpeg,.png,.gif,.pdf">
+          <p><small>You can upload multiple files. Accepted formats: JPG, PNG, GIF, PDF.</small></p>
+        </td>
+      </tr>
+    </table>
+
+    <!-- Submit Button -->
+    <div style="text-align: center;">
+      <button type="submit"><h2>Submit</h2></button>
+    </div>
+  </form>
+</div>
