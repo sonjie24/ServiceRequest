@@ -1,13 +1,16 @@
 (() => {
-  const data = [{"Treasury":{"Business Tax":[{"name":"Formn1","code":"FRM000001"},{"name":"Formn2","code":"FRM000002"},{"name":"Formn3","code":"FRM000003"},{"name":"Formn4","code":"FRM000004"}],"Real Property Tax":[{"name":"Formn5","code":"FRM000005"},{"name":"Formn6","code":"FRM000006"},{"name":"Formn7","code":"FRM000007"},{"name":"Formn8","code":"FRM000008"},{"name":"Formn9","code":"FRM000009"},{"name":"Formn10","code":"FRM000010"}]}}];
 
+  //const data = [{"Treasury":{"Business Tax":[{"name":"Formn1","code":"FRM000001"},{"name":"Formn2","code":"FRM000002"},{"name":"Formn3","code":"FRM000003"},{"name":"Formn4","code":"FRM000004"}],"Real Property Tax":[{"name":"Formn5","code":"FRM000005"},{"name":"Formn6","code":"FRM000006"},{"name":"Formn7","code":"FRM000007"},{"name":"Formn8","code":"FRM000008"},{"name":"Formn9","code":"FRM000009"},{"name":"Formn10","code":"FRM000010"}]}}];
+  const data = JSON.parse(sessionStorage.getItem("functionalities"));
+
+  
   const systemSelect = document.getElementById("systemSelect");
   const moduleSelect = document.getElementById("moduleSelect");
   const formSelect = document.getElementById("formSelect");
   const formNoInput = document.getElementById("formNo");
 
-  const systems = data[0];
-
+  const systems = data.Functionalities;
+  
   Object.keys(systems).forEach(system => {
     const option = document.createElement("option");
     option.value = system;

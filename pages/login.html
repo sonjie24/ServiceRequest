@@ -55,11 +55,33 @@
         department: user.Department,
         project: user.Project
       };
+   
 
+      getFunctionalities();
       saveUserSession(userData);
+      alert("fsfdsf"); 
       window.location.href = "master.html";
     } else {
       alert(data.message || "Login failed.");
+    }
+  }
+
+
+  async function getFunctionalities() {
+    const res = await fetch(`${API_BASE_URL}/get-functionalities`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" }
+    });
+    const data = await res.json();
+
+    // Check if login data was returned
+    if (data.data && data.data.length > 0) {
+     
+      const functionalities = data.data[0];
+      
+      saveFunctionalitiesSession(functionalities);    
+    } else {
+      alert(data.message || "error fetching.");
     }
   }
 </script>

@@ -5,6 +5,11 @@ function saveUserSession(userData) {
   sessionStorage.setItem("user", JSON.stringify(userData));
 }
 
+// Save functionalities to session
+function saveFunctionalitiesSession(userFunctionalities) {
+  sessionStorage.setItem("functionalities", JSON.stringify(userFunctionalities));
+}
+
 // Get user data from session
 function getUserSession() {
   const user = sessionStorage.getItem("user");
