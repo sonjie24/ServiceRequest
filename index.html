@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login</title>
+    <link rel="stylesheet" href="/style/style.css" />
+  </head>
+  <body class="body-login">
+    <div class="login-box">
+      <h2>Login</h2>
+
+      <form onsubmit="return loginUser(event)">
+        <div class="input-group">
+          <label>Username</label>
+          <input type="text" id="username" name="username" required />
+        </div>
+
+        <div class="input-group">
+          <label>Password</label>
+          <input type="password" id="password" name="password" required />
+        </div>
+
+        <button type="submit" class="btn">Log in</button>
+      </form>
+    </div>
+
+    <!-- Load config.js first -->
+    <script src="js/config.js"></script>
+    <script src="js/session.js"></script>
+    <script>
+      async function loginUser(event) {
+        event.preventDefault();
+
+        const username = document.getElementById("username").value;
+        const password = document.getElementById("password").value;
+        const res = await fetch(`${API_BASE_URL}/login`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ username, password }),
+        });
+        const data = await res.json();
+
+        // Check if login data was returned
+        if (data.data && data.data.length > 0) {
+          const user = data.data[0]; // first matched user
+
+          const userData = {
+            userId: user.ID,
+            name: user.EmployeeName,
+            email: user.email_address,
+            department: user.Department,
+            project: user.Project,
+          };
+
+          await getFunctionalities();
+          await getDepartments();
+          saveUserSession(userData);
+          window.location.href = "master.html";
+        } else {
+          alert(data.message || "Login failed.");
+        }
+      }
+
+      async function getFunctionalities() {
+        try {
+          const res = await fetch(`${API_BASE_URL}/get-functionalities`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            // If you need to send body data, add it here:
+            // body: JSON.stringify({ key: "value" }),
+          });
+
+          if (!res.ok) {
+            throw new Error(`HTTP error! Status: ${res.status}`);
+          }
+
+          const data = await res.json();
+
+          if (data.data && data.data.length > 0) {
+     
+            const functionalities = data.data[0];
+            saveFunctionalitiesSession(functionalities);
+          } else {
+            alert(data.message || "No functionalities returned.");
+          }
+        } catch (error) {
+          console.error("Fetch error:", error);
+          alert("An error occurred while fetching functionalities.");
+        }
+      }
+
+      async function getDepartments() {
+        try {
+          const res = await fetch(`${API_BASE_URL}/get-department`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            // If you need to send body data, add it here:
+            // body: JSON.stringify({ key: "value" }),
+          });
+
+          if (!res.ok) {
+            throw new Error(`HTTP error! Status: ${res.status}`);
+          }
+
+          const data = await res.json();
+
+          if (data.data && data.data.length > 0) {
+     
+            const department = data.data[0];
+            saveDepartmentSession(department);
+          } else {
+            alert(data.message || "No department returned.");
+          }
+        } catch (error) {
+          console.error("Fetch error:", error);
+          alert("An error occurred while fetching department.");
+        }
+      }
+    </script>
+  </body>
+</html>
