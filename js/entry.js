@@ -4,7 +4,7 @@
 
   const systemSelect = document.getElementById("systemSelect");
   const formSelect = document.getElementById("formSelect");
-  const formNoInput = document.getElementById("formNo");
+  const formNoInput = document.getElementById("form_no");
 
   const systems = data?.Functionalities || {};
 
@@ -68,7 +68,6 @@
   // Save form function
   async function saveForm(event) {
     event.preventDefault();
- alert("Form submitted successfully!");
     const form = event.target;
     const formData = new FormData(form);
 
@@ -84,7 +83,13 @@
         alert("Form submitted successfully!");
         form.reset();
         document.getElementById("formSelect").disabled = true;
-        document.getElementById("formNo").disabled = true;
+        document.getElementById("form_no").disabled = true;
+
+        // ✅ Hide the modal
+        const modal = document.getElementById("modal");
+        if (modal) {
+          modal.style.display = "none";
+        }
       } else {
         alert(`Error: ${result.message || "Something went wrong"}`);
       }
@@ -95,12 +100,17 @@
   }
 
   // Attach submit event
-  document.addEventListener("DOMContentLoaded", () => {
-    const form = document.querySelector("#createModal form");
-    if (form) {
-      form.addEventListener("submit", saveForm);
-    }
-  });
+
+  const form = document.getElementById("entryForm");
+
+  if (form) {
+    form.addEventListener("submit", saveForm);
+    console.log("✅ Form event attached");
+  } else {
+    console.warn("⚠️ entryForm not found in DOM");
+  }
+
+
 
   // 🧠 Attach event when modal is shown (Bootstrap 5)
   const modal = document.getElementById("createModal");

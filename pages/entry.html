@@ -1,6 +1,6 @@
 <div id="createModal" class="form-container">
   <h2>SERVICE REQUEST FORM</h2>
-  <form onsubmit="saveData(event)">
+  <form id="entryForm">
 
     <div style="display: none">
       <strong>UUID:</strong> <input type="text" name="uuid" id="uuid" />
@@ -58,7 +58,7 @@
           <strong>SYSTEM/MODULE :</strong>
           <select
             id="systemSelect"
-            name="system"
+            name="module"
             required
             style="width: 100%; height: 30px"
           >
@@ -82,7 +82,7 @@
         </td>
         <td>
           <strong>FORM #:</strong>
-          <input type="text" name="form_no" id="formNo" disabled />
+          <input type="text" name="form_no" id="form_no" disabled />
         </td>
       </tr>
     </table>
@@ -233,14 +233,3 @@
     </div>
   </form>
 </div>
-
-<!-- Load config.js first -->
-<script src="/js/config.js"></script>
-<script src="/js/session.js"></script>
-<script>
-  async function saveData(event) {
-    event.preventDefault();
-
-    alert("Login failed.");
-  }
-</script>
