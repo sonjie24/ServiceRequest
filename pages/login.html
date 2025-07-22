@@ -54,6 +54,7 @@
           };
 
           await getFunctionalities();
+          await getDepartments();
           saveUserSession(userData);
           window.location.href = "master.html";
         } else {
@@ -88,6 +89,36 @@
         } catch (error) {
           console.error("Fetch error:", error);
           alert("An error occurred while fetching functionalities.");
+        }
+      }
+
+      async function getDepartments() {
+        try {
+          const res = await fetch(`${API_BASE_URL}/get-department`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            // If you need to send body data, add it here:
+            // body: JSON.stringify({ key: "value" }),
+          });
+
+          if (!res.ok) {
+            throw new Error(`HTTP error! Status: ${res.status}`);
+          }
+
+          const data = await res.json();
+
+          if (data.data && data.data.length > 0) {
+     
+            const department = data.data[0];
+            saveDepartmentSession(department);
+          } else {
+            alert(data.message || "No department returned.");
+          }
+        } catch (error) {
+          console.error("Fetch error:", error);
+          alert("An error occurred while fetching department.");
         }
       }
     </script>

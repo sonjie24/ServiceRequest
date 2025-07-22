@@ -1,14 +1,14 @@
 (() => {
-  //const data = [{"Treasury":{"Business Tax":[{"name":"Formn1","code":"FRM000001"},{"name":"Formn2","code":"FRM000002"},{"name":"Formn3","code":"FRM000003"},{"name":"Formn4","code":"FRM000004"}],"Real Property Tax":[{"name":"Formn5","code":"FRM000005"},{"name":"Formn6","code":"FRM000006"},{"name":"Formn7","code":"FRM000007"},{"name":"Formn8","code":"FRM000008"},{"name":"Formn9","code":"FRM000009"},{"name":"Formn10","code":"FRM000010"}]}}];
-  const data = JSON.parse(sessionStorage.getItem("functionalities"));
+  const data = JSON.parse(localStorage.getItem("functionalities"));
+  const user = JSON.parse(localStorage.getItem("user")); // Your user object
 
   const systemSelect = document.getElementById("systemSelect");
-  const moduleSelect = document.getElementById("moduleSelect");
   const formSelect = document.getElementById("formSelect");
   const formNoInput = document.getElementById("formNo");
 
-  const systems = data.Functionalities;
+  const systems = data?.Functionalities || {};
 
+  // Populate the system dropdown
   Object.keys(systems).forEach((system) => {
     const option = document.createElement("option");
     option.value = system;
@@ -16,69 +16,108 @@
     systemSelect.appendChild(option);
   });
 
+  // When a system is selected, populate form dropdown
   systemSelect.addEventListener("change", () => {
     const selectedSystem = systemSelect.value;
-    moduleSelect.innerHTML =
-      '<option value="" disabled selected>Select Module</option>';
-    formSelect.innerHTML =
-      '<option value="" disabled selected>Select Form</option>';
+
+    // Reset form dropdown and form number
+    formSelect.innerHTML = '<option value="" disabled selected>Select Form</option>';
     formSelect.disabled = true;
+    formNoInput.value = "";
 
     if (selectedSystem && systems[selectedSystem]) {
-      moduleSelect.disabled = false;
-      Object.keys(systems[selectedSystem]).forEach((module) => {
-        const option = document.createElement("option");
-        option.value = module;
-        option.textContent = module;
-        moduleSelect.appendChild(option);
-        formNoInput.value = "";
-      });
-    } else {
-      moduleSelect.disabled = true;
-    }
-  });
-
-  moduleSelect.addEventListener("change", () => {
-    const selectedSystem = systemSelect.value;
-    const selectedModule = moduleSelect.value;
-
-    formSelect.innerHTML =
-      '<option value="" disabled selected>Select Form</option>';
-
-    if (
-      selectedSystem &&
-      selectedModule &&
-      systems[selectedSystem][selectedModule]
-    ) {
       formSelect.disabled = false;
-      systems[selectedSystem][selectedModule].forEach((form) => {
+
+      systems[selectedSystem].forEach((form) => {
         const option = document.createElement("option");
         option.value = form.code;
-        option.textContent = `${form.name}`;
+        option.textContent = form.name;
         formSelect.appendChild(option);
-        formNoInput.value = "";
       });
-    } else {
-      formSelect.disabled = true;
     }
   });
 
+  // When a form is selected, show its code in the input
   formSelect.addEventListener("change", () => {
     const selectedOption = formSelect.options[formSelect.selectedIndex];
     formNoInput.value = selectedOption.value || "";
   });
 
+  // Add row function (global for onclick)
   window.addRow = function () {
-    const table = document
-      .getElementById("dataTable")
-      .getElementsByTagName("tbody")[0];
+    const tableBody = document.querySelector("#dataTable tbody");
     const newRow = document.createElement("tr");
-
     newRow.innerHTML = `
       <td><input type="text" name="data_point[]" /></td>
       <td><input type="text" name="reference_field[]" /></td>
     `;
-
-    table.appendChild(newRow);
+    tableBody.appendChild(newRow);
   };
+
+  // Get default values (used when modal opens)
+  window.getDefaults = function () {
+    const today = new Date().toISOString().split("T")[0];
+    if (user) {
+      document.getElementById("project").value = user.project || "CBMIS";
+      document.getElementById("integrator").value = user.name || "";
+      document.getElementById("department").value = user.department || "";
+    }
+    document.getElementById("date_requested").value = today;
+  };
+
+  // Save form function
+  async function saveForm(event) {
+    event.preventDefault();
+ alert("Form submitted successfully!");
+    const form = event.target;
+    const formData = new FormData(form);
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/create`, {
+        method: "POST",
+        body: formData,
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        alert("Form submitted successfully!");
+        form.reset();
+        document.getElementById("formSelect").disabled = true;
+        document.getElementById("formNo").disabled = true;
+      } else {
+        alert(`Error: ${result.message || "Something went wrong"}`);
+      }
+    } catch (error) {
+      console.error("Submission error:", error);
+      alert("Failed to submit form. See console for details.");
+    }
+  }
+
+  // Attach submit event
+  document.addEventListener("DOMContentLoaded", () => {
+    const form = document.querySelector("#createModal form");
+    if (form) {
+      form.addEventListener("submit", saveForm);
+    }
+  });
+
+  // 🧠 Attach event when modal is shown (Bootstrap 5)
+  const modal = document.getElementById("createModal");
+  if (modal) {
+    modal.addEventListener("show.bs.modal", () => {
+      getDefaults();
+    });
+  }
+
+  // 🔁 Fallback: If not using Bootstrap modal, use MutationObserver to detect display change
+  const observer = new MutationObserver(() => {
+    if (modal.style.display !== "none") {
+      getDefaults();
+    }
+  });
+
+  if (modal) {
+    observer.observe(modal, { attributes: true, attributeFilter: ["style"] });
+  }
 })();

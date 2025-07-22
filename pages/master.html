@@ -1,134 +1,148 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Master List</title>
-  <link rel="stylesheet" href="/style/main.css" />
-</head>
-<body>
-  <h1>Service Request</h1>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Master List</title>
+    <link rel="stylesheet" href="/style/main.css" />
+  </head>
+  <body>
+    <h1>Service Request</h1>
 
-  <div class="top-bar">
-    <input height="20px" type="text" id="searchInput" placeholder="Search by project name..." />
-  </div>
-
-  <div class="top-bar-left">
-    <button id="createBtn">+ Create New Request</button>
-  </div>
-
-  <table id="masterTable">
-    <thead>
-      <tr>
-        <th onclick="sortTable(0)" width="160px">Request No ⬍</th>
-        <th width="120px">Requested Date</th>
-        <th width="250px">Module</th>
-        <th width="300px">Form</th>
-        <th width="500px">Concern</th>
-        <th>Action</th>
-      </tr>
-    </thead>
-    <tbody id="masterTableBody">
-      <!-- Rows will be inserted here -->
-    </tbody>
-  </table>
-
-  <!-- Modal -->
-  <div id="createModal" class="modal" style="display:none;">
-    <div class="modal-content">
-      <span class="close-btn" onclick="closeModal()">&times;</span>
-      <div id="modalBody">Loading...</div>
+    <div class="top-bar">
+      <input
+        height="20px"
+        type="text"
+        id="searchInput"
+        placeholder="Search by project name..."
+      />
     </div>
-  </div>
 
-  <script src="/js/config.js"></script>
-  <script src="/js/session.js"></script>
+    <div class="top-bar-left">
+      <button id="createBtn">+ Create New Request</button>
+    </div>
 
-  <script>
-    async function loadMasterList() {
-      try {
+    <table id="masterTable">
+      <thead>
+        <tr>
+          <th onclick="sortTable(0)" width="160px">Request No ⬍</th>
+          <th width="120px">Requested Date</th>
+          <th width="250px">Module</th>
+          <th width="300px">Form</th>
+          <th width="500px">Concern</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody id="masterTableBody">
+        <!-- Rows will be inserted here -->
+      </tbody>
+    </table>
 
-        const user = getUserSession();
+    <!-- Modal -->
+    <div id="createModal" class="modal" style="display: none">
+      <div class="modal-content">
+        <span class="close-btn" onclick="closeModal()">&times;</span>
+        <div id="modalBody">Loading...</div>
+      </div>
+    </div>
 
-        const projectName = user.project;
-        const response = await fetch(`${API_BASE_URL}/get-all`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ projectName })
-        });
-        const json = await response.json();
-        const records = json.data;
+    <script src="/js/config.js"></script>
+    <script src="/js/session.js"></script>
 
-        const tableBody = document.getElementById("masterTableBody");
-        tableBody.innerHTML = "";
+    <script>
+      async function loadMasterList() {
+        try {
+          const user = getUserSession();
 
-        if (!records || records.length === 0) {
-          tableBody.innerHTML = "<tr><td colspan='6'>No data available</td></tr>";
-          return;
-        }
+          const projectName = user.project;
+          const response = await fetch(`${API_BASE_URL}/get-all`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ projectName }),
+          });
+          const json = await response.json();
+          const records = json.data;
 
-        records.forEach(record => {
-          const row = document.createElement("tr");
-          row.innerHTML = `
+          const tableBody = document.getElementById("masterTableBody");
+          tableBody.innerHTML = "";
+
+          if (!records || records.length === 0) {
+            tableBody.innerHTML =
+              "<tr><td colspan='6'>No data available</td></tr>";
+            return;
+          }
+
+          records.forEach((record) => {
+            const row = document.createElement("tr");
+            row.innerHTML = `
             <td>${record.service_request_no || "-"}</td>
             <td>${record.date_requested || "-"}</td>
             <td>${record.module || "-"}</td>
             <td>${record.system_form_name || "-"}</td>
             <td>${record.system_form_name || "-"}</td>
             <td class="action-buttons">
-              <button onclick="viewRecord('${record.service_request_no}')">View</button>
-              <button onclick="editRecord('${record.service_request_no}')">Edit</button>
-              <button onclick="cancelRecord('${record.service_request_no}')">Cancel</button>
+              <button onclick="viewRecord('${
+                record.service_request_no
+              }')">View</button>
+              <button onclick="editRecord('${
+                record.service_request_no
+              }')">Edit</button>
+              <button onclick="cancelRecord('${
+                record.service_request_no
+              }')">Cancel</button>
             </td>
           `;
-          tableBody.appendChild(row);
-        });
-      } catch (error) {
-        console.error("❌ Failed to load master list:", error);
+            tableBody.appendChild(row);
+          });
+        } catch (error) {
+          console.error("❌ Failed to load master list:", error);
+        }
       }
-    }
 
-    function setupSearch() {
-      const searchInput = document.getElementById("searchInput");
-      searchInput.addEventListener("input", function () {
-        const filter = this.value.toLowerCase();
-        const rows = document.querySelectorAll("#masterTableBody tr");
+      function setupSearch() {
+        const searchInput = document.getElementById("searchInput");
+        searchInput.addEventListener("input", function () {
+          const filter = this.value.toLowerCase();
+          const rows = document.querySelectorAll("#masterTableBody tr");
 
-        rows.forEach(row => {
-          const cells = Array.from(row.cells);
-          const matches = cells.some(cell => cell.textContent.toLowerCase().includes(filter));
-          row.style.display = matches ? "" : "none";
+          rows.forEach((row) => {
+            const cells = Array.from(row.cells);
+            const matches = cells.some((cell) =>
+              cell.textContent.toLowerCase().includes(filter)
+            );
+            row.style.display = matches ? "" : "none";
+          });
         });
-      });
-    }
-
-    function viewRecord(id) {
-      alert("View record: " + id);
-    }
-
-    function editRecord(id) {
-      alert("Edit record: " + id);
-    }
-
-    function cancelRecord(id) {
-      const confirmed = confirm("Are you sure you want to cancel request " + id + "?");
-      if (confirmed) {
-        alert("Request canceled: " + id);
-        // Add actual cancel logic here
       }
-    }
 
-    
+      function viewRecord(id) {
+        alert("View record: " + id);
+      }
 
-    window.addEventListener("DOMContentLoaded", () => {
-      loadMasterList();
-      setupSearch();
-    });
+      function editRecord(id) {
+        alert("Edit record: " + id);
+      }
 
+      function cancelRecord(id) {
+        const confirmed = confirm(
+          "Are you sure you want to cancel request " + id + "?"
+        );
+        if (confirmed) {
+          alert("Request canceled: " + id);
+          // Add actual cancel logic here
+        }
+      }
 
-    document.getElementById("createBtn").addEventListener("click", function () {
-        openModal();
+      window.addEventListener("DOMContentLoaded", () => {
+        loadMasterList();
+        setupSearch();
       });
+
+      document
+        .getElementById("createBtn")
+        .addEventListener("click", function () {
+          openModal();
+        });
 
       function openModal() {
         const modal = document.getElementById("createModal");
@@ -137,27 +151,36 @@
         modalBody.innerHTML = "Loading...";
 
         fetch("entry.html")
-          .then(res => res.text())
-          .then(html => {
+          .then((res) => res.text())
+          .then((html) => {
             modalBody.innerHTML = html;
 
-            // After loading HTML, dynamically load the script
+            // Dynamically load the script
             const script = document.createElement("script");
-            script.src = src="/js/entry.js";
+            script.src = "/js/entry.js";
             script.defer = true;
+
+            script.onload = () => {
+              // 🔥 Call after JS is fully loaded
+              if (typeof getDefaults === "function") {
+                getDefaults();
+              } else {
+                console.warn("getDefaults is not defined");
+              }
+            };
+
             modalBody.appendChild(script);
           })
-          .catch(err => {
+
+          .catch((err) => {
             modalBody.innerHTML = "<p>⚠️ Failed to load the entry form.</p>";
             console.error(err);
           });
       }
 
-
       function closeModal() {
         document.getElementById("createModal").style.display = "none";
       }
-
 
       // Do NOT close modal when clicking outside
       window.addEventListener("click", function (event) {
@@ -177,8 +200,6 @@
           event.preventDefault(); // Prevent ESC from closing
         }
       });
-
-
-  </script>
-</body>
+    </script>
+  </body>
 </html>
