@@ -144,7 +144,7 @@
       modal.style.display = "block";
       modalBody.innerHTML = "Loading...";
 
-      fetch("entry.html")
+      fetch(`${BASE_PATH}pages/entry.html`)
         .then((res) => res.text())
         .then((html) => {
           modalBody.innerHTML = html;

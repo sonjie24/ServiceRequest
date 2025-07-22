@@ -56,7 +56,8 @@
           await getFunctionalities();
           await getDepartments();
           saveUserSession(userData);
-          window.location.href = "master.html";
+          window.location.href = `${BASE_PATH}pages/master.html`;
+
         } else {
           alert(data.message || "Login failed.");
         }
