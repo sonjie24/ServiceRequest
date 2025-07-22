@@ -53,9 +53,8 @@
             project: user.Project,
           };
 
-          getFunctionalities();
+          await getFunctionalities();
           saveUserSession(userData);
-          alert("fsfdsf");
           window.location.href = "master.html";
         } else {
           alert(data.message || "Login failed.");
@@ -63,19 +62,32 @@
       }
 
       async function getFunctionalities() {
-        const res = await fetch(`${API_BASE_URL}/get-functionalities`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-        });
-        const data = await res.json();
+        try {
+          const res = await fetch(`${API_BASE_URL}/get-functionalities`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            // If you need to send body data, add it here:
+            // body: JSON.stringify({ key: "value" }),
+          });
 
-        // Check if login data was returned
-        if (data.data && data.data.length > 0) {
-          const functionalities = data.data[0];
+          if (!res.ok) {
+            throw new Error(`HTTP error! Status: ${res.status}`);
+          }
 
-          saveFunctionalitiesSession(functionalities);
-        } else {
-          alert(data.message || "error fetching.");
+          const data = await res.json();
+
+          if (data.data && data.data.length > 0) {
+     
+            const functionalities = data.data[0];
+            saveFunctionalitiesSession(functionalities);
+          } else {
+            alert(data.message || "No functionalities returned.");
+          }
+        } catch (error) {
+          console.error("Fetch error:", error);
+          alert("An error occurred while fetching functionalities.");
         }
       }
     </script>
