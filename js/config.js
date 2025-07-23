@@ -8,7 +8,7 @@ const API_BASE_URL = "https://500e18becc4f.ngrok-free.app/webhook";
     const repoName = "ServiceRequest"; // Update if needed
     const isGithub = window.location.hostname.includes("github.io");
   
-    const basePath = isGithub ? `/${repoName}/` : `/${repoName}/`;
+    const basePath = isGithub ? `/${repoName}/` : '/';
   
     const base = document.createElement("base");
     base.href = basePath;
