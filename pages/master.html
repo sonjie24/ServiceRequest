@@ -42,7 +42,7 @@
       <div id="modalBody">Loading...</div>
     </div>
   </div>
-  <script src="../js/session.js"></script>
+  <script src="../js/session.js" ></script>
   <script src="../js/config.js"></script>
   <script>
     async function loadMasterList() {
@@ -149,7 +149,7 @@
 
           // Dynamically load the script
           const script = document.createElement("script");
-          script.src = "/js/entry.js";
+          script.src =  `${BASE_PATH}js/entry.js`; 
           script.defer = true;
 
           script.onload = () => {
