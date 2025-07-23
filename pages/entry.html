@@ -1,7 +1,6 @@
 <div id="createModal" class="form-container">
   <h2>SERVICE REQUEST FORM</h2>
   <form id="entryForm">
-
     <div style="display: none">
       <strong>UUID:</strong> <input type="text" name="uuid" id="uuid" />
     </div>
@@ -229,7 +228,25 @@
     </table>
 
     <div style="text-align: center">
-      <button type="submit"><h2>Submit</h2></button>
+      <button type="submit" id="submitBtn">
+        <h2 id="submitText">Submit</h2>
+      </button>
     </div>
   </form>
 </div>
+
+<script>
+  document.getElementById("entryForm").addEventListener("submit", function (e) {
+    const submitBtn = document.getElementById("submitBtn");
+    const submitText = document.getElementById("submitText");
+
+    // Disable the button
+    submitBtn.disabled = true;
+
+    // Replace text with spinner
+    submitText.innerHTML = '<div class="spinner"></div>';
+
+    // If you're not submitting via AJAX, the form will still submit normally here.
+    // If you're submitting via fetch/ajax, you can re-enable the button afterward.
+  });
+</script>

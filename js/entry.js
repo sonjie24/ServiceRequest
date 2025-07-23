@@ -21,7 +21,8 @@
     const selectedSystem = systemSelect.value;
 
     // Reset form dropdown and form number
-    formSelect.innerHTML = '<option value="" disabled selected>Select Form</option>';
+    formSelect.innerHTML =
+      '<option value="" disabled selected>Select Form</option>';
     formSelect.disabled = true;
     formNoInput.value = "";
 
@@ -66,10 +67,20 @@
   };
 
   // Save form function
+  // Save form function
   async function saveForm(event) {
     event.preventDefault();
     const form = event.target;
     const formData = new FormData(form);
+
+    const submitBtn = document.getElementById("submitBtn");
+    const submitText = document.getElementById("submitText");
+
+    // 🔒 Disable the button and show spinner
+    if (submitBtn && submitText) {
+      submitBtn.disabled = true;
+      submitText.innerHTML = '<div class="spinner"></div>';
+    }
 
     try {
       const response = await fetch(`${API_BASE_URL}/create`, {
@@ -85,8 +96,8 @@
         document.getElementById("formSelect").disabled = true;
         document.getElementById("form_no").disabled = true;
 
-        // ✅ Hide the modal
-        const modal = document.getElementById("modal");
+        // Close the modal
+        const modal = document.getElementById("createModal");
         if (modal) {
           modal.style.display = "none";
         }
@@ -96,6 +107,12 @@
     } catch (error) {
       console.error("Submission error:", error);
       alert("Failed to submit form. See console for details.");
+    } finally {
+      // 🔓 Re-enable the button and restore text
+      if (submitBtn && submitText) {
+        submitBtn.disabled = false;
+        submitText.textContent = "Submit";
+      }
     }
   }
 
@@ -109,8 +126,6 @@
   } else {
     console.warn("⚠️ entryForm not found in DOM");
   }
-
-
 
   // 🧠 Attach event when modal is shown (Bootstrap 5)
   const modal = document.getElementById("createModal");
