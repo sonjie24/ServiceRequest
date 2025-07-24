@@ -25,9 +25,11 @@
         <th width="160px" hidden>GUID</th>
         <th onclick="sortTable(0)" width="160px">Request No ⬍</th>
         <th width="120px">Requested Date</th>
+        <th width="250px">User</th>
+        <th width="250px">Department</th>
         <th width="250px">Module</th>
         <th width="300px">Form</th>
-        <th width="500px">Concern</th>
+        <th width="500px" hidden>Concern</th>
         <th>Action</th>
       </tr>
     </thead>
@@ -74,9 +76,11 @@
             <td hidden>${record.uuid || "-"}</td>
             <td>${record.service_request_no || "-"}</td>
             <td>${record.date_requested || "-"}</td>
+            <td>${record.user || "-"}</td>
+            <td>${record.department || "-"}</td>
             <td>${record.module || "-"}</td>
             <td>${record.system_form_name || "-"}</td>
-            <td>${record.system_form_name || "-"}</td>
+            <td hidden>${record.form_no || "-"}</td>
             <td class="action-buttons">
               <button onclick="viewRecord('${record.uuid
             }')">View</button>
