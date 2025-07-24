@@ -81,12 +81,7 @@
         </td>
         <td>
           <strong>FORM #:</strong>
-          <input
-            type="text"
-            name="system_form_no"
-            id="system_form_no"
-            readonly
-          />
+          <input type="text" name="form_no" id="form_no" disabled />
         </td>
       </tr>
     </table>
@@ -99,20 +94,20 @@
       <tr>
         <td>
           <label class="checkbox-label"
-            ><input type="checkbox" name="concern_type_new" value="Yes" /> New
-            (Function/Field/Entry/Column/Row)</label
+            ><input type="checkbox" name="concern_type_new" value="Yes" />
+            New</label
           >
           <label class="checkbox-label"
             ><input type="checkbox" name="concern_type_rev" value="Yes" />
-            Revision (Enhancement of Existing)</label
+            Revision</label
           >
           <label class="checkbox-label"
             ><input type="checkbox" name="concern_type_del" value="Yes" />
-            Delete (Dropped Query/Function/Row/Column/Data Point)</label
+            Delete</label
           >
           <label class="checkbox-label"
             ><input type="checkbox" name="concern_type_cos" value="Yes" />
-            Cosmetic (Fonts/Color/Header/Footer)</label
+            Cosmetic</label
           >
         </td>
         <td>
@@ -141,12 +136,8 @@
       </thead>
       <tbody>
         <tr>
-          <td><input type="text" name="data_point" /></td>
-          <td><input type="text" name="reference_field" /></td>
-        </tr>
-        <tr>
-          <td><input type="text" name="data_point" /></td>
-          <td><input type="text" name="reference_field" /></td>
+          <td><input type="text" name="data_point[]" /></td>
+          <td><input type="text" name="reference_field[]" /></td>
         </tr>
       </tbody>
     </table>
@@ -162,35 +153,9 @@
         <td>IT HEAD</td>
       </tr>
       <tr>
-        <td>
-          <input type="text" readonly name="user" id="user" />
-          <input type="text" readonly name="user_id" id="user_id" hidden />
-        </td>
-        <td>
-          <input
-            type="text"
-            readonly
-            name="department_head"
-            id="department_head"
-          />
-          <input
-            type="text"
-            readonly
-            name="department_head_id"
-            id="department_head_id"
-            hidden
-          />
-        </td>
-        <td>
-          <input type="text" readonly name="it_head" id="it_head" />
-          <input
-            type="text"
-            readonly
-            name="it_head_id"
-            id="it_head_id"
-            hidden
-          />
-        </td>
+        <td><input type="text" required name="user" /></td>
+        <td><input type="text" required name="department_head" /></td>
+        <td><input type="text" required name="it_head" /></td>
       </tr>
       <tr class="section-title">
         <td>INTEGRATOR</td>
@@ -201,40 +166,15 @@
         <td>
           <input
             type="text"
-            readonly
+            required
             id="integrator"
             name="integrator"
-            value=""
-          />
-          <input
-            type="text"
             readonly
-            id="integrator_id"
-            name="integrator_id"
-            value=""
-            hidden
+            value="Mark Jayson Ubas"
           />
         </td>
-        <td>
-          <input
-            type="text"
-            readonly
-            name="developer"
-            id="developer"
-            value=""
-          /><input
-            type="text"
-            readonly
-            name="developer_id"
-            id="developer_id"
-            value=""
-            hidden
-          />
-        </td>
-        <td>
-          <input type="text" readonly name="qa" id="qa" />
-          <input type="text" readonly name="qa_id" id="qa_id" hidden />
-        </td>
+        <td><input type="text" name="developer" /></td>
+        <td><input type="text" name="qa" /></td>
       </tr>
     </table>
 
@@ -294,3 +234,19 @@
     </div>
   </form>
 </div>
+
+<script>
+  document.getElementById("entryForm").addEventListener("submit", function (e) {
+    const submitBtn = document.getElementById("submitBtn");
+    const submitText = document.getElementById("submitText");
+
+    // Disable the button
+    submitBtn.disabled = true;
+
+    // Replace text with spinner
+    submitText.innerHTML = '<div class="spinner"></div>';
+
+    // If you're not submitting via AJAX, the form will still submit normally here.
+    // If you're submitting via fetch/ajax, you can re-enable the button afterward.
+  });
+</script>

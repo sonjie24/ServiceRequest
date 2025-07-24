@@ -43,18 +43,11 @@
   <table id="masterTable">
     <thead>
       <tr>
-<<<<<<< HEAD
         <th width="160px">Request No</th>
-=======
-        <th width="160px" hidden>GUID</th>
-        <th onclick="sortTable(0)" width="160px">Request No ⬍</th>
->>>>>>> b75e8b5b1a4e44ec30f88f79ea2a8d0822cf0906
         <th width="120px">Requested Date</th>
-        <th width="250px">User</th>
-        <th width="250px">Department</th>
         <th width="250px">Module</th>
         <th width="300px">Form</th>
-        <th width="500px" hidden>Concern</th>
+        <th width="500px">Concern</th>
         <th>Action</th>
       </tr>
     </thead>
@@ -85,15 +78,11 @@
     async function loadMasterList() {
       try {
         const user = getUserSession();
-<<<<<<< HEAD
-=======
-    
->>>>>>> b75e8b5b1a4e44ec30f88f79ea2a8d0822cf0906
         const projectName = user.project;
         const response = await fetch(`${API_BASE_URL}/get-all`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ user }),
+          body: JSON.stringify({ projectName }),
         });
 
         const json = await response.json();
@@ -107,35 +96,8 @@
           return;
         }
 
-<<<<<<< HEAD
         renderTablePage(currentPage);
         renderPagination();
-=======
-        records.forEach((record) => {
-          const row = document.createElement("tr");
-          row.innerHTML = `
-            <td hidden>${record.uuid || "-"}</td>
-            <td>${record.service_request_no || "-"}</td>
-            <td>${record.date_requested || "-"}</td>
-            <td>${record.user || "-"}</td>
-            <td>${record.department || "-"}</td>
-            <td>${record.module || "-"}</td>
-            <td>${record.system_form_name || "-"}</td>
-            <td hidden>${record.form_no || "-"}</td>
-            <td class="action-buttons">
-              <button onclick="viewRecord('${record.uuid
-            }')">View</button>
-              <button onclick="editRecord('${record.uuid
-            }')">Edit</button>
-              <button onclick="cancelRecord('${record.uuid
-            }')">Cancel</button>
-              <button onclick="approvedHead('${record.uuid
-            }')">Approve</button>
-            </td>
-          `;
-          tableBody.appendChild(row);
-        });
->>>>>>> b75e8b5b1a4e44ec30f88f79ea2a8d0822cf0906
       } catch (error) {
         console.error("❌ Failed to load master list:", error);
       }
