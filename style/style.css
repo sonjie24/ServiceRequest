@@ -7,7 +7,11 @@
 
     .body-login {
       height: 100vh;
+<<<<<<< HEAD
       background: url('https://images.pexels.com/photos/4609300/pexels-photo-4609300.jpeg') no-repeat center center fixed;
+=======
+      background: url('https://images.pexels.com/photos/3778691/pexels-photo-3778691.jpeg') no-repeat center center fixed;
+>>>>>>> b75e8b5b1a4e44ec30f88f79ea2a8d0822cf0906
       background-size: cover;
       display: flex;
       align-items: center;
