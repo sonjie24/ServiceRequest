@@ -1,38 +1,23 @@
-* {
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Login</title>
+  <style>
+    * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
       font-family: 'Segoe UI', sans-serif;
     }
 
-    .body-login {
+    body {
       height: 100vh;
-      background: url('https://images.pexels.com/photos/2318068/pexels-photo-2318068.jpeg') no-repeat center center fixed;
+      background: url('https://images.pexels.com/photos/1570779/pexels-photo-1570779.jpeg') no-repeat center center fixed;
       background-size: cover;
       display: flex;
       align-items: center;
       justify-content: center;
-      position: relative;
-    }
-
-    .top-right-btn {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      background: rgba(255, 255, 255, 0.1);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      backdrop-filter: blur(10px);
-      color: white;
-      padding: 10px 18px;
-      border-radius: 20px;
-      font-size: 14px;
-      cursor: pointer;
-      transition: background 0.3s;
-      z-index: 1000;
-    }
-
-    .top-right-btn:hover {
-      background: rgba(255, 255, 255, 0.2);
     }
 
     .login-box {
@@ -77,6 +62,23 @@
       background: rgba(255, 255, 255, 0.2);
     }
 
+    .options {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+      margin-bottom: 20px;
+    }
+
+    .options a {
+      color: #bce0ff;
+      text-decoration: none;
+    }
+
+    .options input[type="checkbox"] {
+      margin-right: 5px;
+    }
+
     .btn {
       width: 100%;
       background: white;
@@ -103,20 +105,48 @@
       color: #bce0ff;
       text-decoration: none;
     }
+  </style>
+</head>
+<body>
 
-    .spinner {
-      margin: 20px auto;
-      width: 40px;
-      height: 40px;
-      border: 5px solid #ccc;
-      border-top-color: #3498db;
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-    }
+  <div class="login-box">
+    <h2>Login</h2>
+    <form action="https://1b79852bfb29.ngrok-free.app/webhook-test/6ccbcc0a-4830-4f13-aeb7-1a2eb89f3ce8" method="POST">
+      <div class="input-group">
+        <label>Username</label>
+        <input type="text" name="username" required>
+      </div>
+
+      <div class="input-group">
+        <label>Password</label>
+        <input type="password" name="password" required>
+      </div>
+
+       
+
+      <button type="submit" class="btn">Log in</button>
+    </form>
+
     
-    @keyframes spin {
-      to {
-        transform: rotate(360deg);
+  </div>
+  <script>
+    function restoreSession() {
+      const savedEmail = sessionStorage.getItem('email');
+      if (savedEmail) {
+        document.getElementById('email').value = savedEmail;
       }
     }
-    
+  
+    // Restore on load
+    window.addEventListener('load', restoreSession);
+  
+    // Also restore on back/forward navigation
+    window.addEventListener('pageshow', function (event) {
+      if (event.persisted) {
+        restoreSession();
+      }
+    });
+  </script>
+  
+</body>
+</html>
