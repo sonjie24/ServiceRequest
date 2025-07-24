@@ -4,7 +4,7 @@
 
   const systemSelect = document.getElementById("systemSelect");
   const formSelect = document.getElementById("formSelect");
-  const formNoInput = document.getElementById("form_no");
+  const formNoInput = document.getElementById("system_form_no");
 
   const systems = data?.Functionalities || {};
 
@@ -31,8 +31,9 @@
 
       systems[selectedSystem].forEach((form) => {
         const option = document.createElement("option");
-        option.value = form.code;
+        option.value = form.name; // This will be used as system_form_name
         option.textContent = form.name;
+        option.setAttribute("data-code", form.code); // system_form_no
         formSelect.appendChild(option);
       });
     }
@@ -41,7 +42,8 @@
   // When a form is selected, show its code in the input
   formSelect.addEventListener("change", () => {
     const selectedOption = formSelect.options[formSelect.selectedIndex];
-    formNoInput.value = selectedOption.value || "";
+    const code = selectedOption.getAttribute("data-code");
+    formNoInput.value = code || "";
   });
 
   // Add row function (global for onclick)
@@ -49,11 +51,20 @@
     const tableBody = document.querySelector("#dataTable tbody");
     const newRow = document.createElement("tr");
     newRow.innerHTML = `
-      <td><input type="text" name="data_point[]" /></td>
-      <td><input type="text" name="reference_field[]" /></td>
+      <td><input type="text" name="data_point" /></td>
+      <td><input type="text" name="reference_field" /></td>
     `;
     tableBody.appendChild(newRow);
   };
+
+  function generateUUIDv4() {
+    return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, (c) =>
+      (
+        c ^
+        (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (c / 4)))
+      ).toString(16)
+    );
+  }
 
   // Get default values (used when modal opens)
   window.getDefaults = function () {
@@ -63,15 +74,24 @@
       document.getElementById("integrator").value = user.name || "";
       document.getElementById("department").value = user.department || "";
     }
+
+    // 👇 Generate and assign UUID to hidden input
+    const uuidField = document.getElementById("uuid");
+    if (uuidField) {
+      uuidField.value = generateUUIDv4();
+    }
+
     document.getElementById("date_requested").value = today;
   };
 
-  // Save form function
   // Save form function
   async function saveForm(event) {
     event.preventDefault();
     const form = event.target;
     const formData = new FormData(form);
+
+    console.log(form);
+    console.log(formData);
 
     const submitBtn = document.getElementById("submitBtn");
     const submitText = document.getElementById("submitText");
@@ -94,7 +114,8 @@
         alert("Form submitted successfully!");
         form.reset();
         document.getElementById("formSelect").disabled = true;
-        document.getElementById("form_no").disabled = true;
+   
+        window.parent.loadMasterList();
 
         // Close the modal
         const modal = document.getElementById("createModal");
