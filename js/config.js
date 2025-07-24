@@ -2,10 +2,19 @@
   const repoName = "ServiceRequest"; // Update if needed
   const hostname = window.location.hostname;
 
+
+  let basePath = "";
+  if (hostname.includes("github.io") || hostname.includes("20.20.40.221")) {
+    // GitHub Pages can't make backend calls directly unless it's public API or proxied
+    basePath = `/${repoName}/`;
+  } else {
+    basePath = '/';
+  }
+
+  
+
   // Set base path for GitHub Pages or local
   const isGithub = hostname.includes("github.io");
-  const basePath = isGithub ? `/${repoName}/` : '/';
-
   const base = document.createElement("base");
   base.href = basePath;
   document.head.prepend(base);
