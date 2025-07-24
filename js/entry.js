@@ -185,15 +185,4 @@
       getDefaults();
     });
   }
-
-  // 🔁 Fallback: If not using Bootstrap modal, use MutationObserver to detect display change
-  const observer = new MutationObserver(() => {
-    if (modal.style.display !== "none") {
-      getDefaults();
-    }
-  });
-
-  if (modal) {
-    observer.observe(modal, { attributes: true, attributeFilter: ["style"] });
-  }
 })();

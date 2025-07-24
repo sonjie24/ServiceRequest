@@ -45,13 +45,15 @@
       <div id="modalBody">Loading...</div>
     </div>
   </div>
-  <script src="../js/session.js" ></script>
+  <script src="../js/session.js"></script>
   <script src="../js/config.js"></script>
   <script>
+
+    let mode = "Add";
     async function loadMasterList() {
       try {
         const user = getUserSession();
-    
+
         const projectName = user.project;
         const response = await fetch(`${API_BASE_URL}/get-all`, {
           method: "POST",
@@ -88,7 +90,7 @@
             }')">Edit</button>
               <button onclick="cancelRecord('${record.uuid
             }')">Cancel</button>
-              <button onclick="approvedHead('${record.uuid
+              <button onclick="approvedRecord('${record.uuid
             }')">Approve</button>
             </td>
           `;
@@ -123,6 +125,11 @@
       alert("Edit record: " + id);
     }
 
+    function approvedRecord(id) {
+      mode = "Approve";
+      openModal(id);
+    }
+
     function cancelRecord(id) {
       const confirmed = confirm(
         "Are you sure you want to cancel request " + id + "?"
@@ -141,37 +148,48 @@
     document
       .getElementById("createBtn")
       .addEventListener("click", function () {
+        mode = "Add";
         openModal();
       });
 
-    function openModal() {
+    function openModal(uuid = null) {
       const modal = document.getElementById("createModal");
       const modalBody = document.getElementById("modalBody");
       modal.style.display = "block";
       modalBody.innerHTML = "Loading...";
 
-      fetch(`${BASE_PATH}pages/entry.html`)
+      let pageTmp = "";
+      let scriptFile = "";
+
+      if (mode === "Approve") {
+        pageTmp = "pages/approve.html";
+        scriptFile = "js/approve.js";
+      } else {
+        pageTmp = "pages/entry.html";
+        scriptFile = "js/entry.js";
+      }
+
+      fetch(`${BASE_PATH}${pageTmp}`)
         .then((res) => res.text())
         .then((html) => {
           modalBody.innerHTML = html;
 
-          // Dynamically load the script
           const script = document.createElement("script");
-          script.src =  `${BASE_PATH}js/entry.js`; 
+          script.src = `${BASE_PATH}${scriptFile}`;
           script.defer = true;
 
+          // 🧠 Move getDefaults here, once the script is fully loaded
           script.onload = () => {
-            // 🔥 Call after JS is fully loaded
-            if (typeof getDefaults === "function") {
-              getDefaults();
-            } else {
-              console.warn("getDefaults is not defined");
-            }
+            const tryGetDefaults = setInterval(() => {
+              if (typeof getDefaults === "function") {
+                clearInterval(tryGetDefaults);
+                getDefaults(uuid); // ✅ Now the DOM is guaranteed to be ready
+              }
+            }, 100); // Poll every 100ms until DOM is ready
           };
 
           modalBody.appendChild(script);
         })
-
         .catch((err) => {
           modalBody.innerHTML = "<p>⚠️ Failed to load the entry form.</p>";
           console.error(err);

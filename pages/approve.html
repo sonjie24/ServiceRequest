@@ -1,0 +1,297 @@
+<div id="createModal" class="form-container">
+  <h2>SERVICE REQUEST APPROVAL</h2>
+  <form id="entryForm">
+    <div style="display: none">
+      <strong>UUID:</strong> <input type="text" name="uuid" id="uuid" />
+    </div>
+    <div style="display: none">
+      <strong>type:</strong> <input type="text" name="type" value="actual" id="actual" />
+    </div>
+    <table>
+      <tr>
+        <td>
+          <strong>PROJECT :</strong>
+          <input
+            type="text"
+            id="project"
+            name="project"
+            readonly
+            value="CBMIS"
+          />
+        </td>
+        <td>
+          <strong>DATE REQUESTED :</strong>
+          <input
+            type="date"
+            required
+            id="date_requested"
+            name="date_requested"
+          />
+        </td>
+        <td>
+          <strong>SERVICE REQUEST #:</strong>
+          <input
+            type="text"
+            id="service_request_no"
+            name="service_request_no"
+            readonly
+            value="Generating"
+          />
+        </td>
+      </tr>
+    </table>
+    <table>
+      <tr>
+        <td colspan="2">
+          <strong>DEPARTMENT :</strong>
+          <input
+            type="text"
+            id="department"
+            name="department"
+            readonly
+            value="CTO"
+          />
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2">
+          <strong>SYSTEM/MODULE :</strong>
+          <select
+            id="systemSelect"
+            name="module"
+            required
+            style="width: 100%; height: 30px"
+          >
+            <option value="" disabled selected>Select System</option>
+          </select>
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <strong>SYSTEM FORM NAME :</strong>
+          <select
+            id="formSelect"
+            disabled
+            name="system_form_name"
+            required
+            style="width: 100%; height: 30px"
+          >
+            <option value="" disabled selected>Select Form</option>
+          </select>
+        </td>
+        <td>
+          <strong>FORM #:</strong>
+          <input
+            type="text"
+            name="system_form_no"
+            id="system_form_no"
+            readonly
+          />
+        </td>
+      </tr>
+    </table>
+
+    <table>
+      <tr>
+        <td class="section-title">CONCERN TYPE:</td>
+        <td class="section-title">LEVEL OF PRIORITY:</td>
+      </tr>
+      <tr>
+        <td>
+          <label class="checkbox-label"
+            ><input type="checkbox" id="concern_type_new" name="concern_type_new" value="Yes" /> New
+            (Function/Field/Entry/Column/Row)</label
+          >
+          <label class="checkbox-label"
+            ><input type="checkbox" id="concern_type_rev" name="concern_type_rev" value="Yes" />
+            Revision (Enhancement of Existing)</label
+          >
+          <label class="checkbox-label"
+            ><input type="checkbox" id="concern_type_del" name="concern_type_del" value="Yes" />
+            Delete (Dropped Query/Function/Row/Column/Data Point)</label
+          >
+          <label class="checkbox-label"
+            ><input type="checkbox" id="concern_type_cos" name="concern_type_cos" value="Yes" />
+            Cosmetic (Fonts/Color/Header/Footer)</label
+          >
+        </td>
+        <td>
+          <label class="checkbox-label"
+            ><input type="checkbox" id="priority_set"  name="priority_set" value="Yes" /> Set
+            Committed Date: <input type="date" id="committed_date" name="committed_date"
+          /></label>
+          <label class="checkbox-label"
+            ><input type="checkbox" id="priority_immediate" name="priority_immediate" value="Yes" />
+            Immediate</label
+          >
+          <label class="checkbox-label"
+            ><input type="checkbox" id="priority_add" name="priority_add" value="Yes" /> Addtl
+            Customization/Outside Scope</label
+          >
+        </td>
+      </tr>
+    </table>
+
+    <table id="dataTable">
+      <thead>
+        <tr>
+          <th>DATA POINTS</th>
+          <th>REFERENCE DATA FIELD</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><input type="text" name="data_point" /></td>
+          <td><input type="text" name="reference_field" /></td>
+        </tr>
+        <tr>
+          <td><input type="text" name="data_point" /></td>
+          <td><input type="text" name="reference_field" /></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <button class="add-btn" onclick="addRow()">Add Row</button>
+
+    <p><em>Note: Additional concerns may be written on the back page.</em></p>
+
+    <table>
+      <tr class="section-title">
+        <td>USER</td>
+        <td>DEPARTMENT HEAD</td>
+        <td>IT HEAD</td>
+      </tr>
+      <tr>
+        <td>
+          <input type="text" readonly name="user" id="user" />
+          <input type="text" readonly name="user_id" id="user_id" hidden />
+        </td>
+        <td>
+          <input
+            type="text"
+            readonly
+            name="department_head"
+            id="department_head"
+          />
+          <input
+            type="text"
+            readonly
+            name="department_head_id"
+            id="department_head_id"
+            hidden
+          />
+        </td>
+        <td>
+          <input type="text" readonly name="it_head" id="it_head" />
+          <input
+            type="text"
+            readonly
+            name="it_head_id"
+            id="it_head_id"
+            hidden
+          />
+        </td>
+      </tr>
+      <tr class="section-title">
+        <td>INTEGRATOR</td>
+        <td>DEVELOPER</td>
+        <td>QA</td>
+      </tr>
+      <tr>
+        <td>
+          <input
+            type="text"
+            readonly
+            id="integrator"
+            name="integrator"
+            value=""
+          />
+          <input
+            type="text"
+            readonly
+            id="integrator_id"
+            name="integrator_id"
+            value=""
+            hidden
+          />
+        </td>
+        <td>
+          <input
+            type="text"
+            readonly
+            name="developer"
+            id="developer"
+            value=""
+          /><input
+            type="text"
+            readonly
+            name="developer_id"
+            id="developer_id"
+            value=""
+            hidden
+          />
+        </td>
+        <td>
+          <input type="text" readonly name="qa" id="qa" />
+          <input type="text" readonly name="qa_id" id="qa_id" hidden />
+        </td>
+      </tr>
+    </table>
+
+    <table>
+      <tr>
+        <td>
+          <input type="checkbox" id="print_option_as_req" name="print_option_as_req" value="Yes" /> Print
+          Out as per User Request
+        </td>
+        <td>Date: <input type="date" id="print_out_date"  name="print_out_date" /></td>
+      </tr>
+      <tr>
+        <td>
+          <input type="checkbox" id="print_option_sys_print"  name="print_option_sys_print" value="Yes" />
+          Current System Print Out
+        </td>
+        <td>Date: <input type="date" id="system_print_date" name="system_print_date" /></td>
+      </tr>
+      <tr>
+        <td>
+          <input type="checkbox" id="print_option_modified" name="print_option_modified" value="Yes" />
+          Modified/Revised Print Out
+        </td>
+        <td>Patch Installed On: <input type="date" id="patch_date" name="patch_date" /></td>
+      </tr>
+    </table>
+
+    <!-- File upload section -->
+    <table>
+      <tr class="section-title">
+        <td colspan="2">UPLOAD FILES</td>
+      </tr>
+      <tr>
+        <td colspan="2">
+          <input
+            type="file"
+            name="attachments"
+            multiple
+            placeholder
+            required
+            accept=".jpg,.jpeg,.png,.gif,.pdf"
+          />
+          <p>
+            <small
+              >You can upload multiple files. Accepted formats: JPG, PNG, GIF,
+              PDF.</small
+            >
+          </p>
+        </td>
+      </tr>
+    </table>
+
+    <div style="text-align: center">
+      <button type="submit" id="submitBtn">
+        <h2 id="submitText">Submit</h2>
+      </button>
+    </div>
+  </form>
+</div>
