@@ -162,9 +162,35 @@
         <td>IT HEAD</td>
       </tr>
       <tr>
-        <td><input type="text" required name="user" /></td>
-        <td><input type="text" required name="department_head" /></td>
-        <td><input type="text" required name="it_head" /></td>
+        <td>
+          <input type="text" readonly name="user" id="user" />
+          <input type="text" readonly name="user_id" id="user_id" hidden />
+        </td>
+        <td>
+          <input
+            type="text"
+            readonly
+            name="department_head"
+            id="department_head"
+          />
+          <input
+            type="text"
+            readonly
+            name="department_head_id"
+            id="department_head_id"
+            hidden
+          />
+        </td>
+        <td>
+          <input type="text" readonly name="it_head" id="it_head" />
+          <input
+            type="text"
+            readonly
+            name="it_head_id"
+            id="it_head_id"
+            hidden
+          />
+        </td>
       </tr>
       <tr class="section-title">
         <td>INTEGRATOR</td>
@@ -175,15 +201,40 @@
         <td>
           <input
             type="text"
-            required
+            readonly
             id="integrator"
             name="integrator"
+            value=""
+          />
+          <input
+            type="text"
             readonly
-            value="Mark Jayson Ubas"
+            id="integrator_id"
+            name="integrator_id"
+            value=""
+            hidden
           />
         </td>
-        <td><input type="text" name="developer" /></td>
-        <td><input type="text" name="qa" /></td>
+        <td>
+          <input
+            type="text"
+            readonly
+            name="developer"
+            id="developer"
+            value=""
+          /><input
+            type="text"
+            readonly
+            name="developer_id"
+            id="developer_id"
+            value=""
+            hidden
+          />
+        </td>
+        <td>
+          <input type="text" readonly name="qa" id="qa" />
+          <input type="text" readonly name="qa_id" id="qa_id" hidden />
+        </td>
       </tr>
     </table>
 

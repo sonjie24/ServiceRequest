@@ -51,12 +51,12 @@
     async function loadMasterList() {
       try {
         const user = getUserSession();
-
+    
         const projectName = user.project;
         const response = await fetch(`${API_BASE_URL}/get-all`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ projectName }),
+          body: JSON.stringify({ user }),
         });
         const json = await response.json();
         const records = json.data;
@@ -88,6 +88,8 @@
             }')">Edit</button>
               <button onclick="cancelRecord('${record.uuid
             }')">Cancel</button>
+              <button onclick="approvedHead('${record.uuid
+            }')">Approve</button>
             </td>
           `;
           tableBody.appendChild(row);
@@ -177,7 +179,6 @@
     }
 
     function closeModal() {
-       loadMasterList();
       document.getElementById("createModal").style.display = "none";
     }
 

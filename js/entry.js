@@ -69,10 +69,40 @@
   // Get default values (used when modal opens)
   window.getDefaults = function () {
     const today = new Date().toISOString().split("T")[0];
+    
     if (user) {
       document.getElementById("project").value = user.project || "CBMIS";
-      document.getElementById("integrator").value = user.name || "";
+      
       document.getElementById("department").value = user.department || "";
+        console.log(user.role);
+      if (user.role === "User") {
+         document.getElementById("user").value = user.name || "";
+      } else if(user.role === "Head") {
+        document.getElementById("department_head").value = user.name || "";
+      } else if(user.role === "IT Head") {
+        document.getElementById("it_head").value = user.name || "";
+      } else if(user.role === "Integrator") {
+        document.getElementById("integrator").value = user.name || "";
+      } else if(user.role === "Developer") {
+        document.getElementById("developer").value = user.name || "";
+      } else if(user.role === "QA") {
+        document.getElementById("qa").value = user.name || "";
+      }
+
+       if (user.role === "User") {
+         document.getElementById("user_id").value = user.userId || "";
+      } else if(user.role === "Head") {
+        document.getElementById("department_head_id").value = user.userId || "";
+      } else if(user.role === "IT Head") {
+        document.getElementById("it_head_id").value = user.userId || "";
+      } else if(user.role === "Integrator") {
+        document.getElementById("integrator_id").value = user.userId || "";
+      } else if(user.role === "Developer") {
+        document.getElementById("developer_id").value = user.userId || "";
+      } else if(user.role === "QA_id") {
+        document.getElementById("qa").value = user.userId || "";
+      }
+    
     }
 
     // 👇 Generate and assign UUID to hidden input
@@ -114,7 +144,7 @@
         alert("Form submitted successfully!");
         form.reset();
         document.getElementById("formSelect").disabled = true;
-   
+
         window.parent.loadMasterList();
 
         // Close the modal
