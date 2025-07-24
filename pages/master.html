@@ -22,6 +22,7 @@
   <table id="masterTable">
     <thead>
       <tr>
+        <th width="160px" hidden>GUID</th>
         <th onclick="sortTable(0)" width="160px">Request No ⬍</th>
         <th width="120px">Requested Date</th>
         <th width="250px">Module</th>
@@ -70,17 +71,18 @@
         records.forEach((record) => {
           const row = document.createElement("tr");
           row.innerHTML = `
+            <td hidden>${record.uuid || "-"}</td>
             <td>${record.service_request_no || "-"}</td>
             <td>${record.date_requested || "-"}</td>
             <td>${record.module || "-"}</td>
             <td>${record.system_form_name || "-"}</td>
             <td>${record.system_form_name || "-"}</td>
             <td class="action-buttons">
-              <button onclick="viewRecord('${record.service_request_no
+              <button onclick="viewRecord('${record.uuid
             }')">View</button>
-              <button onclick="editRecord('${record.service_request_no
+              <button onclick="editRecord('${record.uuid
             }')">Edit</button>
-              <button onclick="cancelRecord('${record.service_request_no
+              <button onclick="cancelRecord('${record.uuid
             }')">Cancel</button>
             </td>
           `;
