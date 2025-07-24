@@ -6,13 +6,34 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Master List</title>
   <link rel="stylesheet" href="../style/main.css" />
+  <style>
+    .pagination-controls {
+      display: flex;
+      justify-content: center;
+      margin: 20px 0;
+      gap: 5px;
+    }
+
+    .pagination-controls button {
+      padding: 5px 10px;
+      border: 1px solid #ccc;
+      background: white;
+      cursor: pointer;
+    }
+
+    .pagination-controls button.active {
+      background-color: #007bff;
+      color: white;
+      font-weight: bold;
+    }
+  </style>
 </head>
 
 <body>
   <h1>Service Request</h1>
 
   <div class="top-bar">
-    <input height="20px" type="text" id="searchInput" placeholder="Search by project name..." />
+    <input height="20px" type="text" id="searchInput" placeholder="Search anything..." />
   </div>
 
   <div class="top-bar-left">
@@ -22,7 +43,7 @@
   <table id="masterTable">
     <thead>
       <tr>
-        <th onclick="sortTable(0)" width="160px">Request No ⬍</th>
+        <th width="160px">Request No</th>
         <th width="120px">Requested Date</th>
         <th width="250px">Module</th>
         <th width="300px">Form</th>
@@ -35,6 +56,9 @@
     </tbody>
   </table>
 
+  <!-- Pagination -->
+  <div id="pagination" class="pagination-controls"></div>
+
   <!-- Modal -->
   <div id="createModal" class="modal" style="display: none">
     <div class="modal-content">
@@ -42,52 +66,84 @@
       <div id="modalBody">Loading...</div>
     </div>
   </div>
-  <script src="../js/session.js" ></script>
+
+  <script src="../js/session.js"></script>
   <script src="../js/config.js"></script>
   <script>
+    let currentPage = 1;
+    const rowsPerPage = 10;
+    let allRecords = [];
+    let filteredRecords = [];
+
     async function loadMasterList() {
       try {
         const user = getUserSession();
-
         const projectName = user.project;
         const response = await fetch(`${API_BASE_URL}/get-all`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ projectName }),
         });
+
         const json = await response.json();
-        const records = json.data;
+        allRecords = json.data || [];
+        filteredRecords = [...allRecords];
 
-        const tableBody = document.getElementById("masterTableBody");
-        tableBody.innerHTML = "";
-
-        if (!records || records.length === 0) {
-          tableBody.innerHTML =
+        if (!filteredRecords.length) {
+          document.getElementById("masterTableBody").innerHTML =
             "<tr><td colspan='6'>No data available</td></tr>";
+          document.getElementById("pagination").innerHTML = "";
           return;
         }
 
-        records.forEach((record) => {
-          const row = document.createElement("tr");
-          row.innerHTML = `
-            <td>${record.service_request_no || "-"}</td>
-            <td>${record.date_requested || "-"}</td>
-            <td>${record.module || "-"}</td>
-            <td>${record.system_form_name || "-"}</td>
-            <td>${record.system_form_name || "-"}</td>
-            <td class="action-buttons">
-              <button onclick="viewRecord('${record.service_request_no
-            }')">View</button>
-              <button onclick="editRecord('${record.service_request_no
-            }')">Edit</button>
-              <button onclick="cancelRecord('${record.service_request_no
-            }')">Cancel</button>
-            </td>
-          `;
-          tableBody.appendChild(row);
-        });
+        renderTablePage(currentPage);
+        renderPagination();
       } catch (error) {
         console.error("❌ Failed to load master list:", error);
+      }
+    }
+
+    function renderTablePage(page) {
+      const tableBody = document.getElementById("masterTableBody");
+      tableBody.innerHTML = "";
+
+      const start = (page - 1) * rowsPerPage;
+      const end = start + rowsPerPage;
+      const pageRecords = filteredRecords.slice(start, end);
+
+      pageRecords.forEach((record) => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${record.service_request_no || "-"}</td>
+          <td>${record.date_requested || "-"}</td>
+          <td>${record.module || "-"}</td>
+          <td>${record.system_form_name || "-"}</td>
+          <td>${record.concern || "-"}</td>
+          <td class="action-buttons">
+            <button onclick="viewRecord('${record.service_request_no}')">View</button>
+            <button onclick="editRecord('${record.service_request_no}')">Edit</button>
+            <button onclick="cancelRecord('${record.service_request_no}')">Cancel</button>
+          </td>
+        `;
+        tableBody.appendChild(row);
+      });
+    }
+
+    function renderPagination() {
+      const totalPages = Math.ceil(filteredRecords.length / rowsPerPage);
+      const container = document.getElementById("pagination");
+      container.innerHTML = "";
+
+      for (let i = 1; i <= totalPages; i++) {
+        const btn = document.createElement("button");
+        btn.textContent = i;
+        btn.classList.toggle("active", i === currentPage);
+        btn.onclick = () => {
+          currentPage = i;
+          renderTablePage(currentPage);
+          renderPagination();
+        };
+        container.appendChild(btn);
       }
     }
 
@@ -95,15 +151,23 @@
       const searchInput = document.getElementById("searchInput");
       searchInput.addEventListener("input", function () {
         const filter = this.value.toLowerCase();
-        const rows = document.querySelectorAll("#masterTableBody tr");
 
-        rows.forEach((row) => {
-          const cells = Array.from(row.cells);
-          const matches = cells.some((cell) =>
-            cell.textContent.toLowerCase().includes(filter)
+        filteredRecords = allRecords.filter((record) => {
+          return Object.values(record).some((val) =>
+            String(val).toLowerCase().includes(filter)
           );
-          row.style.display = matches ? "" : "none";
         });
+
+        currentPage = 1;
+
+        if (filteredRecords.length === 0) {
+          document.getElementById("masterTableBody").innerHTML =
+            "<tr><td colspan='6'>No matching records found</td></tr>";
+          document.getElementById("pagination").innerHTML = "";
+        } else {
+          renderTablePage(currentPage);
+          renderPagination();
+        }
       });
     }
 
@@ -116,9 +180,7 @@
     }
 
     function cancelRecord(id) {
-      const confirmed = confirm(
-        "Are you sure you want to cancel request " + id + "?"
-      );
+      const confirmed = confirm("Are you sure you want to cancel request " + id + "?");
       if (confirmed) {
         alert("Request canceled: " + id);
         // Add actual cancel logic here
@@ -130,11 +192,9 @@
       setupSearch();
     });
 
-    document
-      .getElementById("createBtn")
-      .addEventListener("click", function () {
-        openModal();
-      });
+    document.getElementById("createBtn").addEventListener("click", function () {
+      openModal();
+    });
 
     function openModal() {
       const modal = document.getElementById("createModal");
@@ -146,14 +206,11 @@
         .then((res) => res.text())
         .then((html) => {
           modalBody.innerHTML = html;
-
-          // Dynamically load the script
           const script = document.createElement("script");
-          script.src =  `${BASE_PATH}js/entry.js`; 
+          script.src = `${BASE_PATH}js/entry.js`;
           script.defer = true;
 
           script.onload = () => {
-            // 🔥 Call after JS is fully loaded
             if (typeof getDefaults === "function") {
               getDefaults();
             } else {
@@ -163,7 +220,6 @@
 
           modalBody.appendChild(script);
         })
-
         .catch((err) => {
           modalBody.innerHTML = "<p>⚠️ Failed to load the entry form.</p>";
           console.error(err);
@@ -174,14 +230,10 @@
       document.getElementById("createModal").style.display = "none";
     }
 
-    // Do NOT close modal when clicking outside
     window.addEventListener("click", function (event) {
       const modal = document.getElementById("createModal");
       const modalContent = document.querySelector(".modal-content");
-
-      // Check if clicked outside modalContent, but do nothing
       if (event.target === modal) {
-        // Do nothing (don't close)
         event.stopPropagation();
       }
     });
@@ -189,7 +241,7 @@
     document.addEventListener("keydown", function (event) {
       const modal = document.getElementById("createModal");
       if (event.key === "Escape" && modal.style.display === "block") {
-        event.preventDefault(); // Prevent ESC from closing
+        event.preventDefault();
       }
     });
   </script>
