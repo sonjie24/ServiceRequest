@@ -378,14 +378,13 @@
         proc = "/create";
       }
 
- 
+      // Remove Details
       for (const item of tmpDetails) {
         await fetch(`${API_BASE_URL}/delete`, {
           method: "POST",
           body: formData,
         });
       }
-      
 
       const response = await fetch(`${API_BASE_URL}${proc}`, {
         method: "POST",
