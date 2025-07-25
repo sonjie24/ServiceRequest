@@ -16,7 +16,7 @@
   </div>
 
   <div class="top-bar-left">
-    <button id="createBtn">+ Create New Request</button>
+    <button id="createBtn" onclick="addRecord()">+ Create New Request</button>
   </div>
 
   <table id="masterTable">
@@ -89,6 +89,7 @@
               <button onclick="editRecord('${record.uuid
             }')">Edit</button>
               <button onclick="cancelRecord('${record.uuid
+            }','${record.service_request_no
             }')">Cancel</button>
               <button onclick="approvedRecord('${record.uuid
             }')">Approve</button>
@@ -117,12 +118,18 @@
       });
     }
 
+    function addRecord(id) {
+      mode = "Add";
+      openModal(id);
+    }
+
     function viewRecord(id) {
       alert("View record: " + id);
     }
 
     function editRecord(id) {
-      alert("Edit record: " + id);
+      mode = "Edit";
+      openModal(id);
     }
 
     function approvedRecord(id) {
@@ -130,13 +137,13 @@
       openModal(id);
     }
 
-    function cancelRecord(id) {
+    function cancelRecord(id,ref) {
       const confirmed = confirm(
-        "Are you sure you want to cancel request " + id + "?"
+        "Are you sure you want to cancel request " + ref + "?"
       );
       if (confirmed) {
-        alert("Request canceled: " + id);
-        // Add actual cancel logic here
+        mode = "Cancel";
+        openModal(id);
       }
     }
 
@@ -144,13 +151,6 @@
       loadMasterList();
       setupSearch();
     });
-
-    document
-      .getElementById("createBtn")
-      .addEventListener("click", function () {
-        mode = "Add";
-        openModal();
-      });
 
     function openModal(uuid = null) {
       const modal = document.getElementById("createModal");
@@ -161,12 +161,9 @@
       let pageTmp = "";
       let scriptFile = "";
 
-      if (mode === "Approve") {
-        pageTmp = "pages/approve.html";
-        scriptFile = "js/approve.js";
-      } else {
-        pageTmp = "pages/entry.html";
-        scriptFile = "js/entry.js";
+      if (mode === "Approve" || mode === "Add" || mode === "Edit" || mode === "Cancel" ) {
+        pageTmp = "pages/serviceForm.html";
+        scriptFile = "js/serviceForm.js";
       }
 
       fetch(`${BASE_PATH}${pageTmp}`)
@@ -183,12 +180,13 @@
             const tryGetDefaults = setInterval(() => {
               if (typeof getDefaults === "function") {
                 clearInterval(tryGetDefaults);
-                getDefaults(uuid); // ✅ Now the DOM is guaranteed to be ready
+                 // ✅ Now the DOM is guaranteed to be ready
+                 getDefaults(uuid,mode);
               }
             }, 100); // Poll every 100ms until DOM is ready
           };
 
-          modalBody.appendChild(script);
+          modalBody.appendChild(script),mode;
         })
         .catch((err) => {
           modalBody.innerHTML = "<p>⚠️ Failed to load the entry form.</p>";

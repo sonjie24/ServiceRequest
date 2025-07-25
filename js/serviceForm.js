@@ -75,7 +75,9 @@
       qa_id: main.qa_id,
       system_form_no: main.system_form_no,
       date_requested: main.date_requested,
-      service_request_no: main.service_request_no
+      service_request_no: main.service_request_no,
+      memo: main.memo,
+      req_status: main.req_status,
     };
 
     for (const [id, value] of Object.entries(fieldMap)) {
@@ -115,7 +117,6 @@
       }
     }
   }
-
   async function getData(uuid) {
     try {
       const res = await fetch(`${API_BASE_URL}/get-data-main`, {
@@ -130,8 +131,6 @@
 
       const result = await res.json();
       const main = result.data[0] || {};
-
-      console.log(result);
 
       mapDataToForm(main); // <-- Populate main form fields
 
@@ -151,6 +150,11 @@
       alert("An error occurred while fetching data.");
     }
 
+
+  }
+
+  let tmpDetails =[];
+  async function getDataDetails(uuid) {
     try {
       const res = await fetch(`${API_BASE_URL}/get-data-detail`, {
         method: "POST",
@@ -163,32 +167,34 @@
       if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
 
       const result = await res.json();
-      const sub1 = result.data[0] || {};
+      const sub1 = result.data || {};
 
-      console.log(result);
 
-       // Populate sub-table rows
-const tbody = document.querySelector("#dataTable tbody");
-tbody.innerHTML = ""; // Clear existing rows
 
-// Normalize sub1 to an array
-let sub1Array = [];
+      // Populate sub-table rows
+      const tbody = document.querySelector("#dataTable tbody");
+      tbody.innerHTML = ""; // Clear existing rows
 
-if (Array.isArray(sub1)) {
-  sub1Array = sub1;
-} else if (sub1 && typeof sub1 === 'object') {
-  sub1Array = [sub1]; // wrap single object in an array
-}
+      // Normalize sub1 to an array
+      let sub1Array = [];
 
-// Loop through array to create table rows
-sub1Array.forEach(item => {
-  const row = document.createElement("tr");
-  row.innerHTML = `
-    <td><input type="text" name="data_point" value="${item.data_point || ""}" /></td>
-    <td><input type="text" name="reference_field" value="${item.ref_field || ""}" /></td>
-  `;
-  tbody.appendChild(row);
-});
+      if (Array.isArray(sub1)) {
+        sub1Array = sub1;
+      } else if (sub1 && typeof sub1 === 'object') {
+        sub1Array = [sub1]; // wrap single object in an array
+      }
+      
+      tmpDetails = sub1Array;
+      // Loop through array to create table rows
+      sub1Array.forEach(item => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+                        <td><input type="text" name="data_point" value="${item.data_point || ""}" /></td>
+                        <td><input type="text" name="reference_field" value="${item.ref_field || ""}" /></td>
+                      `;
+        tbody.appendChild(row);
+
+      });
 
 
 
@@ -198,43 +204,147 @@ sub1Array.forEach(item => {
     }
   }
 
+  async function getDataFiles(uuid) {
+    try {
+      const res = await fetch(`${API_BASE_URL}/get-data-files`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ uuid }),
+      });
 
-  // Get default values (used when modal opens)
-  window.getDefaults = async function (uuid) {
-    await getData(uuid);
-    const user = JSON.parse(localStorage.getItem("user")); // Your user object
-    console.log(user.role);
+      if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
+
+      const result = await res.json();
+      const sub1 = result.data || {};
+
+      // ✅ FIXED: Correct tbody reference
+      const tbody = document.getElementById("uploadedFilesBody");
+      if (!tbody) {
+        console.warn("⚠️ uploadedFilesBody not found in DOM.");
+        return;
+      }
+
+      tbody.innerHTML = ""; // Clear existing rows
+
+      // Normalize sub1 to array
+      let sub1Array = [];
+
+      if (Array.isArray(sub1)) {
+        sub1Array = sub1;
+      } else if (sub1 && typeof sub1 === 'object') {
+        sub1Array = [sub1];
+      }
+
+      // Create rows dynamically
+      sub1Array.forEach(item => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>
+            <a href="${item.Link || "#"}" target="_blank">
+              ${item.Link || "No Link"}
+            </a>
+          </td>
+        `;
+        tbody.appendChild(row);
+      });
+
+    } catch (error) {
+      console.error("Fetch error:", error);
+      alert("An error occurred while fetching uploaded files.");
+    }
+  }
+
+  function generateUUIDv4() {
+    return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, (c) =>
+      (
+        c ^
+        (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (c / 4)))
+      ).toString(16)
+    );
+  }
+
+  function loadDefaultsUserInfo(user) {
     if (user) {
       if (user.role === "User") {
         document.getElementById("user").value = user.name || "";
+        document.getElementById("user_id").value = user.userId || "";
+        ocument.getElementById("req_status").value = "For Head Approval";
       } else if (user.role === "Head") {
+        if(mode ==="Add"){
+          document.getElementById("user").value = user.name || "";
+          document.getElementById("user_id").value = user.userId || "";
+        }
         document.getElementById("department_head").value = user.name || "";
+        document.getElementById("department_head_id").value = user.userId || "";
+        document.getElementById("req_status").value = "For IT Approval";
       } else if (user.role === "IT Head") {
+        if(mode ==="Add"){
+          document.getElementById("user").value = user.name || "";
+          document.getElementById("user_id").value = user.userId || "";
+
+          document.getElementById("department_head").value = user.name || "";
+          document.getElementById("department_head_id").value = user.userId || "";
+        }
         document.getElementById("it_head").value = user.name || "";
+        document.getElementById("it_head_id").value = user.userId || "";
+        document.getElementById("req_status").value = "Approved";
       } else if (user.role === "Integrator") {
         document.getElementById("integrator").value = user.name || "";
-      } else if (user.role === "Developer") {
-        document.getElementById("developer").value = user.name || "";
-      } else if (user.role === "QA") {
-        document.getElementById("qa").value = user.name || "";
-      }
-
-      if (user.role === "User") {
-        document.getElementById("user_id").value = user.userId || "";
-      } else if (user.role === "Head") {
-        document.getElementById("department_head_id").value = user.userId || "";
-      } else if (user.role === "IT Head") {
-        document.getElementById("it_head_id").value = user.userId || "";
-      } else if (user.role === "Integrator") {
         document.getElementById("integrator_id").value = user.userId || "";
       } else if (user.role === "Developer") {
+        document.getElementById("developer").value = user.name || "";
         document.getElementById("developer_id").value = user.userId || "";
-      } else if (user.role === "QA_id") {
+      } else if (user.role === "QA") {
+        document.getElementById("qa").value = user.name || "";
         document.getElementById("qa").value = user.userId || "";
       }
 
     }
+  }
 
+  // Get default values (used when modal opens)
+  window.getDefaults = async function (uuid, mode) {
+    const user = JSON.parse(localStorage.getItem("user")); // Your user object
+    const submitBtn = document.getElementById("submitBtn");
+    submitBtn.disabled=true;
+    if (mode === "Approve") {
+      document.getElementById("modalTitle").textContent = "SERVICE REQUEST APPROVAL";
+      document.getElementById("attachments").removeAttribute("required");
+      await getData(uuid);
+      await getDataDetails(uuid);
+      await getDataFiles(uuid);
+      loadDefaultsUserInfo(user);
+    } else if (mode === "Add") {
+      const today = new Date().toISOString().split("T")[0];
+      document.getElementById("modalTitle").textContent = "SERVICE REQUEST ENTRY";
+      document.getElementById("date_requested").value = today;
+      document.getElementById("project").value = user.project || "CBMIS";
+      document.getElementById("department").value = user.department || "";
+      
+      // 👇 Generate and assign UUID to hidden input
+      const uuidField = document.getElementById("uuid");
+      if (uuidField) {
+        uuidField.value = generateUUIDv4();
+      }
+      loadDefaultsUserInfo(user);
+    } if (mode === "Edit") {
+      document.getElementById("modalTitle").textContent = "SERVICE REQUEST UPDATE";
+      document.getElementById("attachments").removeAttribute("required");
+      await getData(uuid);
+      await getDataDetails(uuid);
+      await getDataFiles(uuid);
+    } if (mode === "Cancel") {
+      document.getElementById("modalTitle").textContent = "SERVICE REQUEST CANCELLATION";
+      document.getElementById("attachments").removeAttribute("required");
+      await getData(uuid);
+      await getDataDetails(uuid);
+      await getDataFiles(uuid);
+      document.getElementById("req_status").value = "Cancelled";
+    }
+
+    submitBtn.disabled=false;
 
   };
 
@@ -243,6 +353,10 @@ sub1Array.forEach(item => {
     event.preventDefault();
     const form = event.target;
     const formData = new FormData(form);
+
+    for (let pair of formData.entries()) {
+      console.log(`${pair[0]}: ${pair[1]}`);
+    }
 
     console.log(form);
     console.log(formData);
@@ -257,7 +371,23 @@ sub1Array.forEach(item => {
     }
 
     try {
-      const response = await fetch(`${API_BASE_URL}/create`, {
+      let proc ="";
+      if (mode === "Approve" || mode === "Edit" || mode === "Cancel" ) {
+        proc = "/update";
+      } else{
+        proc = "/create";
+      }
+
+ 
+      for (const item of tmpDetails) {
+        await fetch(`${API_BASE_URL}/delete`, {
+          method: "POST",
+          body: formData,
+        });
+      }
+      
+
+      const response = await fetch(`${API_BASE_URL}${proc}`, {
         method: "POST",
         body: formData,
       });

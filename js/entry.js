@@ -105,11 +105,7 @@
     
     }
 
-    // 👇 Generate and assign UUID to hidden input
-    const uuidField = document.getElementById("uuid");
-    if (uuidField) {
-      uuidField.value = generateUUIDv4();
-    }
+    
 
     document.getElementById("date_requested").value = today;
   };
