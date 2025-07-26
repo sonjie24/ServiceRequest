@@ -78,6 +78,8 @@
       service_request_no: main.service_request_no,
       memo: main.memo,
       req_status: main.req_status,
+      cylix_status: main.cylix_status,
+      dev_status: main.dev_status,
     };
 
     for (const [id, value] of Object.entries(fieldMap)) {
@@ -92,6 +94,8 @@
       concern_type_rev: main.concern_type_rev,
       concern_type_del: main.concern_type_del,
       concern_type_cos: main.concern_type_cos,
+      concern_type_data: main.concern_type_data,
+      concern_type_bugs: main.concern_type_bugs,
       priority_set: main.priority_set,
       committed_date: main.committed_date,
       priority_immediate: main.priority_immediate,
@@ -346,21 +350,96 @@
         uuidField.value = generateUUIDv4();
       }
       loadDefaultsUserInfo(user);
-    } if (mode === "Edit") {
+    }else if (mode === "Edit") {
       document.getElementById("modalTitle").textContent = "SERVICE REQUEST UPDATE";
       document.getElementById("submitText").textContent = "UPDATE";
       document.getElementById("attachments").removeAttribute("required");
+
       await getData(uuid);
       await getDataDetails(uuid);
       await getDataFiles(uuid);
-    } if (mode === "Cancel") {
+    }else if (mode === "Cancel") {
       document.getElementById("modalTitle").textContent = "SERVICE REQUEST CANCELLATION";
       document.getElementById("submitText").textContent = "CANCEL";
       document.getElementById("attachments").removeAttribute("required");
+
       await getData(uuid);
       await getDataDetails(uuid);
       await getDataFiles(uuid);
+
       document.getElementById("req_status").value = "Cancelled";
+
+    }else if (mode === "Accept") {
+      document.getElementById("modalTitle").textContent = "ACCEPT SERVICE REQUEST";
+      document.getElementById("submitText").textContent = "ACCEPT";
+      document.getElementById("attachments").removeAttribute("required");
+     
+      await getData(uuid);
+      await getDataDetails(uuid);
+      await getDataFiles(uuid);
+
+      document.getElementById("cylix_status").value = "Accepted";
+      document.getElementById("dev_status").value = "For Development";
+      document.getElementById("integrator").value = user.name || "";
+      document.getElementById("integrator_id").value = user.userId || "";
+    
+    
+    }else if (mode === "Accept Development") {
+      document.getElementById("modalTitle").textContent = "ACCEPT SERVICE REQUEST FOR DEVELOPMENT";
+      document.getElementById("submitText").textContent = "ACCEPT";
+      document.getElementById("attachments").removeAttribute("required");
+
+      await getData(uuid);
+      await getDataDetails(uuid);
+      await getDataFiles(uuid);
+
+      document.getElementById("dev_status").value = "Ongoing";
+      document.getElementById("developer").value = user.name || "";
+      document.getElementById("developer_id").value = user.userId || "";
+    
+    }else if (mode === "Done Development") {
+      document.getElementById("modalTitle").textContent = "DONE DEVELOPMENT";
+      document.getElementById("submitText").textContent = "DONE";
+      document.getElementById("attachments").removeAttribute("required");
+
+      await getData(uuid);
+      await getDataDetails(uuid);
+      await getDataFiles(uuid);
+
+      document.getElementById("dev_status").value = "For QA";
+    }else if (mode === "Accept QA") {
+      document.getElementById("modalTitle").textContent = "FOR TESTING";
+      document.getElementById("submitText").textContent = "ACCEPT";
+      document.getElementById("attachments").removeAttribute("required");
+
+      await getData(uuid);
+      await getDataDetails(uuid);
+      await getDataFiles(uuid);
+     
+      document.getElementById("dev_status").value = "QA";
+      document.getElementById("qa").value = user.name || "";
+      document.getElementById("qa_id").value = user.userId || "";
+    }else if (mode === "Done QA") {
+      document.getElementById("modalTitle").textContent = "DONE TESTING";
+      document.getElementById("submitText").textContent = "DONE";
+      document.getElementById("attachments").removeAttribute("required");
+
+      await getData(uuid);
+      await getDataDetails(uuid);
+      await getDataFiles(uuid);
+     
+      document.getElementById("dev_status").value = "For Deployment";
+    }else if (mode === "Deploy") {
+      document.getElementById("modalTitle").textContent = "DEPLOY CONCERN";
+      document.getElementById("submitText").textContent = "DEPLOY";
+      document.getElementById("attachments").removeAttribute("required");
+      document.getElementById("patch_date").setAttribute("required", "required");
+
+      await getData(uuid);
+      await getDataDetails(uuid);
+      await getDataFiles(uuid);
+     
+      document.getElementById("dev_status").value = "Deployed";
     }
 
     submitBtn.disabled=false;
@@ -391,10 +470,10 @@
 
     try {
       let proc ="";
-      if (mode === "Approve" || mode === "Edit" || mode === "Cancel" ) {
-        proc = "/update";
-      } else{
+      if (mode === "Add" ) {
         proc = "/create";
+      } else{
+        proc = "/update";
       }
 
       // Remove Details

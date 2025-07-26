@@ -3,7 +3,9 @@
   <form id="entryForm">
     <div style="display: none">
       <strong>UUID:</strong> <input type="text" name="uuid" id="uuid" />
-      <input type="text" readonly id="req_status" name="req_status" value="" />
+      <input type="text" readonly id="req_status" name="req_status" value="For Head Approval" />
+      <input type="text" readonly id="cylix_status" name="cylix_status" value="Pending" />
+      <input type="text" readonly id="dev_status" name="dev_status" value="Pending" />
     </div>
     <div style="display: none">
       <strong>type:</strong> <input type="text" name="type" value="actual" id="actual" />
@@ -70,9 +72,15 @@
           <label class="checkbox-label"><input type="checkbox" id="concern_type_del" name="concern_type_del"
               value="Yes" />
             Delete (Dropped Query/Function/Row/Column/Data Point)</label>
-          <label class="checkbox-label"><input type="checkbox" id="concern_type_cos" name="concern_type_cos"
+            <label class="checkbox-label"><input type="checkbox" id="concern_type_cos" name="concern_type_cos"
               value="Yes" />
             Cosmetic (Fonts/Color/Header/Footer)</label>
+            <label class="checkbox-label"><input type="checkbox" id="concern_type_data" name="concern_type_data"
+              value="Yes" />
+            Data (Fonts/Color/Header/Footer)</label>
+            <label class="checkbox-label"><input type="checkbox" id="concern_type_bugs" name="concern_type_bugs"
+              value="Yes" />
+            Bugs (Fonts/Color/Header/Footer)</label>
         </td>
         <td>
           <label class="checkbox-label"><input type="checkbox" id="priority_set" name="priority_set" value="Yes" /> Set
@@ -81,8 +89,7 @@
               value="Yes" />
             Immediate</label>
           <label class="checkbox-label"><input type="checkbox" id="priority_add" name="priority_add" value="Yes" />
-            Addtl
-            Customization/Outside Scope</label>
+            Addtl Customization/Outside Scope</label>
         </td>
       </tr>
     </table>
