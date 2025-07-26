@@ -360,5 +360,13 @@ select {
   margin-top: 2px;
 }
 
-
- 
+#searchInput {
+  display: block;           /* take the full row */
+  width: 100%;              /* occupy full width */
+  height: 50px;             /* bigger height */
+  font-size: 18px;          /* larger text */
+  padding: 10px 15px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  box-sizing: border-box;
+} 

@@ -23,7 +23,7 @@
     </div>
   </div>
   <div class="top-bar">
-    <input height="20px" type="text" id="searchInput" placeholder="Search by..." />
+    <input  class="searchInput" type="text" id="searchInput" placeholder="Search by..." />
   </div>
 
   <!-- <div class="top-bar-left">
@@ -145,8 +145,8 @@
       buttons += `<button onclick="viewRecord('${record.uuid}')">View</button>`;
     
 
-      if (userRole === 'User' || userRole === 'Integrator' || userRole === 'Admin') {
-        if ((userRole === 'User'|| userRole === 'Integrator') & record.req_status !== "Approved"  ){
+      if (userRole === 'User' || userRole === 'Integrator' || userRole === 'Hybrid' || userRole === 'Admin') {
+        if ((userRole === 'User'|| userRole === 'Integrator' || userRole === 'Hybrid') & record.req_status !== "Approved"  ){
           buttons += `<button onclick="editRecord('${record.uuid}')">Edit</button>`;
         } else if(userRole === 'Admin') {
           buttons += `<button onclick="editRecord('${record.uuid}')">Edit</button>`;
@@ -164,7 +164,7 @@
         buttons += `<button onclick="approvedRecord('${record.uuid}')">Approve</button>`;
       } 
 
-      if (userRole === 'QA' || userRole === 'Integrator') {
+      if (userRole === 'QA' || userRole === 'Integrator' || userRole === 'Hybrid') {
         if (record.integrator ===''){
           buttons += `<button onclick="acceptRecord('${record.uuid}')">Accept</button>`;
         }
@@ -183,13 +183,13 @@
       }
 
 
-      if (userRole === 'Developer') {
-        if (record.developer ===''){
+      if (userRole === 'Developer' || userRole === 'Hybrid') {
+        if (record.developer ==='' & record.dev_status!=='Pending' ){
           buttons += `<button onclick="acceptDeveloperRecord('${record.uuid}')">Accept</button>`;
         } 
       }
 
-      if (userRole === 'Developer') {
+      if (userRole === 'Developer' || userRole === 'Hybrid') {
         if (record.dev_status ==='Ongoing'){
           buttons += `<button onclick="doneDevelopentRecord('${record.uuid}')">Done</button>`;
         } 
@@ -197,7 +197,7 @@
 
 
       if (userRole === 'Admin') {
-        if (record.dev_status !=='Deployed'){
+        if (record.dev_status !=='Deployed' & record.dev_status !=='QA' & record.dev_status !=='For Deployment' ){
           buttons += `<button onclick="assignRecord('${record.uuid}')">Assign</button>`;
         } 
         
@@ -205,7 +205,6 @@
 
       return `<td class="action-buttons secondary-text">${buttons}</td>`;
     }
-
 
     function generateConcernType(record) {
 
@@ -257,7 +256,6 @@ if (record.concern_type_bugs?.toLowerCase() === "yes") {
 
 return `<td>${buttons}</td>`;
 }
-
 
     function generatePriorityType(record) {
 
@@ -317,7 +315,6 @@ return `<td>${buttons}</td>`;
 
       return `<td>${buttons}</td>`;
       }
-
 
     function setupSearch() {
       const searchInput = document.getElementById("searchInput");
