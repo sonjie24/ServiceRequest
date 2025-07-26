@@ -246,6 +246,9 @@
               ${item.Link || "No Link"}
             </a>
           </td>
+          <td class="action-buttons">
+              <button type="button" onclick="removeFile('${item.GDriveID}',this)" id="remove">Remove</button>
+          </td>
         `;
         tbody.appendChild(row);
       });
@@ -255,6 +258,18 @@
       alert("An error occurred while fetching uploaded files.");
     }
   }
+
+   // Remove Files (global for onclick)
+   window.removeFile = async function (GDriveID,button) {
+    await fetch(`${API_BASE_URL}/delete-file`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ GDriveID }),
+    });
+    const row = button.closest("tr");
+    row.remove();
+    alert("Deleted successfully!");
+  };
 
   function generateUUIDv4() {
     return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, (c) =>
@@ -311,6 +326,7 @@
     submitBtn.disabled=true;
     if (mode === "Approve") {
       document.getElementById("modalTitle").textContent = "SERVICE REQUEST APPROVAL";
+      document.getElementById("submitText").textContent = "APPROVE";
       document.getElementById("attachments").removeAttribute("required");
       await getData(uuid);
       await getDataDetails(uuid);
@@ -319,6 +335,7 @@
     } else if (mode === "Add") {
       const today = new Date().toISOString().split("T")[0];
       document.getElementById("modalTitle").textContent = "SERVICE REQUEST ENTRY";
+      document.getElementById("submitText").textContent = "SAVE";
       document.getElementById("date_requested").value = today;
       document.getElementById("project").value = user.project || "CBMIS";
       document.getElementById("department").value = user.department || "";
@@ -331,12 +348,14 @@
       loadDefaultsUserInfo(user);
     } if (mode === "Edit") {
       document.getElementById("modalTitle").textContent = "SERVICE REQUEST UPDATE";
+      document.getElementById("submitText").textContent = "UPDATE";
       document.getElementById("attachments").removeAttribute("required");
       await getData(uuid);
       await getDataDetails(uuid);
       await getDataFiles(uuid);
     } if (mode === "Cancel") {
       document.getElementById("modalTitle").textContent = "SERVICE REQUEST CANCELLATION";
+      document.getElementById("submitText").textContent = "CANCEL";
       document.getElementById("attachments").removeAttribute("required");
       await getData(uuid);
       await getDataDetails(uuid);

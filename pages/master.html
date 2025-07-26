@@ -10,14 +10,25 @@
 
 <body>
   <h1>Service Request</h1>
-
+  <div class="user-info-bar">
+    <div class="user-details">
+      <span class="user-name">👤 <strong id="employeeName">John Doe</strong></span>
+      <span class="user-role" id="employeeRole">Integrator</span>
+    </div>
+    <div class="menu-links">
+      <a href="workloads.html" class="menu-link">Workloads</a>
+      <a href="history.html" class="menu-link">History</a>
+      <a onclick="addRecord()" class="menu-link add-new">➕ Add New</a>
+      <a href="#" id="logoutLink" class="logout-link">Logout</a>
+    </div>
+  </div>
   <div class="top-bar">
     <input height="20px" type="text" id="searchInput" placeholder="Search by project name..." />
   </div>
 
-  <div class="top-bar-left">
+  <!-- <div class="top-bar-left">
     <button id="createBtn" onclick="addRecord()">+ Create New Request</button>
-  </div>
+  </div> -->
 
   <table id="masterTable">
     <thead>
@@ -29,7 +40,7 @@
         <th width="250px">Department</th>
         <th width="250px">Module</th>
         <th width="300px">Form</th>
-        <th width="500px" hidden>Concern</th>
+        <th width="150px">Status</th>
         <th>Action</th>
       </tr>
     </thead>
@@ -48,7 +59,7 @@
   <script src="../js/session.js"></script>
   <script src="../js/config.js"></script>
   <script>
-
+    const user = JSON.parse(localStorage.getItem("user"));
     let mode = "Add";
     async function loadMasterList() {
       try {
@@ -75,32 +86,70 @@
         records.forEach((record) => {
           const row = document.createElement("tr");
           row.innerHTML = `
-            <td hidden>${record.uuid || "-"}</td>
-            <td>${record.service_request_no || "-"}</td>
-            <td>${record.date_requested || "-"}</td>
-            <td>${record.user || "-"}</td>
-            <td>${record.department || "-"}</td>
-            <td>${record.module || "-"}</td>
-            <td>${record.system_form_name || "-"}</td>
-            <td hidden>${record.form_no || "-"}</td>
-            <td class="action-buttons">
-              <button onclick="viewRecord('${record.uuid
-            }')">View</button>
-              <button onclick="editRecord('${record.uuid
-            }')">Edit</button>
-              <button onclick="cancelRecord('${record.uuid
-            }','${record.service_request_no
-            }')">Cancel</button>
-              <button onclick="approvedRecord('${record.uuid
-            }')">Approve</button>
-            </td>
+            <td hidden>${record.uuid || ""}</td>
+            <td>${record.service_request_no || "No Data"}</td>
+            <td>${record.date_requested || ""}</td>
+            <td>${record.user || ""}</td>
+            <td>${record.department || ""}</td>
+            <td>${record.module || ""}</td>
+            <td>${record.system_form_name || ""}</td>
+            <td>${record.req_status || ""}</td>
+            <td class="action-buttons" id="actions-${record.uuid}"></td>
+
           `;
           tableBody.appendChild(row);
+          // Inject buttons based on role
+          document.getElementById(`actions-${record.uuid}`).innerHTML = generateActionButtons(record);
+
         });
       } catch (error) {
         console.error("❌ Failed to load master list:", error);
       }
     }
+
+    function generateActionButtons(record) {
+
+
+      const userRole = user.role; // Define this to return role from session or cookie
+      document.getElementById("employeeName").textContent = user.name;
+      document.getElementById("employeeRole").textContent = userRole;
+      let buttons = '';
+
+      if (userRole === 'User' || userRole === 'Integrator') {
+        buttons += `<button onclick="viewRecord('${record.uuid}')">View</button>`;
+      }
+
+      if (userRole === 'User' || userRole === 'Integrator' || userRole === 'Admin') {
+        buttons += `<button onclick="editRecord('${record.uuid}')">Edit</button>`;
+      }
+
+      if (userRole === 'Admin') {
+        buttons += `<button onclick="cancelRecord('${record.uuid}', '${record.service_request_no}')">Cancel</button>`;
+      }
+
+      if (userRole === 'Head' || userRole === 'IT Head') {
+        buttons += `<button onclick="approvedRecord('${record.uuid}')">Approve</button>`;
+      }
+
+      if (userRole === 'Developer' || userRole === 'QA' || userRole === 'Integrator') {
+        buttons += `<button onclick="acceptRecord('${record.uuid}')">Accept</button>`;
+      }
+
+      if (userRole === 'Developer' || userRole === 'Head' || userRole === 'IT Head') {
+        buttons += `<button onclick="rejectRecord('${record.uuid}')">Reject</button>`;
+      }
+
+      if (userRole === 'Developer' || userRole === 'Integrator') {
+        buttons += `<button onclick="rejectRecord('${record.uuid}')">Transfer</button>`;
+      }
+
+      if (userRole === 'Admin') {
+        buttons += `<button onclick="assignRecord('${record.uuid}')">Assign</button>`;
+      }
+
+      return `<td class="action-buttons">${buttons}</td>`;
+    }
+
 
     function setupSearch() {
       const searchInput = document.getElementById("searchInput");
@@ -137,19 +186,23 @@
       openModal(id);
     }
 
-    function cancelRecord(id,ref) {
-      const confirmed = confirm(
-        "Are you sure you want to cancel request " + ref + "?"
-      );
-      if (confirmed) {
-        mode = "Cancel";
-        openModal(id);
-      }
+    function cancelRecord(id, ref) {
+      mode = "Cancel";
+      openModal(id);
     }
 
     window.addEventListener("DOMContentLoaded", () => {
       loadMasterList();
       setupSearch();
+
+      let logoutPath = ""; // Or your logout route if it's server-based
+      if (user.project === "CYLIX") {
+        logoutPath = "cylix.html";
+      } else if (user.project === "CNIMS") {
+        logoutPath = "cnims.html";
+      }
+
+      document.getElementById("logoutLink").href = `${BASE_PATH}pages/` + logoutPath;
     });
 
     function openModal(uuid = null) {
@@ -161,7 +214,7 @@
       let pageTmp = "";
       let scriptFile = "";
 
-      if (mode === "Approve" || mode === "Add" || mode === "Edit" || mode === "Cancel" ) {
+      if (mode === "Approve" || mode === "Add" || mode === "Edit" || mode === "Cancel") {
         pageTmp = "pages/serviceForm.html";
         scriptFile = "js/serviceForm.js";
       }
@@ -180,13 +233,13 @@
             const tryGetDefaults = setInterval(() => {
               if (typeof getDefaults === "function") {
                 clearInterval(tryGetDefaults);
-                 // ✅ Now the DOM is guaranteed to be ready
-                 getDefaults(uuid,mode);
+                // ✅ Now the DOM is guaranteed to be ready
+                getDefaults(uuid, mode);
               }
             }, 100); // Poll every 100ms until DOM is ready
           };
 
-          modalBody.appendChild(script),mode;
+          modalBody.appendChild(script), mode;
         })
         .catch((err) => {
           modalBody.innerHTML = "<p>⚠️ Failed to load the entry form.</p>";

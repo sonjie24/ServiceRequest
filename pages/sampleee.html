@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Filterable Select Dropdown</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 30px;
+      background-color: #f4f4f4;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+
+    select {
+      width: 100%;
+      height: auto;
+      padding: 8px;
+      font-size: 14px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+
+    option {
+      padding: 5px;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Module Selector with Filter</h2>
+
+  <label for="systemSearch">Search Module:</label>
+  <input type="text" id="systemSearch" placeholder="Type to filter..." onkeyup="filterSystemOptions()" />
+
+  <select id="systemSelect" size="10">
+    <option value="Accounting System">Accounting System</option>
+    <option value="Payroll Management">Payroll Management</option>
+    <option value="Inventory Control">Inventory Control</option>
+    <option value="User Access Module">User Access Module</option>
+    <option value="Audit Trail Viewer">Audit Trail Viewer</option>
+    <option value="Document Tracking">Document Tracking</option>
+    <option value="Budget Monitoring">Budget Monitoring</option>
+    <option value="Project Requests">Project Requests</option>
+  </select>
+
+  <script>
+    function filterSystemOptions() {
+      const searchTerm = document.getElementById("systemSearch").value.toLowerCase();
+      const select = document.getElementById("systemSelect");
+      const options = select.options;
+
+      for (let i = 0; i < options.length; i++) {
+        const optionText = options[i].text.toLowerCase();
+        const match = optionText.includes(searchTerm);
+        options[i].style.display = match ? "" : "none";
+      }
+    }
+  </script>
+
+</body>
+</html>
