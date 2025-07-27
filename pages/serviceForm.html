@@ -123,18 +123,7 @@
     <button type="button" class="add-btn" onclick="addRow()">Add Row</button>
 
     <p><em>Note: Additional concerns may be written on the back page.</em></p>
-    <!-- Memo Section -->
-    <table style="width: 100%; margin-top: 20px;">
-      <tr>
-        <td colspan="2"><strong>MEMO / NOTES:</strong></td>
-      </tr>
-      <tr>
-        <td colspan="2">
-          <textarea id="memo" name="memo" rows="4" style="width: 100%; resize: vertical;"
-            placeholder="Enter any remarks, memo, or important notes here..."></textarea>
-        </td>
-      </tr>
-    </table>
+    
 
     <table>
       <tr class="section-title">
@@ -167,7 +156,7 @@
         <td>DEVELOPER</td>
         <td>QA</td>
       </tr>
-      <tr>
+      <tr  id="cylix_sig">
         <td>
           <select id="integrator" name="integrator" style="width: 100%; height: 30px">
             <option value="" disabled selected>Select Integrator</option>
@@ -263,6 +252,7 @@
             <option value="" disabled>-- Select Status --</option>
             <option value="Pending">Pending</option>
             <option value="Accepted">Accepted</option>
+            <option value="Completed">Completed</option>
           </select>
         </td>
         <td>
@@ -276,6 +266,19 @@
             <option value="For Deployment">For Deployment</option>
             <option value="Deployed">Deployed</option>
           </select>
+        </td>
+      </tr>
+    </table>
+
+    <!-- Memo Section -->
+    <table style="width: 100%; margin-top: 20px;">
+      <tr>
+        <td colspan="2"><strong>MEMO / NOTES:</strong></td>
+      </tr>
+      <tr>
+        <td colspan="2">
+          <textarea id="memo" name="memo" rows="4" style="width: 100%; resize: vertical;"
+            placeholder="Enter any remarks, memo, or important notes here..."></textarea>
         </td>
       </tr>
     </table>

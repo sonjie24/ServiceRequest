@@ -78,7 +78,7 @@
   bindHidden(integratorSelect, "integrator_id");
   bindHidden(developerSelect, "developer_id");
   bindHidden(qaSelect, "qa_id");
-  
+
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // Department data from session
   const departmentData = getDepartmentSession();
@@ -184,6 +184,65 @@
     tableBody.appendChild(newRow);
   };
 
+  function toggleFormReadOnly(formId, mode = "View", exceptions = []) {
+    const form = document.getElementById(formId);
+    if (!form) return;
+
+    const isAdd = mode.toLowerCase() === "add";
+    const isException = (el) => exceptions.includes(el.id) || exceptions.includes(el.name);
+
+    // ✅ Handle inputs
+    form.querySelectorAll("input").forEach(el => {
+      if (["hidden", "file"].includes(el.type)) return;
+
+      if (isAdd || isException(el)) {
+        el.readOnly = false;
+        el.disabled = false;
+        el.style.pointerEvents = "auto";
+        el.style.backgroundColor = "";
+        el.removeAttribute("readonly");
+        el.removeAttribute("disabled");
+      } else {
+        if (["checkbox", "radio"].includes(el.type)) {
+          el.disabled = true;
+        } else {
+          el.readOnly = true;
+          el.style.backgroundColor = "#f9f9f9";
+        }
+      }
+    });
+
+    // ✅ Handle textareas
+    form.querySelectorAll("textarea").forEach(el => {
+      if (isAdd || isException(el)) {
+        el.readOnly = false;
+        el.style.backgroundColor = "";
+        el.removeAttribute("readonly");
+      } else {
+        el.readOnly = true;
+        el.style.backgroundColor = "#f9f9f9";
+      }
+    });
+
+    // ✅ Handle selects
+    form.querySelectorAll("select").forEach(el => {
+      if (isAdd || isException(el)) {
+        el.style.pointerEvents = "auto";
+        el.style.backgroundColor = "";
+        el.removeAttribute("disabled");
+        el.removeAttribute("readonly");
+        // 🔥 Remove any old event handler blocking clicks
+        el.onmousedown = null;
+      } else {
+        // 🔒 Make it unselectable
+        el.onmousedown = (e) => e.preventDefault();
+        el.style.pointerEvents = "none";
+        el.style.backgroundColor = "#f3f3f3";
+      }
+    });
+  }
+
+
   function mapDataToForm(main) {
     const fieldMap = {
       uuid: main.uuid,
@@ -210,7 +269,7 @@
       dev_status: main.dev_status
     };
 
- 
+
 
     for (const [id, value] of Object.entries(fieldMap)) {
       const input = document.getElementById(id);
@@ -267,7 +326,7 @@
       const main = result.data[0] || {};
 
       mapDataToForm(main); // <-- Populate main form fields
-
+      console.log(main);
       // SYSTEM SELECT (if options exist)
       if (main.module) {
         systemSelect.value = main.module;
@@ -426,6 +485,16 @@
     );
   }
 
+  function makeSelectReadOnly(select) {
+    // Prevent mouse clicks and keyboard changes
+    select.addEventListener('mousedown', (e) => e.preventDefault());
+    select.addEventListener('keydown', (e) => e.preventDefault());
+
+    // Optional: style to indicate it's readonly
+    select.style.backgroundColor = '#f3f3f3';
+    select.style.pointerEvents = 'none'; // disables mouse, but keeps value
+  }
+
   function loadDefaultsUserInfo(user) {
     if (user) {
       // ✅ Step 1: Select department and trigger user/head population
@@ -436,10 +505,15 @@
         departmentSelect.dispatchEvent(new Event("change"));
         setTimeout(() => {
 
+          makeSelectReadOnly(document.getElementById('integrator'));
+          makeSelectReadOnly(document.getElementById('developer'));
+          makeSelectReadOnly(document.getElementById('qa'));
+
           if (user.role === "User") {
             userSelect.value = user.name || "";
             userSelect.dispatchEvent(new Event("change"));
             document.getElementById("req_status").value = "For Head Approval";
+
           } else if (user.role === "Head") {
             if (mode === "Add") {
               userSelect.value = user.name;
@@ -477,18 +551,10 @@
 
   // Get default values (used when modal opens)
   window.getDefaults = async function (uuid, mode) {
-
     const submitBtn = document.getElementById("submitBtn");
+
     submitBtn.disabled = true;
-    if (mode === "Approve") {
-      document.getElementById("modalTitle").textContent = "SERVICE REQUEST APPROVAL";
-      document.getElementById("submitText").textContent = "APPROVE";
-      document.getElementById("attachments").removeAttribute("required");
-      await getData(uuid);
-      await getDataDetails(uuid);
-      await getDataFiles(uuid);
-      loadDefaultsUserInfo(user);
-    } else if (mode === "Add") {
+    if (mode === "Add") {
       const today = new Date().toISOString().split("T")[0];
       document.getElementById("modalTitle").textContent = "SERVICE REQUEST ENTRY";
       document.getElementById("submitText").textContent = "SAVE";
@@ -531,6 +597,7 @@
       await getDataFiles(uuid);
 
     } else if (mode === "Cancel") {
+      toggleFormReadOnly("entryForm", "View", ["attachments", "memo", "dataTable"]);
       document.getElementById("modalTitle").textContent = "SERVICE REQUEST CANCELLATION";
       document.getElementById("submitText").textContent = "CANCEL";
       document.getElementById("attachments").removeAttribute("required");
@@ -541,7 +608,37 @@
 
       document.getElementById("req_status").value = "Cancelled";
 
+    } else if (mode === "Approve Head") {
+      toggleFormReadOnly("entryForm", "View", ["attachments", "memo", "dataTable"]);
+      document.getElementById("modalTitle").textContent = "SERVICE REQUEST APPROVAL";
+      document.getElementById("submitText").textContent = "APPROVE";
+      document.getElementById("attachments").removeAttribute("required");
+      await getData(uuid);
+      await getDataDetails(uuid);
+      await getDataFiles(uuid);
+
+
+      headSelect.value = user.name;
+      headSelect.dispatchEvent(new Event("change"));
+      document.getElementById("req_status").value = "For IT Approval";
+
+    } else if (mode === "Approve IT") {
+
+      toggleFormReadOnly("entryForm", "View", ["attachments", "memo", "dataTable"]);
+      document.getElementById("modalTitle").textContent = "SERVICE REQUEST APPROVAL";
+      document.getElementById("submitText").textContent = "APPROVE";
+      document.getElementById("attachments").removeAttribute("required");
+
+      await getData(uuid);
+      await getDataDetails(uuid);
+      await getDataFiles(uuid);
+
+      itHeadSelect.value = user.name;
+      itHeadSelect.dispatchEvent(new Event("change"));
+      document.getElementById("req_status").value = "Approved";
+
     } else if (mode === "Accept") {
+      toggleFormReadOnly("entryForm", "View", ["attachments", "memo", "dataTable","developer"]);
       document.getElementById("modalTitle").textContent = "ACCEPT SERVICE REQUEST";
       document.getElementById("submitText").textContent = "ACCEPT";
       document.getElementById("attachments").removeAttribute("required");
@@ -556,7 +653,27 @@
       document.getElementById("integrator_id").value = user.userId || "";
 
 
+    }else if (mode === "Accept Admin") {
+      toggleFormReadOnly("entryForm", "View", ["attachments", "memo", "dataTable","integrator","developer","qa"]);
+      document.getElementById("modalTitle").textContent = "ACCEPT SERVICE REQUEST";
+      document.getElementById("submitText").textContent = "ACCEPT";
+      document.getElementById("attachments").removeAttribute("required");
+      document.getElementById("integrator").setAttribute("required", "required");
+      document.getElementById("developer").setAttribute("required", "required");
+      document.getElementById("qa").setAttribute("required", "required");
+
+      await getData(uuid);
+      await getDataDetails(uuid);
+      await getDataFiles(uuid);
+
+      document.getElementById("cylix_status").value = "Accepted";
+      document.getElementById("dev_status").value = "For Development";
+      document.getElementById("integrator").value =  "";
+      document.getElementById("integrator_id").value =  "";
+
+
     } else if (mode === "Accept Development") {
+      toggleFormReadOnly("entryForm", "View", ["attachments", "memo", "dataTable"]);
       document.getElementById("modalTitle").textContent = "FOR DEVELOPMENT";
       document.getElementById("submitText").textContent = "ACCEPT";
       document.getElementById("attachments").removeAttribute("required");
@@ -570,6 +687,7 @@
       document.getElementById("developer_id").value = user.userId || "";
 
     } else if (mode === "Done Development") {
+      toggleFormReadOnly("entryForm", "View", ["attachments", "memo", "dataTable"]);
       document.getElementById("modalTitle").textContent = "DONE DEVELOPMENT";
       document.getElementById("submitText").textContent = "DONE";
       document.getElementById("attachments").removeAttribute("required");
@@ -580,6 +698,7 @@
 
       document.getElementById("dev_status").value = "For QA";
     } else if (mode === "Accept QA") {
+      toggleFormReadOnly("entryForm", "View", ["attachments", "memo", "dataTable"]);
       document.getElementById("modalTitle").textContent = "FOR TESTING";
       document.getElementById("submitText").textContent = "ACCEPT";
       document.getElementById("attachments").removeAttribute("required");
@@ -592,6 +711,7 @@
       document.getElementById("qa").value = user.name || "";
       document.getElementById("qa_id").value = user.userId || "";
     } else if (mode === "Done QA") {
+      toggleFormReadOnly("entryForm", "View", ["attachments", "memo", "dataTable"]);
       document.getElementById("modalTitle").textContent = "DONE TESTING";
       document.getElementById("submitText").textContent = "DONE";
       document.getElementById("attachments").removeAttribute("required");
@@ -602,6 +722,7 @@
 
       document.getElementById("dev_status").value = "For Deployment";
     } else if (mode === "Deploy") {
+      toggleFormReadOnly("entryForm", "View", ["attachments", "memo", "dataTable", "patch_date"]);
       document.getElementById("modalTitle").textContent = "DEPLOY CONCERN";
       document.getElementById("submitText").textContent = "DEPLOY";
       document.getElementById("attachments").removeAttribute("required");
@@ -612,11 +733,18 @@
       await getDataFiles(uuid);
 
       document.getElementById("dev_status").value = "Deployed";
+    } else if (mode === "Done Fixed") {
+      toggleFormReadOnly("entryForm", "View", ["memo"]);
+      document.getElementById("modalTitle").textContent = "FIXED CONCERN";
+      document.getElementById("submitText").textContent = "FIXED";
+      document.getElementById("attachments").removeAttribute("required");
+
+      await getData(uuid);
+      await getDataDetails(uuid);
+      await getDataFiles(uuid);
+
+      document.getElementById("cylix_status").value = "Completed";
     }
-
-
-    // Reference to the table
-
 
     submitBtn.disabled = false;
 

@@ -146,7 +146,7 @@
 
     function generateActionButtons(record) {
 
-
+      console.log("✅ Async function executed silently after action");
       const userRole = user.role; // Define this to return role from session or cookie
       let buttons = '';
 
@@ -178,14 +178,14 @@
 
       if (userRole === 'Head') {
         if (record.req_status === 'For Head Approval') {
-          buttons += `<button onclick="approvedRecord('${record.uuid}')">Approve</button>`;
+          buttons += `<button onclick="approvedHeadRecord('${record.uuid}')">Approve</button>`;
         }
         
       }
 
       if (userRole === 'IT Head') {
         if (record.req_status === 'For IT Approval') {
-          buttons += `<button onclick="approvedRecord('${record.uuid}')">Approve</button>`;
+          buttons += `<button onclick="approvedITRecord('${record.uuid}')">Approve</button>`;
         }
         
       }
@@ -196,6 +196,10 @@
         }
 
         if (record.qa === '' & record.dev_status === 'For QA') {
+          buttons += `<button onclick="acceptQARecord('${record.uuid}')">Accept</button>`;
+        }
+
+        if (record.qa === user.name & record.dev_status === 'For QA') {
           buttons += `<button onclick="acceptQARecord('${record.uuid}')">Accept</button>`;
         }
 
@@ -211,26 +215,28 @@
 
       if (userRole === 'Admin') {
         if (record.integrator === '') {
-          buttons += `<button onclick="acceptRecord('${record.uuid}')">Accept</button>`;
+          buttons += `<button onclick="acceptAdminRecord('${record.uuid}')">Accept</button>`;
         }
       }
 
 
       if (userRole === 'Developer' || userRole === 'Hybrid') {
-        if (record.developer === '' & (record.dev_status === 'Pending' || record.dev_status === 'For Development')) {
+        if (record.developer === '' & (record.dev_status === 'For Development')) {
           buttons += `<button onclick="acceptDeveloperRecord('${record.uuid}')">Accept</button>`;
         }
-      }
-
-      if (userRole === 'Developer' || userRole === 'Hybrid') {
+        if (record.dev_status === 'For Development' & record.developer === user.name) {
+          buttons += `<button onclick="acceptDeveloperRecord('${record.uuid}')">Accept</button>`;
+        }
         if (record.dev_status === 'Ongoing') {
           buttons += `<button onclick="doneDevelopentRecord('${record.uuid}')">Done</button>`;
         }
-        if (record.dev_status === 'For Development' & record.developer === user.name) {
-          buttons += `<button onclick="doneDevelopentRecord('${record.uuid}')">Done</button>`;
-        }
       }
 
+      if (userRole === 'User' || userRole === 'Head' || userRole === 'IT Head') {
+        if (record.dev_status === 'Deployed' & record.user===user.name) {
+          buttons += `<button onclick="doneFixedRecord('${record.uuid}')">Done</button>`;
+        }
+      }
 
       // if (userRole === 'Admin') {
       //   if (record.dev_status !== 'Deployed' & record.dev_status !== 'QA' & record.dev_status !== 'For Deployment') {
@@ -381,8 +387,13 @@
       openModal(id);
     }
 
-    function approvedRecord(id) {
-      mode = "Approve";
+    function approvedHeadRecord(id) {
+      mode = "Approve Head";
+      openModal(id);
+    }
+
+    function approvedITRecord(id) {
+      mode = "Approve IT";
       openModal(id);
     }
 
@@ -393,6 +404,11 @@
 
     function acceptRecord(id) {
       mode = "Accept";
+      openModal(id);
+    }
+
+    function acceptAdminRecord(id) {
+      mode = "Accept Admin";
       openModal(id);
     }
 
@@ -420,6 +436,19 @@
       mode = "Deploy";
       openModal(id);
     }
+
+    function doneFixedRecord(id) {
+      mode = "Done Fixed";
+      openModal(id);
+    }
+ 
+    // ✅ Runs every 30 seconds
+    setInterval(() => {
+      loadMasterList(); // call async function
+      console.log("✅ Async function executed silently after 30s");
+    }, 3600000);
+
+    setInterval(generateActionButtons, 3600000);
 
     window.addEventListener("DOMContentLoaded", () => {
       loadMasterList();
