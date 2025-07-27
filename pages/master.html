@@ -217,7 +217,7 @@
 
 
       if (userRole === 'Developer' || userRole === 'Hybrid') {
-        if (record.developer === '' & record.dev_status !== 'Pending') {
+        if (record.developer === '' & (record.dev_status === 'Pending' || record.dev_status === 'For Development')) {
           buttons += `<button onclick="acceptDeveloperRecord('${record.uuid}')">Accept</button>`;
         }
       }
