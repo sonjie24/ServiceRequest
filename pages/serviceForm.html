@@ -169,18 +169,25 @@
       </tr>
       <tr>
         <td>
-          <input type="text" readonly id="integrator" name="integrator" value="" />
-          <input type="text" readonly id="integrator_id" name="integrator_id" value="" hidden />
+          <select id="integrator" name="integrator" style="width: 100%; height: 30px">
+            <option value="" disabled selected>Select Integrator</option>
+          </select>
+          <input type="hidden" id="integrator_id" name="integrator_id" />
         </td>
         <td>
-          <input type="text" readonly name="developer" id="developer" value="" /><input type="text" readonly
-            name="developer_id" id="developer_id" value="" hidden />
+          <select id="developer" name="developer" style="width: 100%; height: 30px">
+            <option value="" disabled selected>Select Developer</option>
+          </select>
+          <input type="hidden" id="developer_id" name="developer_id" />
         </td>
         <td>
-          <input type="text" readonly name="qa" id="qa" />
-          <input type="text" readonly name="qa_id" id="qa_id" hidden />
+          <select id="qa" name="qa" style="width: 100%; height: 30px">
+            <option value="" disabled selected>Select QA</option>
+          </select>
+          <input type="hidden" id="qa_id" name="qa_id" />
         </td>
       </tr>
+      
     </table>
 
     <table>

@@ -43,6 +43,42 @@
     const code = selectedOption.getAttribute("data-code");
     formNoInput.value = code || "";
   });
+
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  const employeeData = getCylixSession();
+
+  const integratorSelect = document.getElementById("integrator");
+  const developerSelect = document.getElementById("developer");
+  const qaSelect = document.getElementById("qa");
+
+  // ✅ Populate all employees into each dropdown
+  function populateSelect(select, data) {
+    select.innerHTML = '<option value="" disabled selected>Select</option>';
+    data.forEach(emp => {
+      const option = document.createElement("option");
+      option.value = emp.EmployeeName;      // Use name as value
+      option.textContent = emp.EmployeeName;
+      option.dataset.id = emp.ID;           // Store ID
+      select.appendChild(option);
+    });
+  }
+
+  populateSelect(integratorSelect, employeeData);
+  populateSelect(developerSelect, employeeData);
+  populateSelect(qaSelect, employeeData);
+
+  // ✅ Update hidden fields when user selects an option
+  function bindHidden(select, hiddenInputId) {
+    select.addEventListener("change", () => {
+      const selected = select.options[select.selectedIndex];
+      document.getElementById(hiddenInputId).value = selected.dataset.id || "";
+    });
+  }
+
+  bindHidden(integratorSelect, "integrator_id");
+  bindHidden(developerSelect, "developer_id");
+  bindHidden(qaSelect, "qa_id");
+  
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // Department data from session
   const departmentData = getDepartmentSession();
@@ -528,11 +564,11 @@
       await getData(uuid);
       await getDataDetails(uuid);
       await getDataFiles(uuid);
-     
+
       document.getElementById("dev_status").value = "Ongoing";
       document.getElementById("developer").value = user.name || "";
       document.getElementById("developer_id").value = user.userId || "";
-       
+
     } else if (mode === "Done Development") {
       document.getElementById("modalTitle").textContent = "DONE DEVELOPMENT";
       document.getElementById("submitText").textContent = "DONE";
@@ -597,7 +633,7 @@
     console.log("📌 Form Data:", formObj);
 
 
-  
+
     const submitBtn = document.getElementById("submitBtn");
     const submitText = document.getElementById("submitText");
 

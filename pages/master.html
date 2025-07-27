@@ -105,9 +105,9 @@
             <td><div class="secondary-text">${record.date_requested || ""}</div></td>
             <td id="user-${record.uuid}"></td>
             <td>
-              <label class="secondary-text">${record.department.toUpperCase() || ""}</label>
-              <label class="secondary-text">${record.module.toUpperCase() || ""}</label>
-              <label class="secondary-text">${record.system_form_name.toUpperCase() || ""}</label>
+              <label class="secondary-text">►${record.department.toUpperCase() || ""}</label>
+              <label class="secondary-text">►${record.module.toUpperCase() || ""}</label>
+              <label class="secondary-text">►${record.system_form_name.toUpperCase() || ""}</label>
             </td>
             
             <td id="concern-${record.uuid}"></td>
@@ -224,6 +224,9 @@
 
       if (userRole === 'Developer' || userRole === 'Hybrid') {
         if (record.dev_status === 'Ongoing') {
+          buttons += `<button onclick="doneDevelopentRecord('${record.uuid}')">Done</button>`;
+        }
+        if (record.dev_status === 'For Development' & record.developer === user.name) {
           buttons += `<button onclick="doneDevelopentRecord('${record.uuid}')">Done</button>`;
         }
       }
