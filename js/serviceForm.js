@@ -210,7 +210,7 @@
       dev_status: main.dev_status
     };
 
-    console.log(fieldMap);
+ 
 
     for (const [id, value] of Object.entries(fieldMap)) {
       const input = document.getElementById(id);
@@ -630,9 +630,6 @@
 
     const formObj = {};
     formData.forEach((value, key) => formObj[key] = value);
-    console.log("📌 Form Data:", formObj);
-
-
 
     const submitBtn = document.getElementById("submitBtn");
     const submitText = document.getElementById("submitText");

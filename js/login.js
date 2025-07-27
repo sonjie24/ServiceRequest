@@ -1,4 +1,5 @@
-async function loginUser(event) {
+ 
+    async function loginUser(event) {
     event.preventDefault();
 
     const spinner = document.getElementById("spinner");
@@ -139,3 +140,4 @@ async function getCylix() {
         alert("An error occurred while fetching department.");
     }
 }
+ 
