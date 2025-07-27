@@ -1,6 +1,6 @@
 (() => {
-
-  const data = JSON.parse(localStorage.getItem("functionalities"));
+  const user = getUserSession();
+  const data = getFunctinalitiesSession();
   const systemSelect = document.getElementById("systemSelect");
   const formSelect = document.getElementById("formSelect");
   const formNoInput = document.getElementById("system_form_no");
@@ -37,13 +37,105 @@
       });
     }
   });
-
   // When a form is selected, show its code in the input
   formSelect.addEventListener("change", () => {
     const selectedOption = formSelect.options[formSelect.selectedIndex];
     const code = selectedOption.getAttribute("data-code");
     formNoInput.value = code || "";
   });
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  // Department data from session
+  const departmentData = getDepartmentSession();
+
+  // DOM Elements
+  const departmentSelect = document.getElementById('department');
+  const userSelect = document.getElementById('user');
+  const headSelect = document.getElementById('department_head');
+  const itHeadSelect = document.getElementById('it_head');
+
+  // ✅ Populate departments
+  Object.keys(departmentData).forEach((department) => {
+    const option = document.createElement("option");
+    option.value = department;
+    option.textContent = department;
+    departmentSelect.appendChild(option);
+  });
+
+  // ✅ Populate Users when department changes
+  departmentSelect.addEventListener("change", () => {
+    const selectedDepartment = departmentSelect.value;
+
+    // Clear previous options
+    userSelect.innerHTML = '<option value="" disabled selected>Select User</option>';
+    headSelect.innerHTML = '<option value="" disabled selected>Select Head</option>';
+    itHeadSelect.innerHTML = '<option value="" disabled selected>Select IT Head</option>';
+
+    if (selectedDepartment && departmentData[selectedDepartment]) {
+      userSelect.disabled = false;
+      headSelect.disabled = false;
+      itHeadSelect.disabled = false;
+
+      const data = departmentData[selectedDepartment];
+
+      // ✅ Populate Users
+      data.User.forEach(u => {
+        const opt = document.createElement("option");
+        opt.value = u.name;
+        opt.textContent = u.name;
+        opt.setAttribute("data-code", u.id);
+        userSelect.appendChild(opt);
+      });
+
+      // ✅ Populate Heads
+      data.Head.forEach(h => {
+        const opt = document.createElement("option");
+        opt.value = h.name;
+        opt.textContent = h.name;
+        opt.setAttribute("data-code", h.id);
+        headSelect.appendChild(opt);
+      });
+
+      // ✅ Populate IT Head (for this department)
+      data["IT Head"].forEach(it => {
+        const opt = document.createElement("option");
+        opt.value = it.name;
+        opt.textContent = it.name;
+        opt.setAttribute("data-code", it.id);
+        itHeadSelect.appendChild(opt);
+      });
+
+
+
+    } else {
+      userSelect.disabled = true;
+      headSelect.disabled = true;
+      itHeadSelect.disabled = true;
+    }
+  });
+
+  // When a user is selected, show its code in the input
+  userSelect.addEventListener("change", () => {
+    const selectedOption = userSelect.options[userSelect.selectedIndex];
+    const code = selectedOption.getAttribute("data-code");
+    document.getElementById('user_id').value = code || "";
+  });
+
+  // When a head is selected, show its code in the input
+  headSelect.addEventListener("change", () => {
+    const selectedOption = headSelect.options[headSelect.selectedIndex];
+    const code = selectedOption.getAttribute("data-code");
+    document.getElementById('department_head_id').value = code || "";
+  });
+
+  // When a head is selected, show its code in the input
+  itHeadSelect.addEventListener("change", () => {
+    const selectedOption = itHeadSelect.options[headSelect.selectedIndex];
+    const code = selectedOption.getAttribute("data-code");
+    document.getElementById('it_head_id').value = code || "";
+  });
+
+
+
 
   // Add row function (global for onclick)
   window.addRow = function () {
@@ -79,8 +171,10 @@
       memo: main.memo,
       req_status: main.req_status,
       cylix_status: main.cylix_status,
-      dev_status: main.dev_status,
+      dev_status: main.dev_status
     };
+
+    console.log(fieldMap);
 
     for (const [id, value] of Object.entries(fieldMap)) {
       const input = document.getElementById(id);
@@ -149,6 +243,18 @@
         }, 300); // wait for formSelect to populate
       }
 
+      // ✅ Step 1: Select department and trigger user/head population
+      if (main.department) {
+        departmentSelect.value = main.department;
+
+        // ✅ Step 2: Trigger population and wait for it to finish
+        departmentSelect.dispatchEvent(new Event("change"));
+        setTimeout(() => {
+          userSelect.value = main.user;
+          headSelect.value = main.department_head;
+          itHeadSelect.value = main.it_head;
+        }, 300); // wait for formSelect to populate
+      }
     } catch (error) {
       console.error("Fetch error:", error);
       alert("An error occurred while fetching data.");
@@ -157,7 +263,7 @@
 
   }
 
-  let tmpDetails =[];
+  let tmpDetails = [];
   async function getDataDetails(uuid) {
     try {
       const res = await fetch(`${API_BASE_URL}/get-data-detail`, {
@@ -187,7 +293,7 @@
       } else if (sub1 && typeof sub1 === 'object') {
         sub1Array = [sub1]; // wrap single object in an array
       }
-      
+
       tmpDetails = sub1Array;
       // Loop through array to create table rows
       sub1Array.forEach(item => {
@@ -263,8 +369,8 @@
     }
   }
 
-   // Remove Files (global for onclick)
-   window.removeFile = async function (GDriveID,button) {
+  // Remove Files (global for onclick)
+  window.removeFile = async function (GDriveID, button) {
     await fetch(`${API_BASE_URL}/delete-file`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -286,38 +392,48 @@
 
   function loadDefaultsUserInfo(user) {
     if (user) {
-      if (user.role === "User") {
-        document.getElementById("user").value = user.name || "";
-        document.getElementById("user_id").value = user.userId || "";
-        ocument.getElementById("req_status").value = "For Head Approval";
-      } else if (user.role === "Head") {
-        if(mode ==="Add"){
-          document.getElementById("user").value = user.name || "";
-          document.getElementById("user_id").value = user.userId || "";
-        }
-        document.getElementById("department_head").value = user.name || "";
-        document.getElementById("department_head_id").value = user.userId || "";
-        document.getElementById("req_status").value = "For IT Approval";
-      } else if (user.role === "IT Head") {
-        if(mode ==="Add"){
-          document.getElementById("user").value = user.name || "";
-          document.getElementById("user_id").value = user.userId || "";
+      // ✅ Step 1: Select department and trigger user/head population
+      if (user.department) {
+        departmentSelect.value = user.department;
 
-          document.getElementById("department_head").value = user.name || "";
-          document.getElementById("department_head_id").value = user.userId || "";
-        }
-        document.getElementById("it_head").value = user.name || "";
-        document.getElementById("it_head_id").value = user.userId || "";
-        document.getElementById("req_status").value = "Approved";
-      } else if (user.role === "Integrator") {
-        document.getElementById("integrator").value = user.name || "";
-        document.getElementById("integrator_id").value = user.userId || "";
-      } else if (user.role === "Developer") {
-        document.getElementById("developer").value = user.name || "";
-        document.getElementById("developer_id").value = user.userId || "";
-      } else if (user.role === "QA") {
-        document.getElementById("qa").value = user.name || "";
-        document.getElementById("qa").value = user.userId || "";
+        // ✅ Step 2: Trigger population and wait for it to finish
+        departmentSelect.dispatchEvent(new Event("change"));
+        setTimeout(() => {
+
+          if (user.role === "User") {
+            userSelect.value = user.name || "";
+            userSelect.dispatchEvent(new Event("change"));
+            document.getElementById("req_status").value = "For Head Approval";
+          } else if (user.role === "Head") {
+            if (mode === "Add") {
+              userSelect.value = user.name;
+              userSelect.dispatchEvent(new Event("change"));
+            }
+            headSelect.value = user.name;
+            headSelect.dispatchEvent(new Event("change"));
+            document.getElementById("req_status").value = "For IT Approval";
+          } else if (user.role === "IT Head") {
+            if (mode === "Add") {
+              userSelect.value = user.name;
+              userSelect.dispatchEvent(new Event("change"));
+
+              headSelect.value = user.name;
+              headSelect.dispatchEvent(new Event("change"));
+            }
+            itHeadSelect.value = user.name;
+            itHeadSelect.dispatchEvent(new Event("change"));
+            document.getElementById("req_status").value = "Approved";
+          } else if (user.role === "Integrator") {
+            document.getElementById("integrator").value = user.name || "";
+            document.getElementById("integrator_id").value = user.userId || "";
+          } else if (user.role === "Developer") {
+            document.getElementById("developer").value = user.name || "";
+            document.getElementById("developer_id").value = user.userId || "";
+          } else if (user.role === "QA") {
+            document.getElementById("qa").value = user.name || "";
+            document.getElementById("qa").value = user.userId || "";
+          }
+        }, 300); // wait for formSelect to populate
       }
 
     }
@@ -325,9 +441,9 @@
 
   // Get default values (used when modal opens)
   window.getDefaults = async function (uuid, mode) {
-    const user = JSON.parse(localStorage.getItem("user")); // Your user object
+
     const submitBtn = document.getElementById("submitBtn");
-    submitBtn.disabled=true;
+    submitBtn.disabled = true;
     if (mode === "Approve") {
       document.getElementById("modalTitle").textContent = "SERVICE REQUEST APPROVAL";
       document.getElementById("submitText").textContent = "APPROVE";
@@ -343,22 +459,42 @@
       document.getElementById("date_requested").value = today;
       document.getElementById("project").value = user.project || "CBMIS";
       document.getElementById("department").value = user.department || "";
-      
+
       // 👇 Generate and assign UUID to hidden input
       const uuidField = document.getElementById("uuid");
       if (uuidField) {
         uuidField.value = generateUUIDv4();
       }
+
+      // Show table only if userRole is allowed
+      const statusTable = document.getElementById("status_update");
+      const allowedRoles = ["Admin"];
+      if (!allowedRoles.includes(user.role)) {
+        statusTable.style.display = "none";
+      } else {
+        statusTable.style.display = "table"; // or "block"
+      }
+
       loadDefaultsUserInfo(user);
-    }else if (mode === "Edit") {
+    } else if (mode === "Edit") {
       document.getElementById("modalTitle").textContent = "SERVICE REQUEST UPDATE";
       document.getElementById("submitText").textContent = "UPDATE";
       document.getElementById("attachments").removeAttribute("required");
 
+      // Show table only if userRole is allowed
+      const statusTable = document.getElementById("status_update");
+      const allowedRoles = ["Admin"];
+      if (!allowedRoles.includes(user.role)) {
+        statusTable.style.display = "none";
+      } else {
+        statusTable.style.display = "table"; // or "block"
+      }
+
       await getData(uuid);
       await getDataDetails(uuid);
       await getDataFiles(uuid);
-    }else if (mode === "Cancel") {
+
+    } else if (mode === "Cancel") {
       document.getElementById("modalTitle").textContent = "SERVICE REQUEST CANCELLATION";
       document.getElementById("submitText").textContent = "CANCEL";
       document.getElementById("attachments").removeAttribute("required");
@@ -369,11 +505,11 @@
 
       document.getElementById("req_status").value = "Cancelled";
 
-    }else if (mode === "Accept") {
+    } else if (mode === "Accept") {
       document.getElementById("modalTitle").textContent = "ACCEPT SERVICE REQUEST";
       document.getElementById("submitText").textContent = "ACCEPT";
       document.getElementById("attachments").removeAttribute("required");
-     
+
       await getData(uuid);
       await getDataDetails(uuid);
       await getDataFiles(uuid);
@@ -382,22 +518,22 @@
       document.getElementById("dev_status").value = "For Development";
       document.getElementById("integrator").value = user.name || "";
       document.getElementById("integrator_id").value = user.userId || "";
-    
-    
-    }else if (mode === "Accept Development") {
-      document.getElementById("modalTitle").textContent = "ACCEPT SERVICE REQUEST FOR DEVELOPMENT";
+
+
+    } else if (mode === "Accept Development") {
+      document.getElementById("modalTitle").textContent = "FOR DEVELOPMENT";
       document.getElementById("submitText").textContent = "ACCEPT";
       document.getElementById("attachments").removeAttribute("required");
 
       await getData(uuid);
       await getDataDetails(uuid);
       await getDataFiles(uuid);
-
+     
       document.getElementById("dev_status").value = "Ongoing";
       document.getElementById("developer").value = user.name || "";
       document.getElementById("developer_id").value = user.userId || "";
-    
-    }else if (mode === "Done Development") {
+       
+    } else if (mode === "Done Development") {
       document.getElementById("modalTitle").textContent = "DONE DEVELOPMENT";
       document.getElementById("submitText").textContent = "DONE";
       document.getElementById("attachments").removeAttribute("required");
@@ -407,7 +543,7 @@
       await getDataFiles(uuid);
 
       document.getElementById("dev_status").value = "For QA";
-    }else if (mode === "Accept QA") {
+    } else if (mode === "Accept QA") {
       document.getElementById("modalTitle").textContent = "FOR TESTING";
       document.getElementById("submitText").textContent = "ACCEPT";
       document.getElementById("attachments").removeAttribute("required");
@@ -415,11 +551,11 @@
       await getData(uuid);
       await getDataDetails(uuid);
       await getDataFiles(uuid);
-     
+
       document.getElementById("dev_status").value = "QA";
       document.getElementById("qa").value = user.name || "";
       document.getElementById("qa_id").value = user.userId || "";
-    }else if (mode === "Done QA") {
+    } else if (mode === "Done QA") {
       document.getElementById("modalTitle").textContent = "DONE TESTING";
       document.getElementById("submitText").textContent = "DONE";
       document.getElementById("attachments").removeAttribute("required");
@@ -427,9 +563,9 @@
       await getData(uuid);
       await getDataDetails(uuid);
       await getDataFiles(uuid);
-     
+
       document.getElementById("dev_status").value = "For Deployment";
-    }else if (mode === "Deploy") {
+    } else if (mode === "Deploy") {
       document.getElementById("modalTitle").textContent = "DEPLOY CONCERN";
       document.getElementById("submitText").textContent = "DEPLOY";
       document.getElementById("attachments").removeAttribute("required");
@@ -438,11 +574,15 @@
       await getData(uuid);
       await getDataDetails(uuid);
       await getDataFiles(uuid);
-     
+
       document.getElementById("dev_status").value = "Deployed";
     }
 
-    submitBtn.disabled=false;
+
+    // Reference to the table
+
+
+    submitBtn.disabled = false;
 
   };
 
@@ -452,13 +592,12 @@
     const form = event.target;
     const formData = new FormData(form);
 
-    for (let pair of formData.entries()) {
-      console.log(`${pair[0]}: ${pair[1]}`);
-    }
+    const formObj = {};
+    formData.forEach((value, key) => formObj[key] = value);
+    console.log("📌 Form Data:", formObj);
 
-    console.log(form);
-    console.log(formData);
 
+  
     const submitBtn = document.getElementById("submitBtn");
     const submitText = document.getElementById("submitText");
 
@@ -469,10 +608,10 @@
     }
 
     try {
-      let proc ="";
-      if (mode === "Add" ) {
+      let proc = "";
+      if (mode === "Add") {
         proc = "/create";
-      } else{
+      } else {
         proc = "/update";
       }
 
@@ -496,13 +635,12 @@
         form.reset();
         document.getElementById("formSelect").disabled = true;
 
-        window.parent.loadMasterList();
-
         // Close the modal
         const modal = document.getElementById("createModal");
         if (modal) {
           modal.style.display = "none";
         }
+        window.parent.loadMasterList();
       } else {
         alert(`Error: ${result.message || "Something went wrong"}`);
       }
@@ -516,6 +654,7 @@
         submitText.textContent = "Submit";
       }
     }
+
   }
 
   // Attach submit event

@@ -2,26 +2,32 @@
 
 // Save user data to session
 function saveUserSession(userData) {
-  localStorage.setItem("user", JSON.stringify(userData));
+  sessionStorage.setItem("user", JSON.stringify(userData));
 }
 
 // Save functionalities to session
 function saveFunctionalitiesSession(userFunctionalities) {
-  localStorage.setItem("functionalities", JSON.stringify(userFunctionalities));
+  sessionStorage.setItem("functionalities", JSON.stringify(userFunctionalities));
 }
 
 // Save functionalities to session
 function saveDepartmentSession(department) {
-  localStorage.setItem("department", JSON.stringify(department));
+  sessionStorage.setItem("department", JSON.stringify(department));
 }
 
 // Get user data from session
 function getUserSession() {
-  const user = localStorage.getItem("user");
+  const user = sessionStorage.getItem("user");
   return user ? JSON.parse(user) : null;
 }
 
-// Clear user session (for logout)
-function clearUserSession() {
-  localStorage.removeItem("user");
+function getFunctinalitiesSession() {
+  const functionalities = sessionStorage.getItem("functionalities");
+  return user ? JSON.parse(functionalities) : null;
 }
+
+function getDepartmentSession() {
+  const dept = sessionStorage.getItem("department");
+  return user ? JSON.parse(dept) : null;
+}
+

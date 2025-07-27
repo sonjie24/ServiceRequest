@@ -3,9 +3,6 @@
   <form id="entryForm">
     <div style="display: none">
       <strong>UUID:</strong> <input type="text" name="uuid" id="uuid" />
-      <input type="text" readonly id="req_status" name="req_status" value="For Head Approval" />
-      <input type="text" readonly id="cylix_status" name="cylix_status" value="Pending" />
-      <input type="text" readonly id="dev_status" name="dev_status" value="Pending" />
     </div>
     <div style="display: none">
       <strong>type:</strong> <input type="text" name="type" value="actual" id="actual" />
@@ -14,7 +11,15 @@
       <tr>
         <td>
           <strong>PROJECT :</strong>
-          <input type="text" id="project" name="project" readonly value="CBMIS" />
+          
+          <select required id="project" name="project" style="width: 100%; height: 30px"> 
+            <option value="" disabled selected>Select Project</option>
+            <option value="CNIMS">CNIMS</option>
+            <option value="CBMIS">CBMIS</option>
+            <option value="CTMIS">CTMIS</option>
+            <option value="CCMIS">CCMIS</option>
+            <option value="MDMIS">MDMIS</option>
+          </select>
         </td>
         <td>
           <strong>DATE REQUESTED :</strong>
@@ -30,7 +35,9 @@
       <tr>
         <td colspan="2">
           <strong>DEPARTMENT :</strong>
-          <input type="text" id="department" name="department" readonly value="CTO" />
+          <select id="department" name="department" required style="width: 100%; height: 30px">
+            <option value="" disabled selected>Select Department</option>
+          </select>
         </td>
       </tr>
       <tr>
@@ -137,15 +144,21 @@
       </tr>
       <tr>
         <td>
-          <input type="text" readonly name="user" id="user" />
+          <select name="user" id="user"  style="width: 100%; height: 30px">
+            <option value="" disabled selected>Select User</option>
+          </select>
           <input type="text" readonly name="user_id" id="user_id" hidden />
         </td>
         <td>
-          <input type="text" readonly name="department_head" id="department_head" />
+          <select name="department_head" id="department_head"   style="width: 100%; height: 30px">
+            <option value="" disabled selected>Select Department Head</option>
+          </select>
           <input type="text" readonly name="department_head_id" id="department_head_id" hidden />
         </td>
         <td>
-          <input type="text" readonly name="it_head" id="it_head" />
+          <select name="it_head" id="it_head"   style="width: 100%; height: 30px">
+            <option value="" disabled selected>Select IT Head</option>
+          </select>
           <input type="text" readonly name="it_head_id" id="it_head_id" hidden />
         </td>
       </tr>
@@ -210,7 +223,7 @@
       </tr>
     </table>
 
-    <table id="uploadedFilesTable" style="margin-top: 20px; width: 100%;">
+    <table id="uploadedFilesTable">
       <thead>
         <tr class="section-title">
           <th>UPLOADED FILE LINKS</th>
@@ -221,7 +234,44 @@
         <!-- Links will be dynamically inserted here -->
       </tbody>
     </table>
-
+ 
+    <table  style="display: none" id="status_update">
+      <tr class="section-title">
+        <td>LGU</td>
+        <td>CYLIX</td>
+        <td>DEVELOPMENT</td>
+      </tr>
+      <tr>
+        <td>
+          <select id="req_status" name="req_status" style="width: 100%; height: 30px">
+            <option value="" disabled>-- Select Status --</option>
+            <option value="Pending">Pending</option>
+            <option value="For Head Approval">For Head Approval</option>
+            <option value="For IT Approval">For IT Approval</option>
+            <option value="Approved">Approved</option>
+          </select>
+        </td>
+        <td>
+          <select id="cylix_status" name="cylix_status" style="width: 100%; height: 30px">
+            <option value="" disabled>-- Select Status --</option>
+            <option value="Pending">Pending</option>
+            <option value="Accepted">Accepted</option>
+          </select>
+        </td>
+        <td>
+          <select id="dev_status" name="dev_status" style="width: 100%; height: 30px"> 
+            <option value="" disabled>-- Select Status --</option>
+            <option value="Pending">Pending</option>
+            <option value="For Development">For Development</option>
+            <option value="Ongoing">Ongoing</option>
+            <option value="For QA">For QA</option>
+            <option value="QA">QA</option>
+            <option value="For Deployment">For Deployment</option>
+            <option value="Deployed">Deployed</option>
+          </select>
+        </td>
+      </tr>
+    </table>
 
     <div style="text-align: center">
       <button type="submit" id="submitBtn">

@@ -23,7 +23,7 @@
     </div>
   </div>
   <div class="top-bar">
-    <input  class="searchInput" type="text" id="searchInput" placeholder="Search by..." />
+    <input class="searchInput" type="text" id="searchInput" placeholder="Search by..." />
   </div>
 
   <!-- <div class="top-bar-left">
@@ -58,12 +58,15 @@
   </div>
   <script src="../js/session.js"></script>
   <script src="../js/config.js"></script>
+
+
   <script>
-    const user = JSON.parse(localStorage.getItem("user"));
+
     let mode = "Add";
+    const user = getUserSession();
     async function loadMasterList() {
       try {
-        const user = getUserSession();
+
 
         const projectName = user.project;
         const response = await fetch(`${API_BASE_URL}/get-all`, {
@@ -71,13 +74,18 @@
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ user }),
         });
-        const json = await response.json();
-        const records = json.data;
+
+        const text = await response.text();
+        const json = text ? JSON.parse(text) : { data: [] }; // always return {data:[]}
+    
+          // ✅ extract the array
+        const records = Array.isArray(json.data) ? json.data : [];
+
         if (records.length === 0) {
-        console.warn("No records found");
-        document.getElementById("masterTableBody").innerHTML =
+          console.warn("No records found");
+          document.getElementById("masterTableBody").innerHTML =
             "<tr><td colspan='9'>No data available</td></tr>";
-        return;
+          return;
         }
 
         const tableBody = document.getElementById("masterTableBody");
@@ -97,9 +105,9 @@
             <td><div class="secondary-text">${record.date_requested || ""}</div></td>
             <td id="user-${record.uuid}"></td>
             <td>
-              <label class="secondary-text">${record.department || ""}</label>
-              <label class="secondary-text">${record.module || ""}</label>
-              <label class="secondary-text">${record.system_form_name || ""}</label>
+              <label class="secondary-text">${record.department.toUpperCase() || ""}</label>
+              <label class="secondary-text">${record.module.toUpperCase() || ""}</label>
+              <label class="secondary-text">${record.system_form_name.toUpperCase() || ""}</label>
             </td>
             
             <td id="concern-${record.uuid}"></td>
@@ -143,119 +151,143 @@
       let buttons = '';
 
       buttons += `<button onclick="viewRecord('${record.uuid}')">View</button>`;
-    
 
-      if (userRole === 'User' || userRole === 'Integrator' || userRole === 'Hybrid' || userRole === 'Admin') {
-        if ((userRole === 'User'|| userRole === 'Integrator' || userRole === 'Hybrid') & record.req_status !== "Approved"  ){
+
+      if (userRole === 'User' || userRole === 'Integrator' || userRole === 'Hybrid' || userRole === 'Admin' || userRole === 'Head' || userRole === 'IT Head') {
+        if ((userRole === 'User' || userRole === 'Integrator' || userRole === 'Hybrid') & record.req_status !== "Approved") {
           buttons += `<button onclick="editRecord('${record.uuid}')">Edit</button>`;
-        } else if(userRole === 'Admin') {
+        } else if (userRole === 'Admin') {
           buttons += `<button onclick="editRecord('${record.uuid}')">Edit</button>`;
+        }else if (userRole === 'Head') {
+          if (record.cylix_status !== 'Accepted') {
+            buttons += `<button onclick="editRecord('${record.uuid}')">Edit</button>`;
+          }
+        }else if (userRole === 'IT Head') {
+         if (record.cylix_status !== 'Accepted') {
+            buttons += `<button onclick="editRecord('${record.uuid}')">Edit</button>`;
+          }
         }
       }
 
       if (userRole === 'Admin') {
-        if (record.cylix_status !=='Accepted'){
+        if (record.cylix_status !== 'Accepted') {
           buttons += `<button onclick="cancelRecord('${record.uuid}')">Cancel</button>`;
-        } 
+        }
+
+      }
+
+      if (userRole === 'Head') {
+        if (record.req_status === 'For Head Approval') {
+          buttons += `<button onclick="approvedRecord('${record.uuid}')">Approve</button>`;
+        }
         
       }
 
-      if (userRole === 'Head' || userRole === 'IT Head') {
-        buttons += `<button onclick="approvedRecord('${record.uuid}')">Approve</button>`;
-      } 
+      if (userRole === 'IT Head') {
+        if (record.req_status === 'For IT Approval') {
+          buttons += `<button onclick="approvedRecord('${record.uuid}')">Approve</button>`;
+        }
+        
+      }
 
       if (userRole === 'QA' || userRole === 'Integrator' || userRole === 'Hybrid') {
-        if (record.integrator ===''){
+        if (record.integrator === '') {
           buttons += `<button onclick="acceptRecord('${record.uuid}')">Accept</button>`;
         }
-        
-        if (record.qa ==='' & record.dev_status ==='For QA'){
+
+        if (record.qa === '' & record.dev_status === 'For QA') {
           buttons += `<button onclick="acceptQARecord('${record.uuid}')">Accept</button>`;
-        } 
+        }
 
-        if (record.dev_status ==='QA'){
+        if (record.dev_status === 'QA') {
           buttons += `<button onclick="doneQARecord('${record.uuid}')">Done</button>`;
-        } 
+        }
 
-        if (record.dev_status ==='For Deployment'){
+        if (record.dev_status === 'For Deployment') {
           buttons += `<button onclick="deployedRecord('${record.uuid}')">Deploy</button>`;
-        } 
-      }
-
-
-      if (userRole === 'Developer' || userRole === 'Hybrid') {
-        if (record.developer ==='' & record.dev_status!=='Pending' ){
-          buttons += `<button onclick="acceptDeveloperRecord('${record.uuid}')">Accept</button>`;
-        } 
-      }
-
-      if (userRole === 'Developer' || userRole === 'Hybrid') {
-        if (record.dev_status ==='Ongoing'){
-          buttons += `<button onclick="doneDevelopentRecord('${record.uuid}')">Done</button>`;
-        } 
+        }
       }
 
 
       if (userRole === 'Admin') {
-        if (record.dev_status !=='Deployed' & record.dev_status !=='QA' & record.dev_status !=='For Deployment' ){
-          buttons += `<button onclick="assignRecord('${record.uuid}')">Assign</button>`;
-        } 
-        
+        if (record.integrator === '') {
+          buttons += `<button onclick="acceptRecord('${record.uuid}')">Accept</button>`;
+        }
       }
+
+
+      if (userRole === 'Developer' || userRole === 'Hybrid') {
+        if (record.developer === '' & record.dev_status !== 'Pending') {
+          buttons += `<button onclick="acceptDeveloperRecord('${record.uuid}')">Accept</button>`;
+        }
+      }
+
+      if (userRole === 'Developer' || userRole === 'Hybrid') {
+        if (record.dev_status === 'Ongoing') {
+          buttons += `<button onclick="doneDevelopentRecord('${record.uuid}')">Done</button>`;
+        }
+      }
+
+
+      // if (userRole === 'Admin') {
+      //   if (record.dev_status !== 'Deployed' & record.dev_status !== 'QA' & record.dev_status !== 'For Deployment') {
+      //     buttons += `<button onclick="assignRecord('${record.uuid}')">Assign</button>`;
+      //   }
+      // }
 
       return `<td class="action-buttons secondary-text">${buttons}</td>`;
     }
 
     function generateConcernType(record) {
 
-let buttons = '';
-if (record.concern_type_new?.toLowerCase() === "yes") {
-  buttons += `<label class="secondary-text">
+      let buttons = '';
+      if (record.concern_type_new?.toLowerCase() === "yes") {
+        buttons += `<label class="secondary-text">
                   <input type="checkbox"  Checked disabled>
                   New (Function/Field/Entry/Column/Row)
            </label>`;
-}
+      }
 
-if (record.concern_type_rev?.toLowerCase() === "yes") {
-  buttons += `<label class="secondary-text">
+      if (record.concern_type_rev?.toLowerCase() === "yes") {
+        buttons += `<label class="secondary-text">
                   <input type="checkbox"  Checked disabled>
                   Revision (Enhancement of Existing)
            </label>`;
-}
+      }
 
-if (record.concern_type_del?.toLowerCase() === "yes") {
-  buttons += `<label class="secondary-text">
+      if (record.concern_type_del?.toLowerCase() === "yes") {
+        buttons += `<label class="secondary-text">
                   <input type="checkbox"  Checked disabled>
                   Delete (Dropped Query/Function/Row/Column/Data Point)
            </label>`;
-}
+      }
 
-if (record.concern_type_cos?.toLowerCase() === "yes") {
-  buttons += `<label class="secondary-text">
+      if (record.concern_type_cos?.toLowerCase() === "yes") {
+        buttons += `<label class="secondary-text">
                   <input type="checkbox"  Checked disabled>
                   Cosmetic (Fonts/Color/Header/Footer)
            </label>`;
-}
+      }
 
-if (record.concern_type_data?.toLowerCase() === "yes") {
-  buttons += `<label class="secondary-text">
+      if (record.concern_type_data?.toLowerCase() === "yes") {
+        buttons += `<label class="secondary-text">
                   <input type="checkbox"  Checked disabled>
                   Data (Fonts/Color/Header/Footer)
            </label>`;
-}
+      }
 
-if (record.concern_type_bugs?.toLowerCase() === "yes") {
-  buttons += `<label class="secondary-text">
+      if (record.concern_type_bugs?.toLowerCase() === "yes") {
+        buttons += `<label class="secondary-text">
                   <input type="checkbox"  Checked disabled>
                   Bugs (Fonts/Color/Header/Footer)
            </label>`;
-}
+      }
 
 
- 
 
-return `<td>${buttons}</td>`;
-}
+
+      return `<td>${buttons}</td>`;
+    }
 
     function generatePriorityType(record) {
 
@@ -311,10 +343,10 @@ return `<td>${buttons}</td>`;
                     </label>`;
       }
 
-     
+
 
       return `<td>${buttons}</td>`;
-      }
+    }
 
     function setupSearch() {
       const searchInput = document.getElementById("searchInput");
@@ -392,7 +424,7 @@ return `<td>${buttons}</td>`;
 
       document.getElementById("employeeName").textContent = user.name;
       document.getElementById("employeeRole").textContent = user.role.toUpperCase() + " - " + user.project;
-    
+
       let logoutPath = ""; // Or your logout route if it's server-based
       if (user.project === "CYLIX") {
         logoutPath = "cylix.html";
@@ -412,10 +444,10 @@ return `<td>${buttons}</td>`;
       let pageTmp = "";
       let scriptFile = "";
 
-      if (mode !== "Transfer"){
-          pageTmp = "pages/serviceForm.html";
+      if (mode !== "Transfer") {
+        pageTmp = "pages/serviceForm.html";
         scriptFile = "js/serviceForm.js";
-      }else {
+      } else {
         pageTmp = "pages/serviceForm.html";
         scriptFile = "js/serviceForm.js";
       }
