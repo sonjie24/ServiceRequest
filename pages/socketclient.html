@@ -1,0 +1,86 @@
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Masterlist WebSocket Sync</title>
+</head>
+<body>
+
+  <button onclick="notifyMasterListChange()">🔄 Refresh Masterlist</button>
+
+  <script>
+    const socket = new WebSocket("ws://20.20.40.221:8080");
+
+    socket.addEventListener("open", () => {
+      console.log("✅ Connected to WebSocket server");
+    });
+
+    socket.addEventListener("message", (event) => {
+      console.log("📩 Received WebSocket message:", event.data);
+      if (event.data === "refresh_masterlist") {
+        loadMasterList();
+      }
+    });
+
+    socket.addEventListener("close", () => {
+      console.log("❌ WebSocket connection closed");
+    });
+
+    socket.addEventListener("error", (error) => {
+      console.error("⚠️ WebSocket error:", error);
+    });
+
+    function notifyMasterListChange() {
+      if (socket.readyState === WebSocket.OPEN) {
+        socket.send("refresh_masterlist");
+        console.log("📤 Sent: refresh_masterlist");
+      } else {
+        console.warn("❗ WebSocket not open.");
+      }
+    }
+
+    // Dummy function for testing
+    function loadMasterList() {
+      alert("✅ Masterlist refreshed via WebSocket!");
+    }
+  </script>
+
+</body>
+</html>
+
+
+<script>
+  const socket = new WebSocket("ws://20.20.40.221:8080");
+
+  socket.addEventListener("open", () => {
+    console.log("✅ Connected to WebSocket server");
+  });
+
+  socket.addEventListener("message", (event) => {
+    console.log("📩 Received WebSocket message:", event.data);
+
+    if (event.data === "refresh_masterlist") {
+      loadMasterList(); // Your existing function to refresh the masterlist
+    }
+  });
+
+  socket.addEventListener("close", () => {
+    console.log("❌ WebSocket connection closed");
+  });
+
+  socket.addEventListener("error", (error) => {
+    console.error("⚠️ WebSocket error:", error);
+  });
+
+  function notifyMasterListChange() {
+    if (socket.readyState === WebSocket.OPEN) {
+      socket.send("refresh_masterlist");
+      console.log("📤 Sent: refresh_masterlist");
+    } else {
+      console.warn("❗ WebSocket not open.");
+    }
+  }
+</script>

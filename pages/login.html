@@ -72,6 +72,7 @@
           await getFunctionalities();
           await getDepartments();
           saveUserSession(userData);
+         
           window.location.href = `${BASE_PATH}pages/master.html`;
         } else {
           alert(data.message || "Login failed.");
@@ -84,6 +85,9 @@
         loginBtn.style.display = "block";
       }
     }
+
+
+
 
     async function getFunctionalities() {
       try {
