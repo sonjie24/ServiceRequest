@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Print Service Request</title>
+  <title>Cylx Technologies Inc.</title>
   <style>
-   body {
+    body {
       font-family: Arial, sans-serif;
       padding: 20px;
     }
@@ -27,12 +27,17 @@
       background-color: #f2f2f2;
     }
     .signature-block td {
+      border: 2px solid #000;
       height: 40px;
       text-align: center;
     }
     .checkbox-cell {
       width: 30px;
       text-align: center;
+    }
+    .page-border {
+      border: 2px solid #000;
+      padding: 20px;
     }
     .small {
       font-size: 12px;
@@ -53,169 +58,231 @@
 <body>
 <h2 style="text-align:center;">SERVICE REQUEST FORM</h2>
 
-  <table>
-    <tr>
-      <td>DATE REQUESTED:</td>
-      <td colspan="2"></td>
-      <td>SERVICE REQUEST #:</td>
-      <td><a href="#">CNIMS-2025-07-0006</a></td>
-    </tr>
-    <tr>
-      <td>DEPARTMENT:</td>
-      <td colspan="2"></td>
-      <td>MODULE:</td>
-      <td></td>
-    </tr>
-    <tr>
-      <td>FORM #:</td>
-      <td>Sample</td>
-      <td>SYSTEM FORM NAME:</td>
-      <td colspan="2"></td>
-    </tr>
-  </table>
+<table class="page-border">
+  <tr>
+    <td>DATE REQUESTED:</td>
+    <td colspan="2" id="date_requested"></td>
+    <td>SERVICE REQUEST #:</td>
+    <td id="service_request_no"></td>
+  </tr>
+  <tr>
+    <td>DEPARTMENT:</td>
+    <td colspan="2" id="department"></td>
+    <td>MODULE:</td>
+    <td id="module"></td>
+  </tr>
+  <tr>
+    <td>FORM #:</td>
+    <td id="system_form_no"></td>
+    <td>SYSTEM FORM NAME:</td>
+    <td colspan="2" id="system_form_name"></td>
+  </tr>
+</table>
 
-  <br>
+<table class="page-border">
+  <tr class="section-title">
+    <td colspan="3" style="background-color: #c4ebf1;">CONCERN TYPE</td>
+    <td colspan="2" style="background-color: #c4ebf1;">LEVEL OF PRIORITY</td>
+  </tr>
+  <tr>
+    <td class="checkbox-cell" id="concern_type_new"></td>
+    <td colspan="2">New (Function/Field/Entry/Column/Row)</td>
+    <td class="checkbox-cell" id="priority_set"></td>
+    <td>Basic - Committed Date:</td>
+  </tr>
+  <tr>
+    <td class="checkbox-cell" id="concern_type_rev"></td>
+    <td colspan="2">Revision (Enhancement of Existing)</td>
+    <td class="checkbox-cell" id="priority_immediate"></td>
+    <td>Immediate</td>
+  </tr>
+  <tr>
+    <td class="checkbox-cell" id="concern_type_del"></td>
+    <td colspan="2">Delete (Dropped Query/Function/Row/Column/Data Point)</td>
+    <td class="checkbox-cell" id="priority_add"></td>
+    <td>Addtl Customization/Outside Scope</td>
+  </tr>
+  <tr>
+    <td class="checkbox-cell" id="concern_type_cos"></td>
+    <td colspan="4">Cosmetic (Fonts/Color/Header/Footer)</td>
+  </tr>
+  <tr>
+    <td class="checkbox-cell" id="concern_type_data"></td>
+    <td colspan="4">Data (Override/Deletion)</td>
+  </tr>
+</table>
 
-  <table>
-    <tr class="section-title">
-      <td colspan="3">CONCERN TYPE</td>
-      <td colspan="2">LEVEL OF PRIORITY</td>
-    </tr>
-    <tr>
-      <td class="checkbox-cell">☐</td>
-      <td colspan="2">New (Function/Field/Entry/Column/Row)</td>
-      <td class="checkbox-cell">☐</td>
-      <td>Basic - Committed Date:</td>
-    </tr>
-    <tr>
-      <td class="checkbox-cell">☐</td>
-      <td colspan="2">Revision (Enhancement of Existing)</td>
-      <td class="checkbox-cell">☐</td>
-      <td>Immediate</td>
-    </tr>
-    <tr>
-      <td class="checkbox-cell">☐</td>
-      <td colspan="2">Delete (Dropped Query/Function/Row/Column/Data Point)</td>
-      <td class="checkbox-cell">☐</td>
-      <td>Addtl Customization/Outside Scope</td>
-    </tr>
-    <tr>
-      <td class="checkbox-cell">☐</td>
-      <td colspan="4">Cosmetic (Fonts/Color/Header/Footer)</td>
-    </tr>
-    <tr>
-      <td class="checkbox-cell">☐</td>
-      <td colspan="4">Data (Override/Deletion)</td>
-    </tr>
-  </table>
+<table id="dataPointsTable" class="page-border">
+  <tr class="section-title">
+    <td style="background-color: #c4ebf1;">DATA POINTS</td>
+    <td style="background-color: #c4ebf1;">REFERENCE DATA FIELD</td>
+  </tr>
+  <tr><td>1)</td><td></td></tr>
+  <tr><td>2)</td><td></td></tr>
+  <tr><td>3)</td><td></td></tr>
+  <tr><td>4)</td><td></td></tr>
+  <tr><td>5)</td><td></td></tr>
+  <tr>
+    <td colspan="2" class="small"><i>Note: Additional concerns may be written on the back page.</i></td>
+  </tr>
+</table>
 
-  <br>
+<table class="signature-block" >
+   <tr>
+    <td id="user"></td>
+    <td id="department_head"></td>
+    <td id="it_head"></td>
+  </tr>
+  <tr>
+    <td><b>USER</b></td>
+    <td><b>DEPARTMENT HEAD</b></td>
+    <td><b>IT HEAD</b></td>
+  </tr>
+   <tr>
+    <td id="integrator"></td>
+    <td id="developer"></td>
+    <td id="qa"></td>
+  </tr>
+ 
+  <tr>
+    <td><b>INTEGRATOR</b></td>
+    <td><b>DEVELOPER</b></td>
+    <td><b>QA</b></td>
+  </tr>
+ 
+</table>
 
-  <table>
-    <tr class="section-title">
-      <td>DATA POINTS</td>
-      <td>REFERENCE DATA FIELD</td>
-    </tr>
-    <tr><td>1)</td><td></td></tr>
-    <tr><td>2)</td><td></td></tr>
-    <tr><td>3)</td><td></td></tr>
-    <tr><td>4)</td><td></td></tr>
-    <tr><td>5)</td><td></td></tr>
-    <tr>
-      <td colspan="2" class="small"><i>Note: Additional concerns may be written on the back page.</i></td>
-    </tr>
-  </table>
+<table class="page-border">
+  <tr>
+    <td class="checkbox-cell" id="print_option_as_req"></td>
+    <td>Print Out as per User Request</td>
+    <td id="print_out_date"></td>
+  </tr>
+  <tr>
+    <td class="checkbox-cell" id="print_option_sys_print"></td>
+    <td>Current System Print Out</td>
+    <td id="system_print_date"></td>
+  </tr>
+  <tr>
+    <td class="checkbox-cell" id="print_option_modified"></td>
+    <td>Modified/Revised Print Out</td>
+    <td id="patch_date"></td>
+  </tr>
+</table>
 
-  <br>
+<button onclick="window.print()">🖨️ Print</button>
 
-  <table class="signature-block">
-    <tr>
-      <td>USER</td>
-      <td>DEPARTMENT HEAD</td>
-      <td>IT HEAD</td>
-    </tr>
-    <tr>
-      <td></td>
-      <td>RICHARD PORRAS</td>
-      <td>ROMEO B. EMPLEO JR.</td>
-    </tr>
-    <tr>
-      <td>INTEGRATOR</td>
-      <td>DEVELOPER</td>
-      <td>QA</td>
-    </tr>
-    <tr>
-      <td></td><td></td><td></td>
-    </tr>
-  </table>
+<script>
+  function checkMark(value) {
+    return value === "Yes" ? "☑" : "☐";
+  }
 
-  <br>
+  const record = {
+    "row_number": 10,
+    "id": 9,
+    "type": "actual",
+    "uuid": "3ab0d2be-3916-42c1-9ece-eaa7b6290ae5",
+    "project": "CNIMS",
+    "date_requested": "2025-07-24",
+    "service_request_no": "CNIMS-2025-07-0005",
+    "req_status": "Pending",
+    "cylix_status": "Accepted",
+    "dev_status": "For Development",
+    "department": "BUSINESS PERMITS AND LICENSING OFFICER",
+    "module": "BPLS",
+    "system_form_no": "CMIS00239",
+    "system_form_name": "Business Master List",
+    "memo": "",
+    "concern_type_new": "No",
+    "concern_type_rev": "No",
+    "concern_type_del": "No",
+    "concern_type_cos": "No",
+    "concern_type_data": "Yes",
+    "priority_set": "No",
+    "committed_date": "",
+    "priority_immediate": "Yes",
+    "priority_add": "No",
+    "user_id": 913,
+    "user": "Jec S. Carretas",
+    "department_head_id": 1111,
+    "department_head": "",
+    "it_head_id": 250,
+    "it_head": "Romeo B. Empleo Jr.",
+    "integrator_id": 24,
+    "integrator": "Michael V Tan",
+    "developer_id": 21,
+    "developer": "Richard A. Porras",
+    "qa_id": 24,
+    "qa": "Michael V Tan",
+    "print_option_as_req": "No",
+    "print_out_date": "",
+    "print_option_sys_print": "No",
+    "system_print_date": "",
+    "print_option_modified": "No",
+    "patch_date": ""
+  };
 
-  <table>
-    <tr>
-      <td class="checkbox-cell">☐</td>
-      <td>Print Out as per User Request</td>
-      <td>Date:</td>
-    </tr>
-    <tr>
-      <td class="checkbox-cell">☐</td>
-      <td>Current System Print Out</td>
-      <td>Date:</td>
-    </tr>
-    <tr>
-      <td class="checkbox-cell">☐</td>
-      <td>Modified/Revised Print Out</td>
-      <td>Patch Installed On:</td>
-    </tr>
-  </table>
+  window.addEventListener("DOMContentLoaded", () => {
+    // Fill basic info
+    document.getElementById("date_requested").innerHTML = `<strong>${record.date_requested}</strong>`;
+    document.getElementById("service_request_no").innerHTML = `<strong>${record.service_request_no}</strong>`;
+    document.getElementById("department").innerHTML = `<strong>${record.department}</strong>`;
+    document.getElementById("module").innerHTML = `<strong>${record.module}</strong>`;
+    document.getElementById("system_form_no").innerHTML = `<strong>${record.system_form_no}</strong>`;
+    document.getElementById("system_form_name").innerHTML = `<strong>${record.system_form_name}</strong>`;
 
-  <button onclick="window.print()">🖨️ Print</button>
+    // Fill checkbox sections
+    document.getElementById("concern_type_new").textContent = checkMark(record.concern_type_new);
+    document.getElementById("concern_type_rev").textContent = checkMark(record.concern_type_rev);
+    document.getElementById("concern_type_del").textContent = checkMark(record.concern_type_del);
+    document.getElementById("concern_type_cos").textContent = checkMark(record.concern_type_cos);
+    document.getElementById("concern_type_data").textContent = checkMark(record.concern_type_data);
+    document.getElementById("priority_set").textContent = checkMark(record.priority_set);
+    document.getElementById("priority_immediate").textContent = checkMark(record.priority_immediate);
+    document.getElementById("priority_add").textContent = checkMark(record.priority_add);
 
-  <script src="../js/config.js"></script>
-  <script>
-    async function loadPrintData() {
-      const urlParams = new URLSearchParams(window.location.search);
-      const id = urlParams.get("id");
+    // Signatories
+    document.getElementById("user").textContent = record.user;
+    document.getElementById("department_head").textContent = record.department_head || "RICHARD PORRAS";
+    document.getElementById("it_head").textContent = record.it_head;
+    document.getElementById("integrator").textContent = record.integrator;
+    document.getElementById("developer").textContent = record.developer;
+    document.getElementById("qa").textContent = record.qa;
 
-      if (!id) {
-        alert("Missing request ID.");
-        return;
-      }
+    // Print Options
+    document.getElementById("print_option_as_req").textContent = checkMark(record.print_option_as_req);
+    document.getElementById("print_option_sys_print").textContent = checkMark(record.print_option_sys_print);
+    document.getElementById("print_option_modified").textContent = checkMark(record.print_option_modified);
+    document.getElementById("print_out_date").textContent = record.print_out_date || "";
+    document.getElementById("system_print_date").textContent = record.system_print_date || "";
+    document.getElementById("patch_date").textContent = record.patch_date || "";
 
-      try {
-        const res = await fetch(`${API_BASE_URL}/get-one`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ service_request_no: id })
-        });
+    // Optional auto-print
+    // setTimeout(() => window.print(), 500);
 
-        const json = await res.json();
-        const record = json.data;
+    const dataPoints = [
+  {
+    row_number: 5,
+    MainGUID: "3ab0d2be-3916-42c1-9ece-eaa7b6290ae5",
+    data_point: "Dili ma save and Retrieve ang date sa Fire",
+    ref_field: "Expiry Date Filter"
+  }
+];
 
-        if (!record) {
-          alert("Request not found.");
-          return;
-        }
-
-        // Fill table fields
-        document.getElementById("req_no").textContent = record.service_request_no || "-";
-        document.getElementById("date_requested").textContent = record.date_requested || "-";
-        document.getElementById("module").textContent = record.module || "-";
-        document.getElementById("form").textContent = record.system_form_name || "-";
-        document.getElementById("concern").textContent = record.concern || "-";
-
-        // Auto-print after DOM updates
-        setTimeout(() => {
-          requestAnimationFrame(() => window.print());
-        }, 300);
-
-      } catch (err) {
-        console.error("Failed to load print data:", err);
-        alert("Something went wrong loading the request.");
-      }
+// Populate DATA POINTS table
+const table = document.getElementById("dataPointsTable");
+dataPoints.forEach((item, index) => {
+  // Skip the first two rows (header + 5 default rows) and the note row at the end
+  if (index < 5) {
+    const row = table.rows[index + 1]; // +1 to skip header row
+    if (row) {
+      row.cells[0].textContent = `${index + 1}) ${item.data_point}`;
+      row.cells[1].textContent = item.ref_field;
     }
+  }
+});
+  });
+</script>
 
-    window.addEventListener("DOMContentLoaded", loadPrintData);
-  </script>
 </body>
 </html>

@@ -380,11 +380,17 @@
       openModal(id);
     }
 
-    function viewRecord(id) {
-      mode = "View";
-      openModal(id);
+    // function viewRecord(id) {
+    //   mode = "View";
+    //   openModal(id);
  
+    // }
+
+    function viewRecord(id) {
+      const printUrl = `pages/printreq.html?id=${id}`;
+      window.open(printUrl, '_blank');
     }
+
 
     // function viewRecord(id) {
     //   console.log("printRecord called with ID:", id);
@@ -492,15 +498,19 @@
       if (mode !== "Transfer") {
         pageTmp = "pages/serviceForm.html";
         scriptFile = "js/serviceForm.js";
+
+
       } else {
         pageTmp = "pages/serviceForm.html";
         scriptFile = "js/serviceForm.js";
-      }else if (mode === "View"){
+      }
+
+       if (mode === "View"){
+
+        
         pageTmp = "pages/printreq.html";
         scriptFile = "js/print.js";
-
-      }
-      
+       }
        
 
 
