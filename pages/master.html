@@ -381,8 +381,19 @@
     }
 
     function viewRecord(id) {
-      alert("View record: " + id);
+      mode = "View";
+      openModal(id);
+ 
     }
+
+    // function viewRecord(id) {
+    //   console.log("printRecord called with ID:", id);
+    //   const printUrl = `pages/printreq.html?id=${encodeURIComponent(id)}`;
+    //   window.open(printUrl, "_blank"); // opens print request page in new tab
+    // }
+
+    // const urlParams = new URLSearchParams(window.location.search);
+    // const id = urlParams.get("id"); 
 
     function editRecord(id) {
       mode = "Edit";
@@ -484,7 +495,14 @@
       } else {
         pageTmp = "pages/serviceForm.html";
         scriptFile = "js/serviceForm.js";
+      }else if (mode === "View"){
+        pageTmp = "pages/printreq.html";
+        scriptFile = "js/print.js";
+
       }
+      
+       
+
 
       fetch(`${BASE_PATH}${pageTmp}`)
         .then((res) => res.text())
