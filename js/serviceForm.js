@@ -62,7 +62,6 @@
       select.appendChild(option);
     });
   }
-
   populateSelect(integratorSelect, employeeData);
   populateSelect(developerSelect, employeeData);
   populateSelect(qaSelect, employeeData);
@@ -80,96 +79,100 @@
   bindHidden(qaSelect, "qa_id");
 
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  // Department data from session
-  const departmentData = getDepartmentSession();
+  // ✅ Safely get department data
+  let departmentData = {};
+  try {
+    departmentData = getDepartmentSession() || {};
+  } catch (err) {
+    console.error("❌ Failed to load department session:", err);
+    departmentData = {};
+  }
 
-  // DOM Elements
+  // ✅ DOM Elements
   const departmentSelect = document.getElementById("department");
   const userSelect = document.getElementById("user");
   const headSelect = document.getElementById("department_head");
   const itHeadSelect = document.getElementById("it_head");
 
-  // ✅ Populate departments
-  Object.keys(departmentData).forEach((department) => {
-    const option = document.createElement("option");
-    option.value = department;
-    option.textContent = department;
-    departmentSelect.appendChild(option);
-  });
+  // ✅ Utility: Create Option Safely
+  function createOption(value, text, code = null) {
+    const opt = document.createElement("option");
+    opt.value = value || "";
+    opt.textContent = text || "Unnamed";
+    if (code) opt.setAttribute("data-code", code);
+    return opt;
+  }
 
-  // ✅ Populate Users when department changes
+  // ✅ Populate departments safely
+  if (Object.keys(departmentData).length > 0) {
+    Object.keys(departmentData).forEach((department) => {
+      departmentSelect.appendChild(createOption(department, department));
+    });
+  } else {
+    console.warn("⚠️ No departments found in session.");
+  }
+
+  // ✅ Handle Department Change Event
   departmentSelect.addEventListener("change", () => {
     const selectedDepartment = departmentSelect.value;
 
-    // Clear previous options
-    userSelect.innerHTML =
-      '<option value="" disabled selected>Select User</option>';
-    headSelect.innerHTML =
-      '<option value="" disabled selected>Select Head</option>';
-    itHeadSelect.innerHTML =
-      '<option value="" disabled selected>Select IT Head</option>';
+    // Clear existing options
+    userSelect.innerHTML = '<option value="" disabled selected>Select User</option>';
+    headSelect.innerHTML = '<option value="" disabled selected>Select Head</option>';
+    itHeadSelect.innerHTML = '<option value="" disabled selected>Select IT Head</option>';
 
-    if (selectedDepartment && departmentData[selectedDepartment]) {
+    // Reset disabled state
+    userSelect.disabled = headSelect.disabled = itHeadSelect.disabled = true;
+
+    if (!selectedDepartment || !departmentData[selectedDepartment]) {
+      console.warn(`⚠️ Department '${selectedDepartment}' not found.`);
+      return;
+    }
+
+    const data = departmentData[selectedDepartment];
+
+    // ✅ Populate Users
+    if (Array.isArray(data.User)) {
+      data.User.forEach((u) => userSelect.appendChild(createOption(u.name, u.name, u.id)));
       userSelect.disabled = false;
-      headSelect.disabled = false;
-      itHeadSelect.disabled = false;
-
-      const data = departmentData[selectedDepartment];
-
-      // ✅ Populate Users
-      data.User.forEach((u) => {
-        const opt = document.createElement("option");
-        opt.value = u.name;
-        opt.textContent = u.name;
-        opt.setAttribute("data-code", u.id);
-        userSelect.appendChild(opt);
-      });
-
-      // ✅ Populate Heads
-      data.Head.forEach((h) => {
-        const opt = document.createElement("option");
-        opt.value = h.name;
-        opt.textContent = h.name;
-        opt.setAttribute("data-code", h.id);
-        headSelect.appendChild(opt);
-      });
-
-      // ✅ Populate IT Head (for this department)
-      data["IT Head"].forEach((it) => {
-        const opt = document.createElement("option");
-        opt.value = it.name;
-        opt.textContent = it.name;
-        opt.setAttribute("data-code", it.id);
-        itHeadSelect.appendChild(opt);
-      });
     } else {
-      userSelect.disabled = true;
-      headSelect.disabled = true;
-      itHeadSelect.disabled = true;
+      console.warn(`⚠️ No users found for department '${selectedDepartment}'.`);
+    }
+
+    // ✅ Populate Heads
+    if (Array.isArray(data.Head)) {
+      data.Head.forEach((h) => headSelect.appendChild(createOption(h.name, h.name, h.id)));
+      headSelect.disabled = false;
+    } else {
+      console.warn(`⚠️ No heads found for department '${selectedDepartment}'.`);
+    }
+
+    // ✅ Populate IT Heads
+    if (Array.isArray(data["IT Head"])) {
+      data["IT Head"].forEach((it) => itHeadSelect.appendChild(createOption(it.name, it.name, it.id)));
+      itHeadSelect.disabled = false;
+    } else {
+      console.warn(`⚠️ No IT Heads found for department '${selectedDepartment}'.`);
     }
   });
 
-  // When a user is selected, show its code in the input
-  userSelect.addEventListener("change", () => {
-    const selectedOption = userSelect.options[userSelect.selectedIndex];
-    const code = selectedOption.getAttribute("data-code");
-    document.getElementById("user_id").value = code || "";
-  });
+  // ✅ ID Setter Utility
+  function bindCodeUpdate(selectElement, hiddenInputId) {
+    if (!selectElement) return;
+    selectElement.addEventListener("change", () => {
+      const selected = selectElement.options[selectElement.selectedIndex];
+      document.getElementById(hiddenInputId).value = selected?.getAttribute("data-code") || "";
+    });
+  }
 
-  // When a head is selected, show its code in the input
-  headSelect.addEventListener("change", () => {
-    const selectedOption = headSelect.options[headSelect.selectedIndex];
-    const code = selectedOption.getAttribute("data-code");
-    document.getElementById("department_head_id").value = code || "";
-  });
+  // ✅ Bind events to set IDs safely
+  bindCodeUpdate(userSelect, "user_id");
+  bindCodeUpdate(headSelect, "department_head_id");
+  bindCodeUpdate(itHeadSelect, "it_head_id");
 
-  // When a head is selected, show its code in the input
-  itHeadSelect.addEventListener("change", () => {
-    const selectedOption = itHeadSelect.options[itHeadSelect.selectedIndex];
-    const code = selectedOption.getAttribute("data-code");
-    document.getElementById("it_head_id").value = code || "";
-  });
 
+
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // Add row function (global for onclick)
   window.addRow = function () {
     const tableBody = document.querySelector("#dataTable tbody");
@@ -515,9 +518,10 @@
 
   // Get default values (used when modal opens)
   window.getDefaults = async function (uuid, mode) {
-    const submitBtn = document.getElementById("submitBtn");
 
+    const submitBtn = document.getElementById("submitBtn");
     submitBtn.disabled = true;
+
     if (mode === "Add") {
       const today = new Date().toISOString().split("T")[0];
       document.getElementById("modalTitle").textContent =
@@ -561,7 +565,9 @@
       await getData(uuid);
       await getDataDetails(uuid);
       await getDataFiles(uuid);
+
     } else if (mode === "Cancel") {
+
       toggleFormReadOnly("entryForm", "View", [
         "attachments",
         "memo",
