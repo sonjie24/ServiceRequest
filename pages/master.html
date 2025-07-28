@@ -71,6 +71,7 @@
     <script>
       let mode = "Add";
       const user = getUserSession();
+
       async function loadMasterList() {
         notifyMasterListChange();
         try {
@@ -567,14 +568,16 @@
         console.log("Received WebSocket message:", event.data);
 
         if (event.data === "refresh_masterlist") {
-          loadMasterList(); // ✅ your existing function to load master list
+           loadMasterList(); // ✅ your existing function to load master list
+           loadMasterList(); // ✅ your existing function to load master list
         }
       });
 
       // Example function to send a refresh request (called on button click)
       function notifyMasterListChange() {
+       
         if (socket.readyState === WebSocket.OPEN) {
-          socket.send("refresh_masterlist");
+            socket.send("refresh_masterlist");
         }
       }
     </script>
