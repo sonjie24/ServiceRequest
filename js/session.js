@@ -28,6 +28,13 @@ function saveDetailDataSession(detailData) {
 
 
 
+// Save functionalities to session
+function savelogInProject(logInProject) {
+  sessionStorage.setItem("logInProject", JSON.stringify(logInProject));
+}
+
+
+
 // Get user data from session
 function getUserSession() {
   const user = sessionStorage.getItem("user");
@@ -55,5 +62,11 @@ function getDepartmentSession() {
   return dept ? JSON.parse(dept) : null;
 }
 
+
+// Get user data from session
+function getlogInProject() {
+  const logInProject = sessionStorage.getItem("logInProject");
+  return logInProject ? JSON.parse(logInProject) : null;
+}
 
 

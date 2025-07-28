@@ -376,7 +376,6 @@
         tbody.appendChild(row);
       });
 
-<<<<<<< HEAD
       // ✅ Optionally add a blank row for new entry
       const blankRow = document.createElement("tr");
       blankRow.innerHTML = `
@@ -385,17 +384,7 @@
       `;
       tbody.appendChild(blankRow);
       
-=======
 
-<<<<<<< HEAD
-<<<<<<< HEAD
->>>>>>> e9c156a23cb64a440f7aaf9859fc46e3a3e5f5ab
-=======
-
->>>>>>> parent of 430a071 (asd)
-=======
-
->>>>>>> parent of 430a071 (asd)
     } catch (error) {
       console.error("Fetch error:", error);
       alert("An error occurred while fetching data.");

@@ -458,11 +458,11 @@
 
       document.getElementById("employeeName").textContent = user.name;
       document.getElementById("employeeRole").textContent = user.role.toUpperCase() + " - " + user.project;
-
+      const loginProject = getlogInProject();
       let logoutPath = ""; // Or your logout route if it's server-based
-      if (user.project === "CYLIX") {
+      if (loginProject === "CYLIX") {
         logoutPath = "cylix.html";
-      } else if (user.project === "CNIMS") {
+      } else if (loginProject === "CNIMS") {
         logoutPath = "cnims.html";
       }
 

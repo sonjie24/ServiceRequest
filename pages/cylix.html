@@ -71,6 +71,7 @@
           await getFunctionalities();
           await getDepartments();
           await getCylix();
+          savelogInProject(project);
           saveUserSession(userData);
           window.location.href = `${BASE_PATH}pages/master.html`;
         } else {
