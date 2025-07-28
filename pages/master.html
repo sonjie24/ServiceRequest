@@ -72,6 +72,7 @@
       let mode = "Add";
       const user = getUserSession();
       async function loadMasterList() {
+        notifyMasterListChange();
         try {
           const projectName = user.project;
           const response = await fetch(`${API_BASE_URL}/get-all`, {
