@@ -811,7 +811,8 @@
         if (modal) {
           modal.style.display = "none";
         }
-        window.parent.loadMasterList();
+       
+        notifyMasterListChange;
         // sessionStorage.removeItem("detailData");
       } else {
         alert(`Error: ${result.message || "Something went wrong"}`);
@@ -846,4 +847,27 @@
       getDefaults();
     });
   }
+  
+  const socket = new WebSocket("ws://20.20.40.221:8080");
+
+  socket.addEventListener("open", function () {
+    console.log("Connected to WebSocket server");
+  });
+
+  socket.addEventListener("message", function (event) {
+    console.log("Received WebSocket message:", event.data);
+
+    if (event.data === "refresh_masterlist") {
+       window.parent.loadMasterList(); // ✅ your existing function to load master list
+    }
+  });
+
+  // Example function to send a refresh request (called on button click)
+  function notifyMasterListChange() {
+    
+    if (socket.readyState === WebSocket.OPEN) {
+        socket.send("refresh_masterlist");
+    }
+  }
+    
 })();
