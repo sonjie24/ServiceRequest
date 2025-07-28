@@ -432,3 +432,11 @@ select {
   border-radius: 6px;
   box-sizing: border-box;
 } 
+
+
+.action-buttons a,
+.action-buttons button {
+  display: block;      /* ✅ Forces each link/button to a new line */
+  margin: 3px 0;       /* ✅ Adds spacing between actions */
+  text-align: center;    /* Optional: align text to the left */
+}
