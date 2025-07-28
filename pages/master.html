@@ -216,7 +216,7 @@
 
 
       if (userRole === 'Admin') {
-        if (record.integrator === '') {
+        if (record.cylix_status === 'Pending') {
           buttons += `<button onclick="acceptAdminRecord('${record.uuid}')">Accept</button>`;
         }
       }

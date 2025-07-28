@@ -20,6 +20,14 @@ function saveCylixSession(cylix) {
   sessionStorage.setItem("cylix", JSON.stringify(cylix));
 }
 
+
+// Save functionalities to session
+function saveDetailDataSession(detailData) {
+  sessionStorage.setItem("detailData", JSON.stringify(detailData));
+}
+
+
+
 // Get user data from session
 function getUserSession() {
   const user = sessionStorage.getItem("user");
@@ -28,17 +36,23 @@ function getUserSession() {
 
 function getFunctinalitiesSession() {
   const functionalities = sessionStorage.getItem("functionalities");
-  return user ? JSON.parse(functionalities) : null;
+  return functionalities ? JSON.parse(functionalities) : null;
+}
+
+
+function getDetailDataSession() {
+  const detailData = sessionStorage.getItem("detailData");
+  return detailData ? JSON.parse(detailData) : null;
 }
 
 function getCylixSession() {
   const cylix = sessionStorage.getItem("cylix");
-  return user ? JSON.parse(cylix) : null;
+  return cylix ? JSON.parse(cylix) : null;
 }
 
 function getDepartmentSession() {
   const dept = sessionStorage.getItem("department");
-  return user ? JSON.parse(dept) : null;
+  return dept ? JSON.parse(dept) : null;
 }
 
 
