@@ -165,7 +165,7 @@
 
   // When a head is selected, show its code in the input
   itHeadSelect.addEventListener("change", () => {
-    const selectedOption = itHeadSelect.options[headSelect.selectedIndex];
+    const selectedOption = itHeadSelect.options[itHeadSelect.selectedIndex];
     const code = selectedOption.getAttribute("data-code");
     document.getElementById("it_head_id").value = code || "";
   });
@@ -357,9 +357,9 @@
 
       const result = await res.json();
       const detailData = result.data || [];
-     
+
       saveDetailDataSession(detailData);
-      
+
       // Get table body element
       const tbody = document.getElementById("details_data");
 
@@ -370,8 +370,12 @@
       detailData.forEach((item) => {
         const row = document.createElement("tr"); // ✅ FIX: create <tr> not item
         row.innerHTML = `
-          <td><input type="text" name="data_point" value="${item.data_point || ""}" /></td>
-          <td><input type="text" name="reference_field" value="${item.ref_field || ""}" /></td>
+          <td><input type="text" name="data_point" value="${
+            item.data_point || ""
+          }" /></td>
+          <td><input type="text" name="reference_field" value="${
+            item.ref_field || ""
+          }" /></td>
         `;
         tbody.appendChild(row);
       });
@@ -383,15 +387,11 @@
         <td><input type="text" name="reference_field" value="" /></td>
       `;
       tbody.appendChild(blankRow);
-      
-
     } catch (error) {
       console.error("Fetch error:", error);
       alert("An error occurred while fetching data.");
     }
   }
-
-
 
   async function getDataFiles(uuid) {
     try {
@@ -493,38 +493,21 @@
           makeSelectReadOnly(document.getElementById("qa"));
 
           if (user.role === "User") {
-            userSelect.value = user.name || "";
-            userSelect.dispatchEvent(new Event("change"));
             document.getElementById("req_status").value = "For Head Approval";
           } else if (user.role === "Head") {
-            if (mode === "Add") {
-              userSelect.value = user.name;
-              userSelect.dispatchEvent(new Event("change"));
-            }
-            headSelect.value = user.name;
-            headSelect.dispatchEvent(new Event("change"));
             document.getElementById("req_status").value = "For IT Approval";
-          } else if (user.role === "IT Head") {
-            if (mode === "Add") {
-              userSelect.value = user.name;
-              userSelect.dispatchEvent(new Event("change"));
-
-              headSelect.value = user.name;
-              headSelect.dispatchEvent(new Event("change"));
-            }
-            itHeadSelect.value = user.name;
-            itHeadSelect.dispatchEvent(new Event("change"));
+          } else {
             document.getElementById("req_status").value = "Approved";
-          } else if (user.role === "Integrator") {
-            document.getElementById("integrator").value = user.name || "";
-            document.getElementById("integrator_id").value = user.userId || "";
-          } else if (user.role === "Developer") {
-            document.getElementById("developer").value = user.name || "";
-            document.getElementById("developer_id").value = user.userId || "";
-          } else if (user.role === "QA") {
-            document.getElementById("qa").value = user.name || "";
-            document.getElementById("qa").value = user.userId || "";
           }
+
+          userSelect.value = user.name;
+          userSelect.dispatchEvent(new Event("change"));
+
+          headSelect.value = user.name;
+          headSelect.dispatchEvent(new Event("change"));
+
+          itHeadSelect.value = user.name;
+          itHeadSelect.dispatchEvent(new Event("change"));
         }, 300); // wait for formSelect to populate
       }
     }
@@ -799,18 +782,16 @@
         proc = "/create";
       } else {
         proc = "/update";
-      }
-        
 
-      // Remove Details
-      const detailData = getDetailDataSession();
-      detailData.forEach((item) => {
+        // Remove Details
+        const detailData = getDetailDataSession();
+        detailData.forEach((item) => {
           fetch(`${API_BASE_URL}/delete`, {
-          method: "POST",
-          body: formData,
+            method: "POST",
+            body: formData,
+          });
         });
-      });
-   
+      }
 
       // Save/Update Endpoint
       const response = await fetch(`${API_BASE_URL}${proc}`, {
