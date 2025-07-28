@@ -341,6 +341,12 @@
       await getDataDetails(uuid);
       await getDataFiles(uuid);
       document.getElementById("req_status").value = "Cancelled";
+    } if (mode === "View") {
+      document.getElementById("modalTitle").textContent = "SERVICE REQUEST PRINT";
+      document.getElementById("attachments").removeAttribute("required");
+      await getData(uuid);
+      await getDataDetails(uuid);
+      await getDataFiles(uuid);
     }
 
     submitBtn.disabled=false;
