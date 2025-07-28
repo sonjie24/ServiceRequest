@@ -73,7 +73,6 @@
       const user = getUserSession();
 
       async function loadMasterList() {
-        notifyMasterListChange();
         try {
           const projectName = user.project;
           const response = await fetch(`${API_BASE_URL}/get-all`, {
@@ -534,7 +533,9 @@
       }
 
       function closeModal() {
+        notifyMasterListChange();
         document.getElementById("createModal").style.display = "none";
+      
       }
 
       // Do NOT close modal when clicking outside
@@ -558,6 +559,7 @@
     </script>
     
     <script>
+
       const socket = new WebSocket("ws://20.20.40.221:8080");
 
       socket.addEventListener("open", function () {
@@ -568,14 +570,13 @@
         console.log("Received WebSocket message:", event.data);
 
         if (event.data === "refresh_masterlist") {
-           loadMasterList(); // ✅ your existing function to load master list
-           loadMasterList(); // ✅ your existing function to load master list
+          loadMasterList(); // ✅ your existing function to load master list
         }
       });
 
       // Example function to send a refresh request (called on button click)
       function notifyMasterListChange() {
-       
+        
         if (socket.readyState === WebSocket.OPEN) {
             socket.send("refresh_masterlist");
         }
