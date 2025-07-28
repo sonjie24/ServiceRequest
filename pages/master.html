@@ -461,12 +461,12 @@
       }
 
       // ✅ Runs every 30 seconds
-      setInterval(() => {
-        loadMasterList(); // call async function
-        console.log("✅ Async function executed silently after 30s");
-      }, 3600000);
+      // setInterval(() => {
+      //   loadMasterList(); // call async function
+      //   console.log("✅ Async function executed silently after 30s");
+      // }, 3600000);
 
-      setInterval(generateActionButtons, 3600000);
+      // setInterval(generateActionButtons, 3600000);
 
       window.addEventListener("DOMContentLoaded", () => {
         loadMasterList();

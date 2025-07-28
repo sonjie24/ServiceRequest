@@ -841,4 +841,33 @@
       getDefaults();
     });
   }  
+
+
+  function validateForm() {
+    const concernCheckboxes = document.querySelectorAll('input[name="concern_type"]');
+    const priorityCheckboxes = document.querySelectorAll('input[name="priority_type"]');
+    const committedDateCheckbox = document.getElementById("priority_set");
+    const committedDateInput = document.getElementById("committed_date");
+
+    const concernSelected = Array.from(concernCheckboxes).some(cb => cb.checked);
+    const prioritySelected = Array.from(priorityCheckboxes).some(cb => cb.checked);
+
+    if (!concernSelected) {
+      alert("Please select at least one Concern Type.");
+      return false;
+    }
+
+    if (!prioritySelected) {
+      alert("Please select at least one Priority.");
+      return false;
+    }
+
+    if (committedDateCheckbox.checked && committedDateInput.value === "") {
+      alert("Please set a committed date.");
+      return false;
+    }
+
+    return true;
+  }
+
 })();

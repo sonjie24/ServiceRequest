@@ -70,33 +70,27 @@
       </tr>
       <tr>
         <td>
-          <label class="checkbox-label"><input type="checkbox" id="concern_type_new" name="concern_type_new"
-              value="Yes" /> New
-            (Function/Field/Entry/Column/Row)</label>
-          <label class="checkbox-label"><input type="checkbox" id="concern_type_rev" name="concern_type_rev"
-              value="Yes" />
-            Revision (Enhancement of Existing)</label>
-          <label class="checkbox-label"><input type="checkbox" id="concern_type_del" name="concern_type_del"
-              value="Yes" />
-            Delete (Dropped Query/Function/Row/Column/Data Point)</label>
-            <label class="checkbox-label"><input type="checkbox" id="concern_type_cos" name="concern_type_cos"
-              value="Yes" />
-            Cosmetic (Fonts/Color/Header/Footer)</label>
-            <label class="checkbox-label"><input type="checkbox" id="concern_type_data" name="concern_type_data"
-              value="Yes" />
-            Data (Fonts/Color/Header/Footer)</label>
-            <label class="checkbox-label"><input type="checkbox" id="concern_type_bugs" name="concern_type_bugs"
-              value="Yes" />
-            Bugs (Fonts/Color/Header/Footer)</label>
+            <label class="checkbox-label"><input type="checkbox" name="concern_type" value="new" /> New (Function/Field/Entry/Column/Row)</label>
+            <label class="checkbox-label"><input type="checkbox" name="concern_type" value="rev" /> Revision (Enhancement of Existing)</label>
+            <label class="checkbox-label"><input type="checkbox" name="concern_type" value="del" /> Delete (Dropped Query/Function/Row/Column/Data Point)</label>
+            <label class="checkbox-label"><input type="checkbox" name="concern_type" value="cos" /> Cosmetic (Fonts/Color/Header/Footer)</label>
+            <label class="checkbox-label"><input type="checkbox" name="concern_type" value="data" /> Data (Override/Deletion)</label>
+            <label class="checkbox-label"><input type="checkbox" name="concern_type" value="bugs" /> Bugs</label>
         </td>
-        <td>
-          <label class="checkbox-label"><input type="checkbox" id="priority_set" name="priority_set" value="Yes" /> Set
-            Committed Date: <input type="date" id="committed_date" name="committed_date" /></label>
-          <label class="checkbox-label"><input type="checkbox" id="priority_immediate" name="priority_immediate"
-              value="Yes" />
-            Immediate</label>
-          <label class="checkbox-label"><input type="checkbox" id="priority_add" name="priority_add" value="Yes" />
-            Addtl Customization/Outside Scope</label>
+         <td>
+            <label class="checkbox-label">
+              <input type="checkbox" name="priority_type" value="set" id="priority_set" />
+              Set Committed Date:
+              <input type="date" id="committed_date" name="committed_date" />
+            </label><br>
+            <label class="checkbox-label">
+              <input type="checkbox" name="priority_type" value="immediate" id="priority_immediate" />
+              Immediate
+            </label><br>
+            <label class="checkbox-label">
+              <input type="checkbox" name="priority_type" value="addtl" id="priority_add" />
+              Addtl Customization/Outside Scope
+            </label>
         </td>
       </tr>
     </table>
