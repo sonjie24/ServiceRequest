@@ -15,6 +15,16 @@
       position: relative;
     }
 
+     .body-login-cylix {
+      height: 100vh;
+      background: url('https://images.pexels.com/photos/2130475/pexels-photo-2130475.jpeg') no-repeat center center fixed;
+      background-size: cover;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
     .top-right-btn {
       position: absolute;
       top: 20px;

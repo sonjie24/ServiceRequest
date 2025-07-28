@@ -3,7 +3,6 @@
   <form id="entryForm">
     <div style="display: none">
       <strong>UUID:</strong> <input type="text" name="uuid" id="uuid" />
-      <input type="text" readonly id="req_status" name="req_status" value="" />
     </div>
     <div style="display: none">
       <strong>type:</strong> <input type="text" name="type" value="actual" id="actual" />
@@ -12,7 +11,15 @@
       <tr>
         <td>
           <strong>PROJECT :</strong>
-          <input type="text" id="project" name="project" readonly value="CBMIS" />
+          
+          <select required id="project" name="project" style="width: 100%; height: 30px"> 
+            <option value="" disabled selected>Select Project</option>
+            <option value="CNIMS">CNIMS</option>
+            <option value="CBMIS">CBMIS</option>
+            <option value="CTMIS">CTMIS</option>
+            <option value="CCMIS">CCMIS</option>
+            <option value="MDMIS">MDMIS</option>
+          </select>
         </td>
         <td>
           <strong>DATE REQUESTED :</strong>
@@ -28,7 +35,9 @@
       <tr>
         <td colspan="2">
           <strong>DEPARTMENT :</strong>
-          <input type="text" id="department" name="department" readonly value="CTO" />
+          <select id="department" name="department" required style="width: 100%; height: 30px">
+            <option value="" disabled selected>Select Department</option>
+          </select>
         </td>
       </tr>
       <tr>
@@ -70,9 +79,15 @@
           <label class="checkbox-label"><input type="checkbox" id="concern_type_del" name="concern_type_del"
               value="Yes" />
             Delete (Dropped Query/Function/Row/Column/Data Point)</label>
-          <label class="checkbox-label"><input type="checkbox" id="concern_type_cos" name="concern_type_cos"
+            <label class="checkbox-label"><input type="checkbox" id="concern_type_cos" name="concern_type_cos"
               value="Yes" />
             Cosmetic (Fonts/Color/Header/Footer)</label>
+            <label class="checkbox-label"><input type="checkbox" id="concern_type_data" name="concern_type_data"
+              value="Yes" />
+            Data (Fonts/Color/Header/Footer)</label>
+            <label class="checkbox-label"><input type="checkbox" id="concern_type_bugs" name="concern_type_bugs"
+              value="Yes" />
+            Bugs (Fonts/Color/Header/Footer)</label>
         </td>
         <td>
           <label class="checkbox-label"><input type="checkbox" id="priority_set" name="priority_set" value="Yes" /> Set
@@ -81,8 +96,7 @@
               value="Yes" />
             Immediate</label>
           <label class="checkbox-label"><input type="checkbox" id="priority_add" name="priority_add" value="Yes" />
-            Addtl
-            Customization/Outside Scope</label>
+            Addtl Customization/Outside Scope</label>
         </td>
       </tr>
     </table>
@@ -106,21 +120,10 @@
       </tbody>
     </table>
 
-    <button class="add-btn" onclick="addRow()">Add Row</button>
+    <button type="button" class="add-btn" onclick="addRow()">Add Row</button>
 
     <p><em>Note: Additional concerns may be written on the back page.</em></p>
-    <!-- Memo Section -->
-    <table style="width: 100%; margin-top: 20px;">
-      <tr>
-        <td colspan="2"><strong>MEMO / NOTES:</strong></td>
-      </tr>
-      <tr>
-        <td colspan="2">
-          <textarea id="memo" name="memo" rows="4" style="width: 100%; resize: vertical;"
-            placeholder="Enter any remarks, memo, or important notes here..."></textarea>
-        </td>
-      </tr>
-    </table>
+    
 
     <table>
       <tr class="section-title">
@@ -130,15 +133,21 @@
       </tr>
       <tr>
         <td>
-          <input type="text" readonly name="user" id="user" />
+          <select name="user" id="user"  style="width: 100%; height: 30px">
+            <option value="" disabled selected>Select User</option>
+          </select>
           <input type="text" readonly name="user_id" id="user_id" hidden />
         </td>
         <td>
-          <input type="text" readonly name="department_head" id="department_head" />
+          <select name="department_head" id="department_head"   style="width: 100%; height: 30px">
+            <option value="" disabled selected>Select Department Head</option>
+          </select>
           <input type="text" readonly name="department_head_id" id="department_head_id" hidden />
         </td>
         <td>
-          <input type="text" readonly name="it_head" id="it_head" />
+          <select name="it_head" id="it_head"   style="width: 100%; height: 30px">
+            <option value="" disabled selected>Select IT Head</option>
+          </select>
           <input type="text" readonly name="it_head_id" id="it_head_id" hidden />
         </td>
       </tr>
@@ -147,20 +156,27 @@
         <td>DEVELOPER</td>
         <td>QA</td>
       </tr>
-      <tr>
+      <tr  id="cylix_sig">
         <td>
-          <input type="text" readonly id="integrator" name="integrator" value="" />
-          <input type="text" readonly id="integrator_id" name="integrator_id" value="" hidden />
+          <select id="integrator" name="integrator" style="width: 100%; height: 30px">
+            <option value="" disabled selected>Select Integrator</option>
+          </select>
+          <input type="hidden" id="integrator_id" name="integrator_id" />
         </td>
         <td>
-          <input type="text" readonly name="developer" id="developer" value="" /><input type="text" readonly
-            name="developer_id" id="developer_id" value="" hidden />
+          <select id="developer" name="developer" style="width: 100%; height: 30px">
+            <option value="" disabled selected>Select Developer</option>
+          </select>
+          <input type="hidden" id="developer_id" name="developer_id" />
         </td>
         <td>
-          <input type="text" readonly name="qa" id="qa" />
-          <input type="text" readonly name="qa_id" id="qa_id" hidden />
+          <select id="qa" name="qa" style="width: 100%; height: 30px">
+            <option value="" disabled selected>Select QA</option>
+          </select>
+          <input type="hidden" id="qa_id" name="qa_id" />
         </td>
       </tr>
+      
     </table>
 
     <table>
@@ -203,17 +219,69 @@
       </tr>
     </table>
 
-    <table id="uploadedFilesTable" style="margin-top: 20px; width: 100%;">
+    <table id="uploadedFilesTable">
       <thead>
         <tr class="section-title">
           <th>UPLOADED FILE LINKS</th>
+          <th>REMOVE</th>
         </tr>
       </thead>
       <tbody id="uploadedFilesBody">
         <!-- Links will be dynamically inserted here -->
       </tbody>
     </table>
+ 
+    <table  style="display: none" id="status_update">
+      <tr class="section-title">
+        <td>LGU</td>
+        <td>CYLIX</td>
+        <td>DEVELOPMENT</td>
+      </tr>
+      <tr>
+        <td>
+          <select id="req_status" name="req_status" style="width: 100%; height: 30px">
+            <option value="" disabled>-- Select Status --</option>
+            <option value="Pending">Pending</option>
+            <option value="For Head Approval">For Head Approval</option>
+            <option value="For IT Approval">For IT Approval</option>
+            <option value="Approved">Approved</option>
+          </select>
+        </td>
+        <td>
+          <select id="cylix_status" name="cylix_status" style="width: 100%; height: 30px">
+            <option value="" disabled>-- Select Status --</option>
+            <option value="Pending">Pending</option>
+            <option value="Accepted">Accepted</option>
+            <option value="Completed">Completed</option>
+          </select>
+        </td>
+        <td>
+          <select id="dev_status" name="dev_status" style="width: 100%; height: 30px"> 
+            <option value="" disabled>-- Select Status --</option>
+            <option value="Pending">Pending</option>
+            <option value="For Development">For Development</option>
+            <option value="Ongoing">Ongoing</option>
+            <option value="For QA">For QA</option>
+            <option value="QA">QA</option>
+            <option value="For Deployment">For Deployment</option>
+            <option value="Deployed">Deployed</option>
+          </select>
+        </td>
+      </tr>
+    </table>
 
+    <!-- Memo Section -->
+    <table style="width: 100%; margin-top: 20px;">
+      <tr>
+        <td colspan="2"><strong>MEMO / NOTES:</strong></td>
+      </tr>
+      <tr>
+        <td colspan="2">
+          <textarea id="memo" name="memo" rows="4" style="width: 100%; resize: vertical;"
+            placeholder="Enter any remarks, memo, or important notes here..."></textarea>
+        </td>
+      </tr>
+    </table>
 
     <div style="text-align: center">
       <button type="submit" id="submitBtn">
