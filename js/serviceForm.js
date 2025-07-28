@@ -184,63 +184,55 @@
     tableBody.appendChild(newRow);
   };
 
-  function toggleFormReadOnly(formId, mode = "View", exceptions = []) {
-    const form = document.getElementById(formId);
-    if (!form) return;
+ function toggleFormReadOnly(formId, mode = "View", exceptions = []) {
+  const form = document.getElementById(formId);
+  if (!form) return;
 
-    const isAdd = mode.toLowerCase() === "add";
-    const isException = (el) => exceptions.includes(el.id) || exceptions.includes(el.name);
+  const isAdd = mode.toLowerCase() === "add";
+  const isException = (el) => exceptions.includes(el.id) || exceptions.includes(el.name);
 
-    // ✅ Handle inputs
-    form.querySelectorAll("input").forEach(el => {
-      if (["hidden", "file"].includes(el.type)) return;
+  // ✅ Handle inputs
+  form.querySelectorAll("input").forEach(el => {
+    if (["hidden", "file"].includes(el.type)) return;
 
-      if (isAdd || isException(el)) {
-        el.readOnly = false;
-        el.disabled = false;
-        el.style.pointerEvents = "auto";
-        el.style.backgroundColor = "";
-        el.removeAttribute("readonly");
-        el.removeAttribute("disabled");
-      } else {
-        if (["checkbox", "radio"].includes(el.type)) {
-          el.disabled = true;
-        } else {
-          el.readOnly = true;
-          el.style.backgroundColor = "#f9f9f9";
-        }
-      }
-    });
-
-    // ✅ Handle textareas
-    form.querySelectorAll("textarea").forEach(el => {
-      if (isAdd || isException(el)) {
-        el.readOnly = false;
-        el.style.backgroundColor = "";
-        el.removeAttribute("readonly");
+    if (isAdd || isException(el)) {
+      el.readOnly = false;
+      el.style.pointerEvents = "auto";
+      el.style.backgroundColor = "";
+      el.removeAttribute("readonly");
+    } else {
+      if (["checkbox", "radio"].includes(el.type)) {
+        el.style.pointerEvents = "none"; // Instead of disabling
       } else {
         el.readOnly = true;
         el.style.backgroundColor = "#f9f9f9";
       }
-    });
+    }
+  });
 
-    // ✅ Handle selects
-    form.querySelectorAll("select").forEach(el => {
-      if (isAdd || isException(el)) {
-        el.style.pointerEvents = "auto";
-        el.style.backgroundColor = "";
-        el.removeAttribute("disabled");
-        el.removeAttribute("readonly");
-        // 🔥 Remove any old event handler blocking clicks
-        el.onmousedown = null;
-      } else {
-        // 🔒 Make it unselectable
-        el.onmousedown = (e) => e.preventDefault();
-        el.style.pointerEvents = "none";
-        el.style.backgroundColor = "#f3f3f3";
-      }
-    });
-  }
+  // ✅ Handle textareas
+  form.querySelectorAll("textarea").forEach(el => {
+    if (isAdd || isException(el)) {
+      el.readOnly = false;
+      el.style.backgroundColor = "";
+      el.removeAttribute("readonly");
+    } else {
+      el.readOnly = true;
+      el.style.backgroundColor = "#f9f9f9";
+    }
+  });
+
+  // ✅ Handle selects
+  form.querySelectorAll("select").forEach(el => {
+    if (isAdd || isException(el)) {
+      el.style.pointerEvents = "auto";
+      el.style.backgroundColor = "";
+    } else {
+      el.style.pointerEvents = "none";
+      el.style.backgroundColor = "#f3f3f3";
+    }
+  });
+}
 
 
   function mapDataToForm(main) {

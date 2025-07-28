@@ -10,18 +10,20 @@
 
 <body>
   <h1>SERVICE REQUEST</h1>
-  <div class="user-info-bar">
-    <div class="user-details">
-      <span class="user-name">👤 <strong id="employeeName">John Doe</strong></span>
-      <span class="user-role" id="employeeRole">Integrator</span>
-    </div>
-    <div class="menu-links">
-      <a href="workloads.html" class="menu-link">Workloads</a>
-      <a href="history.html" class="menu-link">History</a>
-      <a onclick="addRecord()" class="menu-link add-new">➕ Add New</a>
-      <a href="#" id="logoutLink" class="logout-link">Logout</a>
-    </div>
+<div class="user-info-bar">
+  <div class="user-details">
+    <span class="user-name">👤 <strong id="employeeName">John Doe</strong></span>
+    <span class="user-role" id="employeeRole">Integrator</span>
   </div>
+  <div class="menu-links">
+    <a href="workloads.html" class="menu-link">Workloads</a>
+    <a href="history.html" class="menu-link">History</a>
+    <a onclick="addRecord()" class="menu-link add-new">➕ Add New</a>
+    <a href="change-password.html" class="menu-link">Change Password</a> <!-- ✅ Added -->
+    <a href="#" id="logoutLink" class="logout-link">Logout</a>
+  </div>
+</div>
+
   <div class="top-bar">
     <input class="searchInput" type="text" id="searchInput" placeholder="Search by..." />
   </div>
