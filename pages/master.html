@@ -169,20 +169,8 @@
 
         buttons += `<button onclick="viewRecord('${record.uuid}')">View</button>`;
 
-        if (
-          userRole === "User" ||
-          userRole === "Integrator" ||
-          userRole === "Hybrid" ||
-          userRole === "Admin" ||
-          userRole === "Head" ||
-          userRole === "IT Head"
-        ) {
-          if (
-            (userRole === "User" ||
-              userRole === "Integrator" ||
-              userRole === "Hybrid") &
-            (record.req_status !== "Approved")
-          ) {
+        if ( userRole === "User" ||userRole === "Integrator" ||  userRole === "Hybrid" || userRole === "Admin" || userRole === "Head" ||  userRole === "IT Head" ) {
+          if ( (userRole === "User" || userRole === "Integrator" || userRole === "Hybrid") & (record.req_status !== "Approved")  ) {
             buttons += `<button onclick="editRecord('${record.uuid}')">Edit</button>`;
           } else if (userRole === "Admin") {
             buttons += `<button onclick="editRecord('${record.uuid}')">Edit</button>`;
@@ -215,20 +203,20 @@
           }
         }
 
-        if (
-          userRole === "QA" ||
-          userRole === "Integrator" ||
-          userRole === "Hybrid"
-        ) {
+        if ( userRole === "QA" ||   userRole === "Integrator" ||  userRole === "Hybrid"  ) {
           if (record.integrator === "") {
             buttons += `<button onclick="acceptRecord('${record.uuid}')">Accept</button>`;
           }
 
-          if ((record.qa === "") & (record.dev_status === "For QA")) {
+          if (record.integrator === user.name &&  record.cylix_status==="Pending" ) {
+            buttons += `<button onclick="acceptRecord('${record.uuid}')">Accept</button>`;
+          }
+
+          if ((record.qa === "") && (record.dev_status === "For QA")) {
             buttons += `<button onclick="acceptQARecord('${record.uuid}')">Accept</button>`;
           }
 
-          if ((record.qa === user.name) & (record.dev_status === "For QA")) {
+          if ((record.qa === user.name) && (record.dev_status === "For QA")) {
             buttons += `<button onclick="acceptQARecord('${record.uuid}')">Accept</button>`;
           }
 
@@ -249,14 +237,12 @@
 
         if (userRole === "Developer" || userRole === "Hybrid") {
           if (
-            (record.developer === "") &
-            (record.dev_status === "For Development")
+            (record.developer === "") && (record.dev_status === "For Development")
           ) {
             buttons += `<button onclick="acceptDeveloperRecord('${record.uuid}')">Accept</button>`;
           }
           if (
-            (record.dev_status === "For Development") &
-            (record.developer === user.name)
+            (record.dev_status === "For Development") && (record.developer === user.name)
           ) {
             buttons += `<button onclick="acceptDeveloperRecord('${record.uuid}')">Accept</button>`;
           }
@@ -271,8 +257,7 @@
           userRole === "IT Head"
         ) {
           if (
-            (record.dev_status === "Deployed") &
-            (record.user === user.name)
+            (record.dev_status === "Deployed") &&  (record.user === user.name)
           ) {
             buttons += `<button onclick="doneFixedRecord('${record.uuid}')">Done</button>`;
           }
