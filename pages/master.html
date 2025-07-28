@@ -102,6 +102,7 @@
         records.forEach((record) => {
           const row = document.createElement("tr");
           row.innerHTML = `
+<<<<<<< Updated upstream
             <td hidden>${record.uuid || ""}</td>
             <td><div class="secondary-text">${record.service_request_no || "No Data"}</div></td>
             <td><div class="secondary-text">${record.date_requested || ""}</div></td>
@@ -110,6 +111,19 @@
               <label class="secondary-text">►${record.department.toUpperCase() || ""}</label>
               <label class="secondary-text">►${record.module.toUpperCase() || ""}</label>
               <label class="secondary-text">►${record.system_form_name.toUpperCase() || ""}</label>
+=======
+            <td>${record.service_request_no || "-"}</td>
+            <td>${record.date_requested || "-"}</td>
+            <td>${record.module || "-"}</td>
+            <td>${record.system_form_name || "-"}</td>
+            <td>${record.system_form_name || "-"}</td>
+            <td class="action-buttons">
+            <button onclick="viewRecord('${record.service_request_no}')">View</button>
+            <button onclick="editRecord('${record.service_request_no
+            }')">Edit</button>
+              <button onclick="cancelRecord('${record.service_request_no
+            }')">Cancel</button>
+>>>>>>> Stashed changes
             </td>
             
             <td id="concern-${record.uuid}"></td>
@@ -375,10 +389,19 @@
       });
     }
 
+<<<<<<< Updated upstream
     function addRecord(id) {
       mode = "Add";
       openModal(id);
     }
+=======
+
+
+
+      function viewRecord(id) {
+        window.location.href = `${BASE_PATH}pages/printreq.html?id=${id}`;
+      }
+>>>>>>> Stashed changes
 
     // function viewRecord(id) {
     //   mode = "View";
