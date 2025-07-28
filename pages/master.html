@@ -10,19 +10,27 @@
 
 <body>
   <h1>SERVICE REQUEST</h1>
-<div class="user-info-bar">
-  <div class="user-details">
-    <span class="user-name">👤 <strong id="employeeName">John Doe</strong></span>
-    <span class="user-role" id="employeeRole">Integrator</span>
+  <div class="user-info-bar">
+    <div class="user-details">
+      <span class="user-name">👤 <strong id="employeeName">John Doe</strong></span>
+      <span class="user-role" id="employeeRole">Integrator</span>
+  
+      <!-- ✅ Small links under role -->
+      <div class="user-actions">
+        <a href="change-password.html" class="user-action-link">Change Password</a>
+        <span class="divider">|</span>
+        <a href="#" id="logoutLink" class="user-action-link logout">Logout</a>
+      </div>
+    </div>
+  
+    <div class="menu-links">
+      <a href="workloads.html" class="menu-link">Workloads</a>
+      <a href="history.html" class="menu-link">History</a>
+      <a onclick="addRecord()" class="menu-link add-new">➕ Add New</a>
+    </div>
   </div>
-  <div class="menu-links">
-    <a href="workloads.html" class="menu-link">Workloads</a>
-    <a href="history.html" class="menu-link">History</a>
-    <a onclick="addRecord()" class="menu-link add-new">➕ Add New</a>
-    <a href="change-password.html" class="menu-link">Change Password</a> <!-- ✅ Added -->
-    <a href="#" id="logoutLink" class="logout-link">Logout</a>
-  </div>
-</div>
+  
+  
 
   <div class="top-bar">
     <input class="searchInput" type="text" id="searchInput" placeholder="Search by..." />
@@ -543,6 +551,7 @@
     }
 
     function closeModal() {
+      notifyMasterListChange();
       document.getElementById("createModal").style.display = "none";
     }
 
@@ -565,6 +574,31 @@
       }
     });
   </script>
+
+</script>
+    
+<script>
+
+  const socket = new WebSocket("ws://20.20.40.221:8080");
+
+  socket.addEventListener("open", function () {
+
+    console.log("Received WebSocket message:", event.data);
+
+    if (event.data === "refresh_masterlist") {
+       loadMasterList(); // ✅ your existing function to load master list
+    }
+  });
+
+  // Example function to send a refresh request (called on button click)
+  function notifyMasterListChange() {
+    if (socket.readyState === WebSocket.OPEN) {
+        socket.send("refresh_masterlist");
+    }else{
+      loadMasterList(); 
+    }
+  }
+</script>
 </body>
 
 </html>

@@ -285,10 +285,7 @@ select {
   gap: 2px;
 }
 
-.user-name {
-  font-size: 16px;
-  color: #1f2937;
-}
+ 
 
 .user-role {
   background-color: #e0f2f1;
@@ -299,6 +296,71 @@ select {
   font-weight: 600;
   display: inline-block;
   margin-top: 2px;
+}
+
+
+.user-info-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #fff;
+  padding: 10px 20px;
+  border-bottom: 1px solid #e0e0e0;
+  font-family: "Inter", sans-serif;
+}
+
+.user-details {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.user-name {
+  font-size: 1.1em;
+  color: #333;
+}
+
+.user-role {
+  font-size: 0.75em;       /* 🔹 Made smaller */
+  font-weight: 400;        /* 🔹 Lighter weight */
+  color: #888;             /* 🔹 Subtle gray */
+  margin-bottom: 2px;
+  letter-spacing: 0.5px;   /* 🔹 Slight spacing for elegance */
+  width: 100%;
+}
+
+ 
+
+.user-actions {
+  font-size: 0.8em;
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}
+
+.user-action-link {
+  color: #007bff;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.user-action-link:hover {
+  color: #0056b3;
+  text-decoration: underline;
+}
+
+.user-action-link.logout {
+  color: #d9534f;
+}
+
+.user-action-link.logout:hover {
+  color: #b52b27;
+}
+
+.divider {
+  color: #aaa;
+  font-size: 0.8em;
 }
 
 .menu-links {
