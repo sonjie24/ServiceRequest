@@ -1,129 +1,128 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Master List</title>
+    <link rel="stylesheet" href="../style/main.css" />
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Master List</title>
-  <link rel="stylesheet" href="../style/main.css" />
-</head>
+  <body>
+    <h1>SERVICE REQUEST</h1>
+    <div class="user-info-bar">
+      <div class="user-details">
+        <span class="user-name"
+          >👤 <strong id="employeeName">John Doe</strong></span
+        >
+        <span class="user-role" id="employeeRole">Integrator</span>
+      </div>
+      <div class="menu-links">
+        <a href="workloads.html" class="menu-link">Workloads</a>
+        <a href="history.html" class="menu-link">History</a>
+        <a onclick="addRecord()" class="menu-link add-new">➕ Add New</a>
+        <a href="change-password.html" class="menu-link">Change Password</a>
+        <!-- ✅ Added -->
+        <a href="#" id="logoutLink" class="logout-link">Logout</a>
+      </div>
+    </div>
 
-<body>
-  <h1>SERVICE REQUEST</h1>
-<div class="user-info-bar">
-  <div class="user-details">
-    <span class="user-name">👤 <strong id="employeeName">John Doe</strong></span>
-    <span class="user-role" id="employeeRole">Integrator</span>
-  </div>
-  <div class="menu-links">
-    <a href="workloads.html" class="menu-link">Workloads</a>
-    <a href="history.html" class="menu-link">History</a>
-    <a onclick="addRecord()" class="menu-link add-new">➕ Add New</a>
-    <a href="change-password.html" class="menu-link">Change Password</a> <!-- ✅ Added -->
-    <a href="#" id="logoutLink" class="logout-link">Logout</a>
-  </div>
-</div>
+    <div class="top-bar">
+      <input
+        class="searchInput"
+        type="text"
+        id="searchInput"
+        placeholder="Search by..."
+      />
+    </div>
 
-  <div class="top-bar">
-    <input class="searchInput" type="text" id="searchInput" placeholder="Search by..." />
-  </div>
-
-  <!-- <div class="top-bar-left">
+    <!-- <div class="top-bar-left">
     <button id="createBtn" onclick="addRecord()">+ Create New Request</button>
   </div> -->
 
-  <table id="masterTable">
-    <thead>
-      <tr>
-        <th width="160px" hidden>GUID</th>
-        <th onclick="sortTable(0)" width="160px">Request No ⬍</th>
-        <th width="120px">Requested Date</th>
-        <th width="250px">User/Integrator/Developer/QA</th>
-        <th width="250px">Department/Module/Form</th>
-        <th width="500px">Concern Type</th>
-        <th width="250px">Priority</th>
-        <th width="150px">Status</th>
-        <th>Action</th>
-      </tr>
-    </thead>
-    <tbody id="masterTableBody">
-      <!-- Rows will be inserted here -->
-    </tbody>
-  </table>
+    <table id="masterTable">
+      <thead>
+        <tr>
+          <th width="160px" hidden>GUID</th>
+          <th onclick="sortTable(0)" width="160px">Request No ⬍</th>
+          <th width="120px">Requested Date</th>
+          <th width="250px">User/Integrator/Developer/QA</th>
+          <th width="250px">Department/Module/Form</th>
+          <th width="500px">Concern Type</th>
+          <th width="250px">Priority</th>
+          <th width="150px">Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody id="masterTableBody">
+        <!-- Rows will be inserted here -->
+      </tbody>
+    </table>
 
-  <!-- Modal -->
-  <div id="createModal" class="modal" style="display: none">
-    <div class="modal-content">
-      <span class="close-btn" onclick="closeModal()">&times;</span>
-      <div id="modalBody">Loading...</div>
+    <!-- Modal -->
+    <div id="createModal" class="modal" style="display: none">
+      <div class="modal-content">
+        <span class="close-btn" onclick="closeModal()">&times;</span>
+        <div id="modalBody">Loading...</div>
+      </div>
     </div>
-  </div>
-  <script src="../js/session.js"></script>
-  <script src="../js/config.js"></script>
+    <script src="../js/session.js"></script>
+    <script src="../js/config.js"></script>
 
+    <script>
+      let mode = "Add";
+      const user = getUserSession();
+      async function loadMasterList() {
+        try {
+          const projectName = user.project;
+          const response = await fetch(`${API_BASE_URL}/get-all`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ user }),
+          });
 
-  <script>
+          const text = await response.text();
+          const json = text ? JSON.parse(text) : { data: [] }; // always return {data:[]}
 
-    let mode = "Add";
-    const user = getUserSession();
-    async function loadMasterList() {
-      try {
-
-
-        const projectName = user.project;
-        const response = await fetch(`${API_BASE_URL}/get-all`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ user }),
-        });
-
-        const text = await response.text();
-        const json = text ? JSON.parse(text) : { data: [] }; // always return {data:[]}
-    
           // ✅ extract the array
-        const records = Array.isArray(json.data) ? json.data : [];
+          const records = Array.isArray(json.data) ? json.data : [];
 
-        if (records.length === 0) {
-          console.warn("No records found");
-          document.getElementById("masterTableBody").innerHTML =
-            "<tr><td colspan='9'>No data available</td></tr>";
-          return;
-        }
+          if (records.length === 0) {
+            console.warn("No records found");
+            document.getElementById("masterTableBody").innerHTML =
+              "<tr><td colspan='9'>No data available</td></tr>";
+            return;
+          }
 
-        const tableBody = document.getElementById("masterTableBody");
-        tableBody.innerHTML = "";
+          const tableBody = document.getElementById("masterTableBody");
+          tableBody.innerHTML = "";
 
-        if (!records || records.length === 0) {
-          tableBody.innerHTML =
-            "<tr><td colspan='6'>No data available</td></tr>";
-          return;
-        }
+          if (!records || records.length === 0) {
+            tableBody.innerHTML =
+              "<tr><td colspan='6'>No data available</td></tr>";
+            return;
+          }
 
-        records.forEach((record) => {
-          const row = document.createElement("tr");
-          row.innerHTML = `
-<<<<<<< Updated upstream
+          records.forEach((record) => {
+            const row = document.createElement("tr");
+            row.innerHTML = `
             <td hidden>${record.uuid || ""}</td>
-            <td><div class="secondary-text">${record.service_request_no || "No Data"}</div></td>
-            <td><div class="secondary-text">${record.date_requested || ""}</div></td>
+            <td><div class="secondary-text">${
+              record.service_request_no || "No Data"
+            }</div></td>
+            <td><div class="secondary-text">${
+              record.date_requested || ""
+            }</div></td>
             <td id="user-${record.uuid}"></td>
             <td>
-              <label class="secondary-text">►${record.department.toUpperCase() || ""}</label>
-              <label class="secondary-text">►${record.module.toUpperCase() || ""}</label>
-              <label class="secondary-text">►${record.system_form_name.toUpperCase() || ""}</label>
-=======
-            <td>${record.service_request_no || "-"}</td>
-            <td>${record.date_requested || "-"}</td>
-            <td>${record.module || "-"}</td>
-            <td>${record.system_form_name || "-"}</td>
-            <td>${record.system_form_name || "-"}</td>
-            <td class="action-buttons">
-            <button onclick="viewRecord('${record.service_request_no}')">View</button>
-            <button onclick="editRecord('${record.service_request_no
-            }')">Edit</button>
-              <button onclick="cancelRecord('${record.service_request_no
-            }')">Cancel</button>
->>>>>>> Stashed changes
+              <label class="secondary-text">►${
+                record.department.toUpperCase() || ""
+              }</label>
+              <label class="secondary-text">►${
+                record.module.toUpperCase() || ""
+              }</label>
+              <label class="secondary-text">►${
+                record.system_form_name.toUpperCase() || ""
+              }</label>
             </td>
             
             <td id="concern-${record.uuid}"></td>
@@ -147,465 +146,453 @@
             <td class="action-buttons" id="actions-${record.uuid}"></td>
 
           `;
-          tableBody.appendChild(row);
-          // Inject buttons based on role
-          document.getElementById(`actions-${record.uuid}`).innerHTML = generateActionButtons(record);
-          document.getElementById(`concern-${record.uuid}`).innerHTML = generateConcernType(record);
-          document.getElementById(`priority-${record.uuid}`).innerHTML = generatePriorityType(record);
-          document.getElementById(`user-${record.uuid}`).innerHTML = generateUsers(record);
-
-        });
-      } catch (error) {
-        console.error("❌ Failed to load master list:", error);
+            tableBody.appendChild(row);
+            // Inject buttons based on role
+            document.getElementById(`actions-${record.uuid}`).innerHTML =
+              generateActionButtons(record);
+            document.getElementById(`concern-${record.uuid}`).innerHTML =
+              generateConcernType(record);
+            document.getElementById(`priority-${record.uuid}`).innerHTML =
+              generatePriorityType(record);
+            document.getElementById(`user-${record.uuid}`).innerHTML =
+              generateUsers(record);
+          });
+        } catch (error) {
+          console.error("❌ Failed to load master list:", error);
+        }
       }
-    }
 
-    function generateActionButtons(record) {
+      function generateActionButtons(record) {
+        console.log("✅ Async function executed silently after action");
+        const userRole = user.role; // Define this to return role from session or cookie
+        let buttons = "";
 
-      console.log("✅ Async function executed silently after action");
-      const userRole = user.role; // Define this to return role from session or cookie
-      let buttons = '';
+        buttons += `<button onclick="viewRecord('${record.uuid}')">View</button>`;
 
-      buttons += `<button onclick="viewRecord('${record.uuid}')">View</button>`;
-
-
-      if (userRole === 'User' || userRole === 'Integrator' || userRole === 'Hybrid' || userRole === 'Admin' || userRole === 'Head' || userRole === 'IT Head') {
-        if ((userRole === 'User' || userRole === 'Integrator' || userRole === 'Hybrid') & record.req_status !== "Approved") {
-          buttons += `<button onclick="editRecord('${record.uuid}')">Edit</button>`;
-        } else if (userRole === 'Admin') {
-          buttons += `<button onclick="editRecord('${record.uuid}')">Edit</button>`;
-        }else if (userRole === 'Head') {
-          if (record.cylix_status !== 'Accepted') {
+        if (
+          userRole === "User" ||
+          userRole === "Integrator" ||
+          userRole === "Hybrid" ||
+          userRole === "Admin" ||
+          userRole === "Head" ||
+          userRole === "IT Head"
+        ) {
+          if (
+            (userRole === "User" ||
+              userRole === "Integrator" ||
+              userRole === "Hybrid") &
+            (record.req_status !== "Approved")
+          ) {
             buttons += `<button onclick="editRecord('${record.uuid}')">Edit</button>`;
-          }
-        }else if (userRole === 'IT Head') {
-         if (record.cylix_status !== 'Accepted') {
+          } else if (userRole === "Admin") {
             buttons += `<button onclick="editRecord('${record.uuid}')">Edit</button>`;
+          } else if (userRole === "Head") {
+            if (record.cylix_status !== "Accepted") {
+              buttons += `<button onclick="editRecord('${record.uuid}')">Edit</button>`;
+            }
+          } else if (userRole === "IT Head") {
+            if (record.cylix_status !== "Accepted") {
+              buttons += `<button onclick="editRecord('${record.uuid}')">Edit</button>`;
+            }
           }
         }
+
+        if (userRole === "Admin") {
+          if (record.cylix_status !== "Accepted") {
+            buttons += `<button onclick="cancelRecord('${record.uuid}')">Cancel</button>`;
+          }
+        }
+
+        if (userRole === "Head") {
+          if (record.req_status === "For Head Approval") {
+            buttons += `<button onclick="approvedHeadRecord('${record.uuid}')">Approve</button>`;
+          }
+        }
+
+        if (userRole === "IT Head") {
+          if (record.req_status === "For IT Approval") {
+            buttons += `<button onclick="approvedITRecord('${record.uuid}')">Approve</button>`;
+          }
+        }
+
+        if (
+          userRole === "QA" ||
+          userRole === "Integrator" ||
+          userRole === "Hybrid"
+        ) {
+          if (record.integrator === "") {
+            buttons += `<button onclick="acceptRecord('${record.uuid}')">Accept</button>`;
+          }
+
+          if ((record.qa === "") & (record.dev_status === "For QA")) {
+            buttons += `<button onclick="acceptQARecord('${record.uuid}')">Accept</button>`;
+          }
+
+          if ((record.qa === user.name) & (record.dev_status === "For QA")) {
+            buttons += `<button onclick="acceptQARecord('${record.uuid}')">Accept</button>`;
+          }
+
+          if (record.dev_status === "QA") {
+            buttons += `<button onclick="doneQARecord('${record.uuid}')">Done</button>`;
+          }
+
+          if (record.dev_status === "For Deployment") {
+            buttons += `<button onclick="deployedRecord('${record.uuid}')">Deploy</button>`;
+          }
+        }
+
+        if (userRole === "Admin") {
+          if (record.integrator === "") {
+            buttons += `<button onclick="acceptAdminRecord('${record.uuid}')">Accept</button>`;
+          }
+        }
+
+        if (userRole === "Developer" || userRole === "Hybrid") {
+          if (
+            (record.developer === "") &
+            (record.dev_status === "For Development")
+          ) {
+            buttons += `<button onclick="acceptDeveloperRecord('${record.uuid}')">Accept</button>`;
+          }
+          if (
+            (record.dev_status === "For Development") &
+            (record.developer === user.name)
+          ) {
+            buttons += `<button onclick="acceptDeveloperRecord('${record.uuid}')">Accept</button>`;
+          }
+          if (record.dev_status === "Ongoing") {
+            buttons += `<button onclick="doneDevelopentRecord('${record.uuid}')">Done</button>`;
+          }
+        }
+
+        if (
+          userRole === "User" ||
+          userRole === "Head" ||
+          userRole === "IT Head"
+        ) {
+          if (
+            (record.dev_status === "Deployed") &
+            (record.user === user.name)
+          ) {
+            buttons += `<button onclick="doneFixedRecord('${record.uuid}')">Done</button>`;
+          }
+        }
+
+        // if (userRole === 'Admin') {
+        //   if (record.dev_status !== 'Deployed' & record.dev_status !== 'QA' & record.dev_status !== 'For Deployment') {
+        //     buttons += `<button onclick="assignRecord('${record.uuid}')">Assign</button>`;
+        //   }
+        // }
+
+        return `<td class="action-buttons secondary-text">${buttons}</td>`;
       }
 
-      if (userRole === 'Admin') {
-        if (record.cylix_status !== 'Accepted') {
-          buttons += `<button onclick="cancelRecord('${record.uuid}')">Cancel</button>`;
-        }
-
-      }
-
-      if (userRole === 'Head') {
-        if (record.req_status === 'For Head Approval') {
-          buttons += `<button onclick="approvedHeadRecord('${record.uuid}')">Approve</button>`;
-        }
-        
-      }
-
-      if (userRole === 'IT Head') {
-        if (record.req_status === 'For IT Approval') {
-          buttons += `<button onclick="approvedITRecord('${record.uuid}')">Approve</button>`;
-        }
-        
-      }
-
-      if (userRole === 'QA' || userRole === 'Integrator' || userRole === 'Hybrid') {
-        if (record.integrator === '') {
-          buttons += `<button onclick="acceptRecord('${record.uuid}')">Accept</button>`;
-        }
-
-        if (record.qa === '' & record.dev_status === 'For QA') {
-          buttons += `<button onclick="acceptQARecord('${record.uuid}')">Accept</button>`;
-        }
-
-        if (record.qa === user.name & record.dev_status === 'For QA') {
-          buttons += `<button onclick="acceptQARecord('${record.uuid}')">Accept</button>`;
-        }
-
-        if (record.dev_status === 'QA') {
-          buttons += `<button onclick="doneQARecord('${record.uuid}')">Done</button>`;
-        }
-
-        if (record.dev_status === 'For Deployment') {
-          buttons += `<button onclick="deployedRecord('${record.uuid}')">Deploy</button>`;
-        }
-      }
-
-
-      if (userRole === 'Admin') {
-        if (record.integrator === '') {
-          buttons += `<button onclick="acceptAdminRecord('${record.uuid}')">Accept</button>`;
-        }
-      }
-
-
-      if (userRole === 'Developer' || userRole === 'Hybrid') {
-        if (record.developer === '' & (record.dev_status === 'For Development')) {
-          buttons += `<button onclick="acceptDeveloperRecord('${record.uuid}')">Accept</button>`;
-        }
-        if (record.dev_status === 'For Development' & record.developer === user.name) {
-          buttons += `<button onclick="acceptDeveloperRecord('${record.uuid}')">Accept</button>`;
-        }
-        if (record.dev_status === 'Ongoing') {
-          buttons += `<button onclick="doneDevelopentRecord('${record.uuid}')">Done</button>`;
-        }
-      }
-
-      if (userRole === 'User' || userRole === 'Head' || userRole === 'IT Head') {
-        if (record.dev_status === 'Deployed' & record.user===user.name) {
-          buttons += `<button onclick="doneFixedRecord('${record.uuid}')">Done</button>`;
-        }
-      }
-
-      // if (userRole === 'Admin') {
-      //   if (record.dev_status !== 'Deployed' & record.dev_status !== 'QA' & record.dev_status !== 'For Deployment') {
-      //     buttons += `<button onclick="assignRecord('${record.uuid}')">Assign</button>`;
-      //   }
-      // }
-
-      return `<td class="action-buttons secondary-text">${buttons}</td>`;
-    }
-
-    function generateConcernType(record) {
-
-      let buttons = '';
-      if (record.concern_type_new?.toLowerCase() === "yes") {
-        buttons += `<label class="secondary-text">
+      function generateConcernType(record) {
+        let buttons = "";
+        if (record.concern_type_new?.toLowerCase() === "yes") {
+          buttons += `<label class="secondary-text">
                   <input type="checkbox"  Checked disabled>
                   New (Function/Field/Entry/Column/Row)
            </label>`;
-      }
+        }
 
-      if (record.concern_type_rev?.toLowerCase() === "yes") {
-        buttons += `<label class="secondary-text">
+        if (record.concern_type_rev?.toLowerCase() === "yes") {
+          buttons += `<label class="secondary-text">
                   <input type="checkbox"  Checked disabled>
                   Revision (Enhancement of Existing)
            </label>`;
-      }
+        }
 
-      if (record.concern_type_del?.toLowerCase() === "yes") {
-        buttons += `<label class="secondary-text">
+        if (record.concern_type_del?.toLowerCase() === "yes") {
+          buttons += `<label class="secondary-text">
                   <input type="checkbox"  Checked disabled>
                   Delete (Dropped Query/Function/Row/Column/Data Point)
            </label>`;
-      }
+        }
 
-      if (record.concern_type_cos?.toLowerCase() === "yes") {
-        buttons += `<label class="secondary-text">
+        if (record.concern_type_cos?.toLowerCase() === "yes") {
+          buttons += `<label class="secondary-text">
                   <input type="checkbox"  Checked disabled>
                   Cosmetic (Fonts/Color/Header/Footer)
            </label>`;
-      }
+        }
 
-      if (record.concern_type_data?.toLowerCase() === "yes") {
-        buttons += `<label class="secondary-text">
+        if (record.concern_type_data?.toLowerCase() === "yes") {
+          buttons += `<label class="secondary-text">
                   <input type="checkbox"  Checked disabled>
                   Data (Fonts/Color/Header/Footer)
            </label>`;
-      }
+        }
 
-      if (record.concern_type_bugs?.toLowerCase() === "yes") {
-        buttons += `<label class="secondary-text">
+        if (record.concern_type_bugs?.toLowerCase() === "yes") {
+          buttons += `<label class="secondary-text">
                   <input type="checkbox"  Checked disabled>
                   Bugs (Fonts/Color/Header/Footer)
            </label>`;
+        }
+
+        return `<td>${buttons}</td>`;
       }
 
-
-
-
-      return `<td>${buttons}</td>`;
-    }
-
-    function generatePriorityType(record) {
-
-      let buttons = '';
-      if (record.priority_set?.toLowerCase() === "yes") {
-        buttons += `<label class="secondary-text">
+      function generatePriorityType(record) {
+        let buttons = "";
+        if (record.priority_set?.toLowerCase() === "yes") {
+          buttons += `<label class="secondary-text">
                         <input type="checkbox"  Checked disabled>
                         Set Committed Date:${record.committed_date}
                 </label>`;
-      }
+        }
 
-      if (record.priority_immediate?.toLowerCase() === "yes") {
-        buttons += `<label class="secondary-text">
+        if (record.priority_immediate?.toLowerCase() === "yes") {
+          buttons += `<label class="secondary-text">
                         <input type="checkbox"  Checked disabled>
                         Immediate
                 </label>`;
-      }
+        }
 
-      if (record.priority_add?.toLowerCase() === "yes") {
-        buttons += `<label class="secondary-text">
+        if (record.priority_add?.toLowerCase() === "yes") {
+          buttons += `<label class="secondary-text">
                         <input type="checkbox"  Checked disabled>
                         Addtl Customization/Outside Scope
                 </label>`;
+        }
+
+        return `<td>${buttons}</td>`;
       }
 
-      return `<td>${buttons}</td>`;
-    }
-
-    function generateUsers(record) {
-
-      let buttons = '';
-      if (record.user?.toLowerCase() !== "") {
-        buttons += `<label class="secondary-text">
+      function generateUsers(record) {
+        let buttons = "";
+        if (record.user?.toLowerCase() !== "") {
+          buttons += `<label class="secondary-text">
                          👤 ${record.user || ""}
                     </label>`;
-      }
+        }
 
-      if (record.integrator?.toLowerCase() !== "") {
-        buttons += `<label class="secondary-text">
+        if (record.integrator?.toLowerCase() !== "") {
+          buttons += `<label class="secondary-text">
                          🔗 ${record.integrator}
                     </label>`;
-      }
+        }
 
-      if (record.developer?.toLowerCase() !== "") {
-        buttons += `<label class="secondary-text">
+        if (record.developer?.toLowerCase() !== "") {
+          buttons += `<label class="secondary-text">
                          👨‍💻 ${record.developer || ""}
                     </label>`;
-      }
+        }
 
-      if (record.qa?.toLowerCase() !== "") {
-        buttons += `<label class="secondary-text">
+        if (record.qa?.toLowerCase() !== "") {
+          buttons += `<label class="secondary-text">
                          ✅ ${record.qa || ""}
                     </label>`;
+        }
+
+        return `<td>${buttons}</td>`;
       }
 
+      function setupSearch() {
+        const searchInput = document.getElementById("searchInput");
+        searchInput.addEventListener("input", function () {
+          const filter = this.value.toLowerCase();
+          const rows = document.querySelectorAll("#masterTableBody tr");
 
-
-      return `<td>${buttons}</td>`;
-    }
-
-    function setupSearch() {
-      const searchInput = document.getElementById("searchInput");
-      searchInput.addEventListener("input", function () {
-        const filter = this.value.toLowerCase();
-        const rows = document.querySelectorAll("#masterTableBody tr");
-
-        rows.forEach((row) => {
-          const cells = Array.from(row.cells);
-          const matches = cells.some((cell) =>
-            cell.textContent.toLowerCase().includes(filter)
-          );
-          row.style.display = matches ? "" : "none";
+          rows.forEach((row) => {
+            const cells = Array.from(row.cells);
+            const matches = cells.some((cell) =>
+              cell.textContent.toLowerCase().includes(filter)
+            );
+            row.style.display = matches ? "" : "none";
+          });
         });
-      });
-    }
+      }
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-    function addRecord(id) {
-      mode = "Add";
-      openModal(id);
-    }
-=======
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-
-
+      function addRecord(id) {
+        mode = "Add";
+        openModal(id);
+      }
 
       function viewRecord(id) {
         window.location.href = `${BASE_PATH}pages/printreq.html?id=${id}`;
       }
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
 
-    // function viewRecord(id) {
-    //   mode = "View";
-    //   openModal(id);
- 
-    // }
+      // function viewRecord(id) {
+      //   mode = "View";
+      //   openModal(id);
 
-    function viewRecord(id) {
-  const printUrl = `pages/printreq.html?id=${id}`;
-  window.open(printUrl, '_blank');
-}
+      // }
 
-
-    // function viewRecord(id) {
-    //   console.log("printRecord called with ID:", id);
-    //   const printUrl = `pages/printreq.html?id=${encodeURIComponent(id)}`;
-    //   window.open(printUrl, "_blank"); // opens print request page in new tab
-    // }
-
-    // const urlParams = new URLSearchParams(window.location.search);
-    // const id = urlParams.get("id"); 
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-
-    function editRecord(id) {
-      mode = "Edit";
-      openModal(id);
-    }
-
-    function approvedHeadRecord(id) {
-      mode = "Approve Head";
-      openModal(id);
-    }
-
-    function approvedITRecord(id) {
-      mode = "Approve IT";
-      openModal(id);
-    }
-
-    function cancelRecord(id) {
-      mode = "Cancel";
-      openModal(id);
-    }
-
-    function acceptRecord(id) {
-      mode = "Accept";
-      openModal(id);
-    }
-
-    function acceptAdminRecord(id) {
-      mode = "Accept Admin";
-      openModal(id);
-    }
-
-    function acceptDeveloperRecord(id) {
-      mode = "Accept Development";
-      openModal(id);
-    }
-
-    function doneDevelopentRecord(id) {
-      mode = "Done Development";
-      openModal(id);
-    }
-
-    function acceptQARecord(id) {
-      mode = "Accept QA";
-      openModal(id);
-    }
-
-    function doneQARecord(id) {
-      mode = "Done QA";
-      openModal(id);
-    }
-
-    function deployedRecord(id) {
-      mode = "Deploy";
-      openModal(id);
-    }
-
-    function doneFixedRecord(id) {
-      mode = "Done Fixed";
-      openModal(id);
-    }
- 
-    // ✅ Runs every 30 seconds
-    setInterval(() => {
-      loadMasterList(); // call async function
-      console.log("✅ Async function executed silently after 30s");
-    }, 3600000);
-
-    setInterval(generateActionButtons, 3600000);
-
-    window.addEventListener("DOMContentLoaded", () => {
-      loadMasterList();
-      setupSearch();
-
-      document.getElementById("employeeName").textContent = user.name;
-      document.getElementById("employeeRole").textContent = user.role.toUpperCase() + " - " + user.project;
-
-      let logoutPath = ""; // Or your logout route if it's server-based
-      if (user.project === "CYLIX") {
-        logoutPath = "cylix.html";
-      } else if (user.project === "CNIMS") {
-        logoutPath = "cnims.html";
+      function viewRecord(id) {
+        const printUrl = `pages/printreq.html?id=${id}`;
+        window.open(printUrl, "_blank");
       }
 
-      document.getElementById("logoutLink").href = `${BASE_PATH}pages/` + logoutPath;
-    });
+      // function viewRecord(id) {
+      //   console.log("printRecord called with ID:", id);
+      //   const printUrl = `pages/printreq.html?id=${encodeURIComponent(id)}`;
+      //   window.open(printUrl, "_blank"); // opens print request page in new tab
+      // }
 
-    function openModal(uuid = null) {
-      const modal = document.getElementById("createModal");
-      const modalBody = document.getElementById("modalBody");
-      modal.style.display = "block";
-      modalBody.innerHTML = "Loading...";
+      // const urlParams = new URLSearchParams(window.location.search);
+      // const id = urlParams.get("id");
 
-      let pageTmp = "";
-      let scriptFile = "";
-
-      if (mode !== "Transfer") {
-        pageTmp = "pages/serviceForm.html";
-        scriptFile = "js/serviceForm.js";
-
-
-      } else {
-        pageTmp = "pages/serviceForm.html";
-        scriptFile = "js/serviceForm.js";
+      function editRecord(id) {
+        mode = "Edit";
+        openModal(id);
       }
 
-       if (mode === "View"){
-
-        
-        pageTmp = "pages/printreq.html";
-        scriptFile = "js/print.js";
-       }
-       
-
-
-      fetch(`${BASE_PATH}${pageTmp}`)
-        .then((res) => res.text())
-        .then((html) => {
-          modalBody.innerHTML = html;
-
-          const script = document.createElement("script");
-          script.src = `${BASE_PATH}${scriptFile}`;
-          script.defer = true;
-
-          // 🧠 Move getDefaults here, once the script is fully loaded
-          script.onload = () => {
-            const tryGetDefaults = setInterval(() => {
-              if (typeof getDefaults === "function") {
-                clearInterval(tryGetDefaults);
-                // ✅ Now the DOM is guaranteed to be ready
-                getDefaults(uuid, mode);
-              }
-            }, 100); // Poll every 100ms until DOM is ready
-          };
-
-          modalBody.appendChild(script), mode;
-        })
-        .catch((err) => {
-          modalBody.innerHTML = "<p>⚠️ Failed to load the entry form.</p>";
-          console.error(err);
-        });
-    }
-
-    function closeModal() {
-      document.getElementById("createModal").style.display = "none";
-    }
-
-    // Do NOT close modal when clicking outside
-    window.addEventListener("click", function (event) {
-      const modal = document.getElementById("createModal");
-      const modalContent = document.querySelector(".modal-content");
-
-      // Check if clicked outside modalContent, but do nothing
-      if (event.target === modal) {
-        // Do nothing (don't close)
-        event.stopPropagation();
+      function approvedHeadRecord(id) {
+        mode = "Approve Head";
+        openModal(id);
       }
-    });
 
-    document.addEventListener("keydown", function (event) {
-      const modal = document.getElementById("createModal");
-      if (event.key === "Escape" && modal.style.display === "block") {
-        event.preventDefault(); // Prevent ESC from closing
+      function approvedITRecord(id) {
+        mode = "Approve IT";
+        openModal(id);
       }
-    });
-  </script>
-</body>
 
+      function cancelRecord(id) {
+        mode = "Cancel";
+        openModal(id);
+      }
+
+      function acceptRecord(id) {
+        mode = "Accept";
+        openModal(id);
+      }
+
+      function acceptAdminRecord(id) {
+        mode = "Accept Admin";
+        openModal(id);
+      }
+
+      function acceptDeveloperRecord(id) {
+        mode = "Accept Development";
+        openModal(id);
+      }
+
+      function doneDevelopentRecord(id) {
+        mode = "Done Development";
+        openModal(id);
+      }
+
+      function acceptQARecord(id) {
+        mode = "Accept QA";
+        openModal(id);
+      }
+
+      function doneQARecord(id) {
+        mode = "Done QA";
+        openModal(id);
+      }
+
+      function deployedRecord(id) {
+        mode = "Deploy";
+        openModal(id);
+      }
+
+      function doneFixedRecord(id) {
+        mode = "Done Fixed";
+        openModal(id);
+      }
+
+      // ✅ Runs every 30 seconds
+      setInterval(() => {
+        loadMasterList(); // call async function
+        console.log("✅ Async function executed silently after 30s");
+      }, 3600000);
+
+      setInterval(generateActionButtons, 3600000);
+
+      window.addEventListener("DOMContentLoaded", () => {
+        loadMasterList();
+        setupSearch();
+
+        document.getElementById("employeeName").textContent = user.name;
+        document.getElementById("employeeRole").textContent =
+          user.role.toUpperCase() + " - " + user.project;
+
+        let logoutPath = ""; // Or your logout route if it's server-based
+        if (user.project === "CYLIX") {
+          logoutPath = "cylix.html";
+        } else if (user.project === "CNIMS") {
+          logoutPath = "cnims.html";
+        }
+
+        document.getElementById("logoutLink").href =
+          `${BASE_PATH}pages/` + logoutPath;
+      });
+
+      function openModal(uuid = null) {
+        const modal = document.getElementById("createModal");
+        const modalBody = document.getElementById("modalBody");
+        modal.style.display = "block";
+        modalBody.innerHTML = "Loading...";
+
+        let pageTmp = "";
+        let scriptFile = "";
+
+        if (mode !== "Transfer") {
+          pageTmp = "pages/serviceForm.html";
+          scriptFile = "js/serviceForm.js";
+        } else {
+          pageTmp = "pages/serviceForm.html";
+          scriptFile = "js/serviceForm.js";
+        }
+
+        if (mode === "View") {
+          pageTmp = "pages/printreq.html";
+          scriptFile = "js/print.js";
+        }
+
+        fetch(`${BASE_PATH}${pageTmp}`)
+          .then((res) => res.text())
+          .then((html) => {
+            modalBody.innerHTML = html;
+
+            const script = document.createElement("script");
+            script.src = `${BASE_PATH}${scriptFile}`;
+            script.defer = true;
+
+            // 🧠 Move getDefaults here, once the script is fully loaded
+            script.onload = () => {
+              const tryGetDefaults = setInterval(() => {
+                if (typeof getDefaults === "function") {
+                  clearInterval(tryGetDefaults);
+                  // ✅ Now the DOM is guaranteed to be ready
+                  getDefaults(uuid, mode);
+                }
+              }, 100); // Poll every 100ms until DOM is ready
+            };
+
+            modalBody.appendChild(script), mode;
+          })
+          .catch((err) => {
+            modalBody.innerHTML = "<p>⚠️ Failed to load the entry form.</p>";
+            console.error(err);
+          });
+      }
+
+      function closeModal() {
+        document.getElementById("createModal").style.display = "none";
+      }
+
+      // Do NOT close modal when clicking outside
+      window.addEventListener("click", function (event) {
+        const modal = document.getElementById("createModal");
+        const modalContent = document.querySelector(".modal-content");
+
+        // Check if clicked outside modalContent, but do nothing
+        if (event.target === modal) {
+          // Do nothing (don't close)
+          event.stopPropagation();
+        }
+      });
+
+      document.addEventListener("keydown", function (event) {
+        const modal = document.getElementById("createModal");
+        if (event.key === "Escape" && modal.style.display === "block") {
+          event.preventDefault(); // Prevent ESC from closing
+        }
+      });
+    </script>
+  </body>
 </html>
