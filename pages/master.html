@@ -294,7 +294,7 @@
       if (record.concern_type_data?.toLowerCase() === "yes") {
         buttons += `<label class="secondary-text">
                   <input type="checkbox"  Checked disabled>
-                  Data (Fonts/Color/Header/Footer)
+                  Data (Override/Deletion)
            </label>`;
       }
 
@@ -473,12 +473,12 @@
     }
  
     // ✅ Runs every 30 seconds
-    setInterval(() => {
-      loadMasterList(); // call async function
-      console.log("✅ Async function executed silently after 30s");
-    }, 3600000);
+    // setInterval(() => {
+    //   loadMasterList(); // call async function
+    //   console.log("✅ Async function executed silently after 30s");
+    // }, 3600000);
+    // setInterval(generateActionButtons, 3600000);
 
-    setInterval(generateActionButtons, 3600000);
 
     window.addEventListener("DOMContentLoaded", () => {
       loadMasterList();
@@ -493,9 +493,9 @@
       } else if (user.project === "CNIMS") {
         logoutPath = "cnims.html";
       }
-
       document.getElementById("logoutLink").href = `${BASE_PATH}pages/` + logoutPath;
     });
+
 
     function openModal(uuid = null) {
       const modal = document.getElementById("createModal");
@@ -570,28 +570,40 @@
 
 </script>
     
-<script>
 
+<script>
   const socket = new WebSocket("ws://20.20.40.221:8080");
 
-  socket.addEventListener("open", function () {
+  socket.addEventListener("open", () => {
+    console.log("✅ Connected to WebSocket server");
+  });
 
-    console.log("Received WebSocket message:", event.data);
+  socket.addEventListener("message", (event) => {
+    console.log("📩 Received WebSocket message:", event.data);
 
     if (event.data === "refresh_masterlist") {
-       loadMasterList(); // ✅ your existing function to load master list
+      loadMasterList(); // Your existing function to refresh the masterlist
     }
   });
 
-  // Example function to send a refresh request (called on button click)
+  socket.addEventListener("close", () => {
+    console.log("❌ WebSocket connection closed");
+  });
+
+  socket.addEventListener("error", (error) => {
+    console.error("⚠️ WebSocket error:", error);
+  });
+
   function notifyMasterListChange() {
     if (socket.readyState === WebSocket.OPEN) {
-        socket.send("refresh_masterlist");
-    }else{
-      loadMasterList(); 
+      socket.send("refresh_masterlist");
+      console.log("📤 Sent: refresh_masterlist");
+    } else {
+      console.warn("❗ WebSocket not open.");
     }
   }
 </script>
+
 </body>
 
 </html>
