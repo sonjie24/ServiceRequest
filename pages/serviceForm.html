@@ -8,28 +8,32 @@
       <strong>type:</strong> <input type="text" name="type" value="actual" id="actual" />
     </div>
     <table>
-      <tr>
-        <td>
-          <strong>PROJECT :</strong>
-          
-          <select required id="project" name="project" style="width: 100%; height: 30px"> 
-            <option value="" disabled selected>Select Project</option>
-            <option value="CNIMS">CNIMS</option>
-            <option value="CBMIS">CBMIS</option>
-            <option value="CTMIS">CTMIS</option>
-            <option value="CCMIS">CCMIS</option>
-            <option value="MDMIS">MDMIS</option>
-          </select>
-        </td>
-        <td>
-          <strong>DATE REQUESTED :</strong>
-          <input type="date" required id="date_requested" name="date_requested" />
-        </td>
-        <td>
-          <strong>SERVICE REQUEST #:</strong>
-          <input type="text" id="service_request_no" name="service_request_no" readonly value="Generating" />
-        </td>
-      </tr>
+     <tr>
+      <td style="width: 30%;">
+        <strong>PROJECT :</strong>
+        <select required id="project" name="project" style="width: 100%; height: 30px; box-sizing: border-box;">
+          <option value="" disabled selected>Select Project</option>
+          <option value="CNIMS">CNIMS</option>
+          <option value="CBMIS">CBMIS</option>
+          <option value="CTMIS">CTMIS</option>
+          <option value="CCMIS">CCMIS</option>
+          <option value="MDMIS">MDMIS</option>
+        </select>
+      </td>
+
+      <td style="width: 40%;">
+        <div style="display: flex; flex-direction: column; width: 100%;">
+          <strong style="margin-bottom: 4px; white-space: nowrap;">DATE REQUESTED:</strong>
+          <input type="date" required id="date_requested" name="date_requested" style="height: 30px; width: 100%;" />
+        </div>
+      </td>
+
+      <td style="width: 30%;">
+        <strong>SERVICE REQUEST #:</strong><br />
+        <input type="text" id="service_request_no" name="service_request_no" readonly value="Generating" style="width: 100%; height: 30px;" />
+      </td>
+    </tr>
+
     </table>
     <table>
       <tr>
@@ -50,13 +54,13 @@
       </tr>
 
       <tr>
-        <td>
+        <td style="width: 70%;">
           <strong>SYSTEM FORM NAME :</strong>
           <select id="formSelect" disabled name="system_form_name" required style="width: 100%; height: 30px">
             <option value="" disabled selected>Select Form</option>
           </select>
         </td>
-        <td>
+        <td style="width: 30%;">
           <strong>FORM #:</strong>
           <input type="text" name="system_form_no" id="system_form_no" readonly />
         </td>

@@ -1,6 +1,7 @@
 (() => {
   const user = getUserSession();
   const data = getFunctinalitiesSession();
+  const loginPrject = getlogInProject();
   const systemSelect = document.getElementById("systemSelect");
   const formSelect = document.getElementById("formSelect");
   const formNoInput = document.getElementById("system_form_no");
@@ -539,27 +540,38 @@
 
       // Show table only if userRole is allowed
       const statusTable = document.getElementById("status_update");
-      const allowedRoles = ["Admin"];
-      if (!allowedRoles.includes(user.role)) {
-        statusTable.style.display = "none";
-      } else {
+      // const allowedRoles = ["Admin"];
+      // if (!allowedRoles.includes(user.role)) {
+      //   statusTable.style.display = "none";
+      // } else {
+      //   statusTable.style.display = "table"; // or "block"
+      // }
+     if ((loginPrject==="CYLIX")) {
+         statusTable.style.display = "none";
+         document.getElementById("attachments").removeAttribute("required");
+      }else{
         statusTable.style.display = "table"; // or "block"
       }
+
 
       loadDefaultsUserInfo(user);
     } else if (mode === "Edit") {
       document.getElementById("modalTitle").textContent =
         "SERVICE REQUEST UPDATE";
       document.getElementById("submitText").textContent = "UPDATE";
-      document.getElementById("attachments").removeAttribute("required");
+    
 
       // Show table only if userRole is allowed
       const statusTable = document.getElementById("status_update");
-      const allowedRoles = ["Admin"];
-      if (!allowedRoles.includes(user.role)) {
-        statusTable.style.display = "none";
-      } else {
+      if ((loginPrject==="CYLIX")) {
+         statusTable.style.display = "none";
+         document.getElementById("attachments").removeAttribute("required");
+      }else{
         statusTable.style.display = "table"; // or "block"
+      }
+
+      if ((user.role ==="Admin")) {
+         document.getElementById("service_request_no").readOnly=false;
       }
 
       await getData(uuid);
