@@ -100,7 +100,8 @@
   <div id="notification" style="display: none; position: fixed; top: 20px; right: 20px; z-index: 99999; background-color: #333; color: white; padding: 15px 20px; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.3); font-size: 14px;">
   🔄 Master list has been updated.
   </div>
-  <audio id="notifySound" src="../resources/notify.mp3" preload="auto"></audio>
+  <audio id="notifySound" preload="auto"></audio>
+
 
 
   <script>
@@ -503,6 +504,7 @@
       document.getElementById("employeeName").textContent = user.name;
       document.getElementById("employeeRole").textContent = user.role.toUpperCase() + " - " + user.project;
 
+
       if (user.isdirect === "True") {
         document.querySelector(".user-actions").style.display = "none";
       }
@@ -515,6 +517,8 @@
         logoutPath = "cnims.html";
       }
       document.getElementById("logoutLink").href = `${BASE_PATH}pages/` + logoutPath;
+      document.getElementById("notifySound").src = `${BASE_PATH}resources/notify.mp3`;
+
     });
 
 
