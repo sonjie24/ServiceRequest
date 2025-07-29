@@ -566,6 +566,15 @@
       await getDataDetails(uuid);
       await getDataFiles(uuid);
 
+    }else if (mode === "View") {
+      document.getElementById("modalTitle").textContent =
+        "SERVICE REQUEST Print";
+      document.getElementById("submitText").textContent = "Print";
+
+      await getData(uuid);
+      await getDataDetails(uuid);
+      await getDataFiles(uuid);
+
     } else if (mode === "Cancel") {
 
       toggleFormReadOnly("entryForm", "View", [

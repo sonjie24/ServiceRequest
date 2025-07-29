@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Fullscreen Modal Example</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+    }
+
+    /* Fullscreen Modal Container */
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: rgba(0, 0, 0, 0.6);
+      display: none;
+      z-index: 9999;
+    }
+
+    /* Modal Content takes full space */
+    .modal-content {
+      background-color: #fff;
+      width: 100%;
+      height: 100%;
+      padding: 20px;
+      box-sizing: border-box;
+      overflow-y: auto;
+      position: relative;
+    }
+
+    /* Close button */
+    .close {
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      font-size: 28px;
+      font-weight: bold;
+      color: #333;
+      cursor: pointer;
+    }
+
+    /* Optional: Button styling */
+    button {
+      margin: 40px;
+      padding: 10px 20px;
+      font-size: 16px;
+    }
+
+    /* Prevent background scroll when modal is open */
+    body.modal-open {
+      overflow: hidden;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Trigger Button -->
+  <!-- <button onclick="openModal()">Open Fullscreen Modal</button> -->
+
+  <!-- Fullscreen Modal -->
+  <div id="fullscreenModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal()">&times;</span>
+      <h2>Fullscreen Modal</h2>
+      <p>This modal takes up the full browser window.</p>
+      <p>You can load dynamic content here or even embed an iframe.</p>
+    </div>
+  </div>
+
+  <script>
+    function openModal() {
+      document.getElementById("fullscreenModal").style.display = "block";
+      document.body.classList.add("modal-open");
+    }
+
+    function closeModal() {
+      document.getElementById("fullscreenModal").style.display = "none";
+      document.body.classList.remove("modal-open");
+    }
+  </script>
+</body>
+</html>

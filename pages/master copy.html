@@ -7,19 +7,6 @@
   <title>Master List</title>
   <link rel="stylesheet" href="../style/main.css" />
 </head>
-<style>
-    .Fullscreenmodal {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background-color: rgba(0, 0, 0, 0.6);
-      display: none;
-      z-index: 9999;
-    }
-  </style>
-
 
 <body>
   <!-- <h1>SERVICE REQUEST</h1> -->
@@ -37,8 +24,7 @@
       </div>
   
       <div class="menu-links">
-        <button onclick="openModals()">Workloads</button>
-        <!-- <a href="workloads.html" class="menu-link">Workloads</a> -->
+        <a href="workloads.html" class="menu-link">Workloads</a>
         <a href="history.html" class="menu-link">History</a>
         <a onclick="addRecord()" class="menu-link add-new">➕ Add New</a>
       </div>
@@ -85,17 +71,6 @@
   </div>
   <script src="../js/session.js"></script>
   <script src="../js/config.js"></script>
-
-
-    <!-- Fullscreen Modal -->
-  <div id="fullModal" class="Fullscreenmodal" style="display: none">
-    <div class="modal-content">
-      <span class="close" onclick="closeModal()">&times;</span>
-      <h2>Fullscreen Modal</h2>
-      <p>This modal takes up the full browser window.</p>
-      <p>You can load dynamic content here or even embed an iframe.</p>
-    </div>
-  </div>
 
 
   <script>
@@ -416,18 +391,16 @@
       openModal(id);
     }
 
-    function viewRecord(uuid) {
-  console.log("Opening ID:", uuid);
-  const printUrl = `pages/printreq.html?id=${uuid}`;
-  window.open(printUrl, '_blank');
-}
-
     // function viewRecord(id) {
     //   mode = "View";
     //   openModal(id);
  
     // }
 
+    function viewRecord(id) {
+  const printUrl = `pages/printreq.html?id=${id}`;
+  window.open(printUrl, '_blank');
+}
 
 
     // function viewRecord(id) {
@@ -533,14 +506,13 @@
       let pageTmp = "";
       let scriptFile = "";
 
-      if (mode === "View") {
+      if (mode === "Transfer") {
         pageTmp = "pages/printreq.html";
-        scriptFile = "js/serviceForm.js";
+        scriptFile = "js/print.js";
       } else {
         pageTmp = "pages/serviceForm.html";
         scriptFile = "js/serviceForm.js";
       }
-
        
       fetch(`${BASE_PATH}${pageTmp}`)
         .then((res) => res.text())
@@ -575,11 +547,6 @@
       notifyMasterListChange();
       document.getElementById("createModal").style.display = "none";
     }
-
-    function openModals() {
-  document.getElementById("fullModal").style.display = "none";
-}
-
 
     // Do NOT close modal when clicking outside
     window.addEventListener("click", function (event) {
