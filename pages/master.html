@@ -37,8 +37,8 @@
       </div>
   
       <div class="menu-links">
-        <button onclick="openModals()">Workloads</button>
-        <!-- <a href="workloads.html" class="menu-link">Workloads</a> -->
+        <!-- <button onclick="openModals()">Workloads</button> -->
+        <a href="workloads.html" class="menu-link">Workloads</a>
         <a href="history.html" class="menu-link">History</a>
         <a onclick="addRecord()" class="menu-link add-new">➕ Add New</a>
       </div>
@@ -97,6 +97,9 @@
     </div>
   </div>
 
+  <div id="notification" style="display: none; position: fixed; top: 20px; right: 20px; z-index: 99999; background-color: #333; color: white; padding: 15px 20px; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.3); font-size: 14px;">
+  🔄 Master list has been updated.
+  </div>
 
   <script>
 
@@ -605,6 +608,7 @@
 
     if (event.data === "refresh_masterlist") {
       loadMasterList(); // Your existing function to refresh the masterlist
+      showNotification("🔄 Master list has been updated.");
     }
   });
 
@@ -625,6 +629,19 @@
     }
   }
 </script>
+<script>
+  function showNotification(message, duration = 3000) {
+    const notification = document.getElementById("notification");
+    notification.textContent = message;
+    notification.style.display = "block";
+
+    setTimeout(() => {
+      notification.style.display = "none";
+    }, duration);
+  }
+</script>
+
+
 
 </body>
 
