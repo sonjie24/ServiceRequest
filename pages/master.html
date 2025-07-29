@@ -326,7 +326,7 @@
       if (record.concern_type_bugs?.toLowerCase() === "yes") {
         buttons += `<label class="secondary-text">
                   <input type="checkbox"  Checked disabled>
-                  Bugs (Fonts/Color/Header/Footer)
+                  Bugs
            </label>`;
       }
 
@@ -513,6 +513,11 @@
 
       document.getElementById("employeeName").textContent = user.name;
       document.getElementById("employeeRole").textContent = user.role.toUpperCase() + " - " + user.project;
+
+      if (user.isdirect === "True") {
+        document.querySelector(".user-actions").style.display = "none";
+      }
+
 
       let logoutPath = ""; // Or your logout route if it's server-based
       if (user.project === "CYLIX") {
