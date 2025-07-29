@@ -153,6 +153,72 @@ async function getDataFiles(uuid) {
   }
 }
 
+function mapDataToForm(main) {
+  const fieldMap = {
+    uuid: main.uuid,
+    project: main.project || "CBMIS",
+    department: main.department,
+    user: main.user,
+    user_id: main.user_id,
+    department_head: main.department_head,
+    department_head_id: main.department_head_id,
+    it_head: main.it_head,
+    it_head_id: main.it_head_id,
+    integrator: main.integrator,
+    integrator_id: main.integrator_id,
+    developer: main.developer,
+    developer_id: main.developer_id,
+    qa: main.qa,
+    qa_id: main.qa_id,
+    system_form_no: main.system_form_no,
+    date_requested: main.date_requested,
+    service_request_no: main.service_request_no,
+    memo: main.memo,
+    req_status: main.req_status,
+    cylix_status: main.cylix_status,
+    dev_status: main.dev_status,
+  };
+
+  for (const [id, value] of Object.entries(fieldMap)) {
+    const input = document.getElementById(id);
+    if (input) input.value = value || "";
+    else console.warn(`⚠️ Element with id '${id}' not found`);
+  }
+
+  // Checkbox/priority mappings
+  const checkboxMap = {
+    concern_type_new: main.concern_type_new,
+    concern_type_rev: main.concern_type_rev,
+    concern_type_del: main.concern_type_del,
+    concern_type_cos: main.concern_type_cos,
+    concern_type_data: main.concern_type_data,
+    concern_type_bugs: main.concern_type_bugs,
+    priority_set: main.priority_set,
+    committed_date: main.committed_date,
+    priority_immediate: main.priority_immediate,
+    priority_add: main.priority_add,
+    print_option_as_req: main.print_option_as_req,
+    print_out_date: main.print_out_date,
+    print_option_sys_print: main.print_option_sys_print,
+    system_print_date: main.system_print_date,
+    print_option_modified: main.print_option_modified,
+    patch_date: main.patch_date,
+  };
+
+  for (const [id, value] of Object.entries(checkboxMap)) {
+    const el = document.getElementById(id);
+    if (el) {
+      if (el.type === "checkbox") {
+        el.checked = value === "Yes";
+      } else {
+        el.value = value || "";
+      }
+    } else {
+      console.warn(`⚠️ Element with id '${id}' not found`);
+    }
+  }
+}
+
 window.addEventListener("DOMContentLoaded", async () => {
   alert("safsf");
 
@@ -165,7 +231,6 @@ window.addEventListener("DOMContentLoaded", async () => {
   }
 
   try {
-     
     await getData(uuid);
     await getDataDetails(uuid);
     await getDataFiles(uuid);
