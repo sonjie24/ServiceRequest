@@ -546,13 +546,13 @@
       // } else {
       //   statusTable.style.display = "table"; // or "block"
       // }
-     if ((loginPrject==="CYLIX")) {
-         statusTable.style.display = "none";
+    
+      if ((loginPrject==="CYLIX")) {
+         statusTable.style.display = "table"; // or "block"
          document.getElementById("attachments").removeAttribute("required");
       }else{
-        statusTable.style.display = "table"; // or "block"
+        statusTable.style.display = "none";
       }
-
 
       loadDefaultsUserInfo(user);
     } else if (mode === "Edit") {
@@ -560,15 +560,15 @@
         "SERVICE REQUEST UPDATE";
       document.getElementById("submitText").textContent = "UPDATE";
     
-
       // Show table only if userRole is allowed
       const statusTable = document.getElementById("status_update");
       if ((loginPrject==="CYLIX")) {
-         statusTable.style.display = "none";
+         statusTable.style.display = "table"; // or "block"
          document.getElementById("attachments").removeAttribute("required");
       }else{
-        statusTable.style.display = "table"; // or "block"
+        statusTable.style.display = "none";
       }
+
 
       if ((user.role ==="Admin")) {
          document.getElementById("service_request_no").readOnly=false;
