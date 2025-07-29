@@ -487,6 +487,11 @@
       document.getElementById("employeeName").textContent = user.name;
       document.getElementById("employeeRole").textContent = user.role.toUpperCase() + " - " + user.project;
 
+      if (user.isdirect === "True") {
+        document.querySelector(".user-actions").style.display = "none";
+      }
+
+
       let logoutPath = ""; // Or your logout route if it's server-based
       if (user.project === "CYLIX") {
         logoutPath = "cylix.html";
