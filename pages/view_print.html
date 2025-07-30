@@ -1,0 +1,427 @@
+<div id="createModal" class="form-container">
+  <h2 id="modalTitle"></h2>
+  <form id="entryForm">
+    <div style="display: none">
+      <strong>UUID:</strong> <input type="text" name="uuid" id="uuid" />
+    </div>
+    <div style="display: none">
+      <strong>type:</strong>
+      <input type="text" name="type" value="actual" id="actual" />
+    </div>
+    <table>
+      <tr>
+        <td style="width: 30%">
+          <strong>PROJECT :</strong><br/><br/>
+          <input
+              type="text"
+              readonly
+              id="project"
+              name="project"
+              style="height: 30px; width: 100%"
+            />
+        </td>
+
+        <td style="width: 40%">         
+            <strong>DATE REQUESTED :</strong><br/><br/>
+            <input
+              type="text"
+              required
+              id="date_requested"
+              name="date_requested"
+              style="height: 30px; width: 100%"
+            />  
+        </td>
+
+        <td style="width: 30%">
+          <strong>SERVICE REQUEST #:</strong><br/><br/>
+          <input
+            type="text"
+            id="service_request_no"
+            name="service_request_no"
+            readonly
+            value="Generating"
+            style="width: 100%; height: 30px"
+          />
+        </td>
+      </tr>
+    </table>
+    <table>
+      <tr>
+        <td colspan="2">
+          <strong>DEPARTMENT :</strong><br/><br/>
+          <input
+              type="text"
+              readonly
+              id="department"
+              name="department"
+              style="height: 30px; width: 100%"
+            />
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2">
+          <strong>SYSTEM/MODULE :</strong><br/><br/>
+          <input
+            type="text"
+            id="systemSelect"
+            name="systemSelect"
+            readonly
+            value="Generating"
+            style="width: 100%; height: 30px"
+          />          
+        </td>
+      </tr>
+
+      <tr>
+        <td style="width: 70%">
+          <strong>SYSTEM FORM NAME :</strong><br/><br/>
+          <input
+            type="text"
+            id="formSelect"
+            name="formSelect"
+            readonly
+            value="Generating"
+            style="width: 100%; height: 30px"
+          />    
+        </td>
+        <td style="width: 30%">
+          <strong>FORM #:</strong><br/><br/>
+          <input
+            type="text"
+            id="system_form_no"
+            name="system_form_no"
+            readonly
+            style="width: 100%; height: 30px"
+          /> 
+        </td>
+      </tr>
+    </table>
+
+    <table>
+      <tr>
+        <td class="section-title">CONCERN TYPE:</td>
+        <td class="section-title">LEVEL OF PRIORITY:</td>
+      </tr>
+      <tr>
+        <td>
+          <label class="checkbox-label"
+            ><input
+              type="checkbox"
+              name="concern_type_new"
+              id="concern_type_new"
+              value="Yes"
+            />
+            New (Function/Field/Entry/Column/Row)</label
+          ><br /><br />
+          <label class="checkbox-label"
+            ><input
+              type="checkbox"
+              name="concern_type_rev"
+              id="concern_type_rev"
+              value="Yes"
+            />
+            Revision (Enhancement of Existing)</label
+          ><br /><br />
+          <label class="checkbox-label"
+            ><input
+              type="checkbox"
+              name="concern_type_del"
+              id="concern_type_del"
+              value="Yes"
+            />
+            Delete (Dropped Query/Function/Row/Column/Data Point)</label
+          ><br /><br />
+          <label class="checkbox-label"
+            ><input
+              type="checkbox"
+              name="concern_type_cos"
+              id="concern_type_cos"
+              value="Yes"
+            />
+            Cosmetic (Fonts/Color/Header/Footer)</label
+          ><br /><br />
+          <label class="checkbox-label"
+            ><input
+              type="checkbox"
+              name="concern_type_data"
+              id="concern_type_data"
+              value="Yes"
+            />
+            Data (Override/Deletion)</label
+          ><br /><br />
+          <label class="checkbox-label"
+            ><input
+              type="checkbox"
+              name="concern_type_bugs"
+              id="concern_type_bugs"
+              value="Yes"
+            />
+            Bugs</label
+          >
+        </td>
+        <td>
+          <label class="checkbox-label">
+            <input
+              type="checkbox"
+              name="priority_set"
+              value="Yes"
+              id="priority_set"
+            />
+            Set Committed Date:
+            <input
+              type="date"
+              id="committed_date"
+              name="committed_date"
+            /> </label
+          ><br /><br />
+          <label class="checkbox-label">
+            <input
+              type="checkbox"
+              name="priority_immediate"
+              value="Yes"
+              id="priority_immediate"
+            />
+            Immediate </label
+          ><br /><br />
+          <label class="checkbox-label">
+            <input
+              type="checkbox"
+              name="priority_add"
+              value="Yes"
+              id="priority_add"
+            />
+            Addtl Customization/Outside Scope
+          </label>
+        </td>
+      </tr>
+    </table>
+
+    <table id="dataTable">
+      <thead>
+        <tr>
+          <th>DATA POINTS</th>
+          <th>REFERENCE DATA FIELD</th>
+        </tr>
+      </thead>
+      <tbody id="details_data">
+        <tr>
+          <td><input type="text" name="data_point" /></td>
+          <td><input type="text" name="reference_field" /></td>
+        </tr>
+        <tr>
+          <td><input type="text" name="data_point" /></td>
+          <td><input type="text" name="reference_field" /></td>
+        </tr>
+      </tbody>
+    </table>
+
+  
+    <p><em>Note: Additional concerns may be written on the back page.</em></p>
+
+    <table>
+      <tr class="section-title">
+        <td>USER</td>
+        <td>DEPARTMENT HEAD</td>
+        <td>IT HEAD</td>
+      </tr>
+      <tr>
+        <td>
+          <select name="user" id="user" style="width: 100%; height: 30px">
+            <option value="" disabled selected>Select User</option>
+          </select>
+          <input type="text" readonly name="user_id" id="user_id" hidden />
+        </td>
+        <td>
+          <select
+            name="department_head"
+            id="department_head"
+            style="width: 100%; height: 30px"
+          >
+            <option value="" disabled selected>Select Department Head</option>
+          </select>
+          <input
+            type="text"
+            readonly
+            name="department_head_id"
+            id="department_head_id"
+            hidden
+          />
+        </td>
+        <td>
+          <select name="it_head" id="it_head" style="width: 100%; height: 30px">
+            <option value="" disabled selected>Select IT Head</option>
+          </select>
+          <input
+            type="text"
+            readonly
+            name="it_head_id"
+            id="it_head_id"
+            hidden
+          />
+        </td>
+      </tr>
+      <tr class="section-title">
+        <td>INTEGRATOR</td>
+        <td>DEVELOPER</td>
+        <td>QA</td>
+      </tr>
+      <tr id="cylix_sig">
+        <td>
+          <select
+            id="integrator"
+            name="integrator"
+            style="width: 100%; height: 30px"
+          >
+            <option value="" disabled selected>Select Integrator</option>
+          </select>
+          <input type="hidden" id="integrator_id" name="integrator_id" />
+        </td>
+        <td>
+          <select
+            id="developer"
+            name="developer"
+            style="width: 100%; height: 30px"
+          >
+            <option value="" disabled selected>Select Developer</option>
+          </select>
+          <input type="hidden" id="developer_id" name="developer_id" />
+        </td>
+        <td>
+          <select id="qa" name="qa" style="width: 100%; height: 30px">
+            <option value="" disabled selected>Select QA</option>
+          </select>
+          <input type="hidden" id="qa_id" name="qa_id" />
+        </td>
+      </tr>
+    </table>
+
+    <table>
+      <tr>
+        <td>
+          <input
+            type="checkbox"
+            id="print_option_as_req"
+            name="print_option_as_req"
+            value="Yes"
+          />
+          Print Out as per User Request
+        </td>
+        <td>
+          Date: <input type="date" id="print_out_date" name="print_out_date" />
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <input
+            type="checkbox"
+            id="print_option_sys_print"
+            name="print_option_sys_print"
+            value="Yes"
+          />
+          Current System Print Out
+        </td>
+        <td>
+          Date:
+          <input type="date" id="system_print_date" name="system_print_date" />
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <input
+            type="checkbox"
+            id="print_option_modified"
+            name="print_option_modified"
+            value="Yes"
+          />
+          Modified/Revised Print Out
+        </td>
+        <td>
+          Patch Installed On:
+          <input type="date" id="patch_date" name="patch_date" />
+        </td>
+      </tr>
+    </table>
+
+    <table style="display: none" id="status_update">
+      <tr class="section-title">
+        <td>LGU</td>
+        <td>CYLIX</td>
+        <td>DEVELOPMENT</td>
+      </tr>
+      <tr>
+        <td>
+          <select
+            id="req_status"
+            name="req_status"
+            style="width: 100%; height: 30px"
+          >
+            <option value="" disabled>-- Select Status --</option>
+            <option value="Pending">Pending</option>
+            <option value="For Head Approval">For Head Approval</option>
+            <option value="For IT Approval">For IT Approval</option>
+            <option value="Approved">Approved</option>
+          </select>
+        </td>
+        <td>
+          <select
+            id="cylix_status"
+            name="cylix_status"
+            style="width: 100%; height: 30px"
+          >
+            <option value="" disabled>-- Select Status --</option>
+            <option value="Pending">Pending</option>
+            <option value="Accepted">Accepted</option>
+            <option value="Completed">Completed</option>
+            <option value="Filed">Filed</option>
+          </select>
+        </td>
+        <td>
+          <select
+            id="dev_status"
+            name="dev_status"
+            style="width: 100%; height: 30px"
+          >
+            <option value="" disabled>-- Select Status --</option>
+            <option value="Pending">Pending</option>
+            <option value="For Development">For Development</option>
+            <option value="Ongoing">Ongoing</option>
+            <option value="For QA">For QA</option>
+            <option value="QA">QA</option>
+            <option value="For Deployment">For Deployment</option>
+            <option value="Deployed">Deployed</option>
+          </select>
+        </td>
+      </tr>
+    </table>
+
+    <!-- Memo Section -->
+    <table style="width: 100%; margin-top: 20px">
+      <tr>
+        <td colspan="2"><strong>MEMO / NOTES:</strong></td>
+      </tr>
+      <tr>
+        <td colspan="2">
+          <textarea
+            id="memo"
+            name="memo"
+            rows="4"
+            style="width: 100%; resize: vertical"
+            placeholder="Enter any remarks, memo, or important notes here..."
+          ></textarea>
+        </td>
+      </tr>
+    </table>
+
+    <div style="text-align: center" hidden>
+      <button type="submit" id="submitBtn">
+        <h2 id="submitText">Submit</h2>
+      </button>
+    </div>
+
+    <div style="text-align: center">
+      <button type="button" onclick="printModal()">
+        <h2 id="submitText">Print</h2>
+      </button>
+    </div>
+  </form>
+</div>

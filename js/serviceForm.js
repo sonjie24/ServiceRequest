@@ -185,6 +185,57 @@
     tableBody.appendChild(newRow);
   };
 
+  // print function (global for onclick)
+  window.printModal = function () {
+   const modalForm = document.querySelector("#createModal .form-container");
+  const clone = modalForm.cloneNode(true);
+
+  // Replace form fields with their values
+  clone.querySelectorAll("input, select, textarea").forEach((el) => {
+    const text = el.tagName === "SELECT"
+      ? el.options[el.selectedIndex]?.text || ""
+      : el.value;
+
+    const span = document.createElement("span");
+    span.textContent = text;
+    el.replaceWith(span);
+  });
+
+  const printWindow = window.open("", "", "width=1000,height=700");
+
+  printWindow.document.write(`
+    <html>
+      <head>
+        <title>Print Form</title>
+        <style>
+          body { font-family: Arial, sans-serif; padding: 20px; }
+          table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+          th, td { border: 1px solid #ccc; padding: 8px; }
+          .section-title { font-weight: bold; background: #f0f0f0; }
+          h2 { text-align: center; }
+        </style>
+      </head>
+      <body>
+        ${clone.innerHTML}
+        <script>
+          window.onload = function() {
+            window.print();
+            window.onafterprint = function() {
+              window.close();
+            };
+          };
+        </script>
+      </body>
+    </html>
+  `);
+
+  printWindow.document.close();
+};
+
+
+  
+ 
+
   function toggleFormReadOnly(formId, mode = "View", exceptions = []) {
     const form = document.getElementById(formId);
     if (!form) return;
@@ -580,7 +631,7 @@
 
     }else if (mode === "View") {
       document.getElementById("modalTitle").textContent =
-        "SERVICE REQUEST Print";
+        "SERVICE REQUEST";
       document.getElementById("submitText").textContent = "Print";
 
       await getData(uuid);
@@ -597,7 +648,7 @@
       document.getElementById("modalTitle").textContent =
         "SERVICE REQUEST CANCELLATION";
       document.getElementById("submitText").textContent = "CANCEL";
-      document.getElementById("attachments").removeAttribute("required");
+      
 
       await getData(uuid);
       await getDataDetails(uuid);
@@ -791,6 +842,21 @@
       await getDataFiles(uuid);
 
       document.getElementById("cylix_status").value = "Filed";
+    } else if (mode === "View") {
+         toggleFormReadOnly("entryForm", "View", [
+        "attachments",
+        "memo",
+        "dataTable",
+      ]);
+      document.getElementById("modalTitle").textContent = "FILE SERVICE REQUEST";
+      document.getElementById("submitText").textContent = "FILE";
+      document.getElementById("attachments").removeAttribute("required");
+
+      await getData(uuid);
+      await getDataDetails(uuid);
+      await getDataFiles(uuid);
+
+      document.getElementById("cylix_status").value = "Filed";
     }
 
     submitBtn.disabled = false;
@@ -907,5 +973,7 @@
 
     return true;
   }
+
+
 
 })();

@@ -178,3 +178,49 @@
 
 </body>
 </html>
+
+
+<style>
+@media print {
+  /* Hide everything except the modal */
+  body * {
+    visibility: hidden !important;
+  }
+
+  #createModal,
+  #createModal * {
+    visibility: visible !important;
+  }
+
+  #createModal {
+    position: static !important;
+    display: block !important;
+    width: 100% !important;
+    height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+    box-shadow: none !important;
+    background: white !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  html, body {
+    height: auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: visible !important;
+    background: white !important;
+  }
+
+  /* Remove modal-specific styles (like centering or shadows) */
+  .modal-backdrop, .modal-close, .add-btn, .print-hide {
+    display: none !important;
+  }
+
+  /* Page break support if needed */
+  table {
+    page-break-inside: avoid;
+  }
+}
+</style>
