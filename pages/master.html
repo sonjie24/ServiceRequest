@@ -53,6 +53,7 @@
           <th width="160px" hidden>GUID</th>
           <th onclick="sortTable(0)" width="160px">Request No ⬍</th>
           <th width="120px">Requested Date</th>
+          <th width="120px">Project</th>
           <th width="250px">User/Integrator/Developer/QA</th>
           <th width="250px">Department/Module/Form</th>
           <th width="500px">Concern Type</th>
@@ -152,6 +153,7 @@
             <td><div class="secondary-text">${
               record.date_requested || ""
             }</div></td>
+            <td id="prject_desc-${record.uuid}"></td>
             <td id="user-${record.uuid}"></td>
             <td>
               <label class="secondary-text">►${
@@ -196,6 +198,8 @@
               generatePriorityType(record);
             document.getElementById(`user-${record.uuid}`).innerHTML =
               generateUsers(record);
+            document.getElementById(`prject_desc-${record.uuid}`).innerHTML =
+              generateProjectDesc(record);
           });
         } catch (error) {
           console.error("❌ Failed to load master list:", error);
@@ -428,6 +432,28 @@
 
         return `<td>${buttons}</td>`;
       }
+
+        function generateProjectDesc(record) {
+        let buttons = "";
+        if (record.project?.toLowerCase() === "cnims") {
+          buttons = `<label class="secondary-text">
+                          City of Naga
+                    </label>`;
+        }
+
+         if (record.project?.toLowerCase() === "cbmis") {
+          buttons = `<label class="secondary-text">
+                          City of Bogo
+                    </label>`;
+        }
+
+       
+
+        return `<td>${buttons}</td>`;
+      }
+
+
+
 
       function setupSearch() {
         const searchInput = document.getElementById("searchInput");

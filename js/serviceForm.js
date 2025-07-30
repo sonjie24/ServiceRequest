@@ -550,17 +550,10 @@
         // ✅ Step 2: Trigger population and wait for it to finish
         departmentSelect.dispatchEvent(new Event("change"));
         setTimeout(() => {
+
           makeSelectReadOnly(document.getElementById("integrator"));
           makeSelectReadOnly(document.getElementById("developer"));
           makeSelectReadOnly(document.getElementById("qa"));
-
-          if (user.role === "User") {
-            document.getElementById("req_status").value = "For Head Approval";
-          } else if (user.role === "Head") {
-            document.getElementById("req_status").value = "For IT Approval";
-          } else {
-            document.getElementById("req_status").value = "Approved";
-          }
 
           userSelect.value = user.name;
           userSelect.dispatchEvent(new Event("change"));
@@ -570,6 +563,20 @@
 
           itHeadSelect.value = user.name;
           itHeadSelect.dispatchEvent(new Event("change"));
+
+          if (user.role === "User") {
+            document.getElementById("req_status").value = "For Head Approval";
+          } else if (user.role === "Head") {
+            document.getElementById("req_status").value = "For IT Approval";
+          } else if (user.role === "Integrator") {
+
+            document.getElementById("integrator").value = user.name;
+            document.getElementById("integrator_id").value = user.userId;
+          } else {
+            document.getElementById("req_status").value = "Approved";
+          }
+
+
         }, 300); // wait for formSelect to populate
       }
     }
@@ -597,13 +604,6 @@
 
       // Show table only if userRole is allowed
       const statusTable = document.getElementById("status_update");
-      // const allowedRoles = ["Admin"];
-      // if (!allowedRoles.includes(user.role)) {
-      //   statusTable.style.display = "none";
-      // } else {
-      //   statusTable.style.display = "table"; // or "block"
-      // }
-
       if (loginPrject === "CYLIX") {
         statusTable.style.display = "table"; // or "block"
         document.getElementById("attachments").removeAttribute("required");
