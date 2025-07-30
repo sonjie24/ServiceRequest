@@ -107,6 +107,7 @@
 
     <script src="../js/session.js"></script>
     <script src="../js/config.js"></script>
+    <script src="../js/global.js"></script>
     <script>
       let mode = "Add";
 
@@ -294,12 +295,12 @@
         if (userRole === "Developer" || userRole === "Hybrid") {
           if (
             (record.developer === "") &
-            (record.dev_status === "For Development")
+            (record.dev_status === "For Development" ||record.dev_status === "Pending")
           ) {
             buttons += `<button onclick="acceptDeveloperRecord('${record.uuid}')">Accept</button>`;
           }
           if (
-            (record.dev_status === "For Development") &
+            (record.dev_status === "For Development" || record.dev_status === "Pending") &
             (record.developer === user.name)
           ) {
             buttons += `<button onclick="acceptDeveloperRecord('${record.uuid}')">Accept</button>`;

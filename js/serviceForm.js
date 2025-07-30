@@ -1,47 +1,113 @@
 (() => {
-  
-  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
   const user = getUserSession();
   const data = getFunctinalitiesSession();
   const loginPrject = getlogInProject();
+
+  let departmentData = getDepartmentSession();
+
+ //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  async function ifProjectCylix(selectedProject) {
+    // 🔹 Special handling for CYLIX project
+    if (user.project === "CYLIX") {
+      departmentSelect.disabled = true;
+      departmentSelect.innerHTML = '<option value="" disabled selected>Select Department</option>';
+
+      try {
+        await getDepartments(selectedProject);   // ✅ ensure data is fetched
+        departmentData = getDepartmentSession(); // ✅ get updated session data
+
+        // 🔹 Populate Departments safely
+        if (departmentData && typeof departmentData === "object" && Object.keys(departmentData).length > 0) {
+          departmentSelect.disabled = false;
+          systemSelect.disabled = false;
+          Object.keys(departmentData).forEach(department => {
+            departmentSelect.appendChild(createOption(department, department));
+          });
+        } else {
+          console.warn("⚠️ No departments found in session.");
+        }
+
+        console.log("✅ Department Data Loaded:", departmentData);
+      } catch (err) {
+        console.error("❌ Failed to load departments:", err);
+      }
+    } else {
+      departmentSelect.disabled = false;
+      systemSelect.disabled = false;
+    }
+  }
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+  const projecttSelect = document.getElementById("project");
   const systemSelect = document.getElementById("systemSelect");
   const formSelect = document.getElementById("formSelect");
   const formNoInput = document.getElementById("system_form_no");
 
-  const systems = data?.Functionalities || {};
+  const projects = data?.Functionalities || {};
 
-  // Populate the system dropdown
-  Object.keys(systems).forEach((system) => {
+
+  // Populate the project dropdown
+  Object.keys(projects).forEach((project) => {
     const option = document.createElement("option");
-    option.value = system;
-    option.textContent = system;
-    systemSelect.appendChild(option);
+    option.value = project;
+    option.textContent = project;
+    projecttSelect.appendChild(option);
   });
 
-  // When a system is selected, populate form dropdown
-  systemSelect.addEventListener("change", () => {
-    const selectedSystem = systemSelect.value;
+  // When a project is selected, populate form dropdown
+  projecttSelect.addEventListener("change", async () => {
+    const selectedProject = projecttSelect.value;
 
-    // Reset form dropdown and form number
-    formSelect.innerHTML =
-      '<option value="" disabled selected>Select Form</option>';
+    // 🔹 Reset selects
+    systemSelect.innerHTML = '<option value="" disabled selected>Select Module</option>';
+    formSelect.innerHTML = '<option value="" disabled selected>Select Form</option>';
+
+    // 🔹 Disable them initially
+    systemSelect.disabled = true;
     formSelect.disabled = true;
     formNoInput.value = "";
 
-    if (selectedSystem && systems[selectedSystem]) {
+    // 🔹 Populate System Modules for selected project
+    if (selectedProject && projects[selectedProject]) {
+
+      Object.keys(projects[selectedProject]).forEach(systemName => {
+        const option = document.createElement("option");
+        option.value = systemName;
+        option.textContent = systemName;
+        systemSelect.appendChild(option);
+      });
+    }
+
+    await ifProjectCylix(selectedProject);
+
+  });
+
+  systemSelect.addEventListener("change", () => {
+    const selectedProject = projecttSelect.value;
+    const selectedSystem = systemSelect.value;
+
+    // ✅ Get the forms array for this system
+    const forms = (projects[selectedProject] && projects[selectedProject][selectedSystem]) || [];
+
+    // Reset form dropdown
+    formSelect.innerHTML = '<option value="" disabled selected>Select Form</option>';
+    formSelect.disabled = true;
+    formNoInput.value = "";
+
+    // ✅ Populate forms if available
+    if (forms.length > 0) {
       formSelect.disabled = false;
 
-      systems[selectedSystem].forEach((form) => {
+      forms.forEach(formObj => {
         const option = document.createElement("option");
-        option.value = form.name; // This will be used as system_form_name
-        option.textContent = form.name;
-        option.setAttribute("data-code", form.code); // system_form_no
+        option.value = formObj.name;         // system_form_name
+        option.textContent = formObj.name;   // display name
+        option.dataset.code = formObj.code;  // store form code
         formSelect.appendChild(option);
       });
     }
   });
+
   // When a form is selected, show its code in the input
   formSelect.addEventListener("change", () => {
     const selectedOption = formSelect.options[formSelect.selectedIndex];
@@ -85,15 +151,6 @@
 
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // ✅ Safely get department data
-  let departmentData = {};
-  try {
-    departmentData = getDepartmentSession() || {};
-  } catch (err) {
-    console.error("❌ Failed to load department session:", err);
-    departmentData = {};
-  }
-
-  // ✅ DOM Elements
   const departmentSelect = document.getElementById("department");
   const userSelect = document.getElementById("user");
   const headSelect = document.getElementById("department_head");
@@ -109,13 +166,13 @@
   }
 
   // ✅ Populate departments safely
-  if (Object.keys(departmentData).length > 0) {
-    Object.keys(departmentData).forEach((department) => {
-      departmentSelect.appendChild(createOption(department, department));
-    });
-  } else {
-    console.warn("⚠️ No departments found in session.");
-  }
+  // if (Object.keys(departmentData).length > 0) {
+  //   Object.keys(departmentData).forEach((department) => {
+  //     departmentSelect.appendChild(createOption(department, department));
+  //   });
+  // } else {
+  //   console.warn("⚠️ No departments found in session.");
+  // }
 
   // ✅ Handle Department Change Event
   departmentSelect.addEventListener("change", () => {
@@ -380,8 +437,25 @@
 
       mapDataToForm(main); // <-- Populate main form fields
       console.log(main);
+
+      // PROJECT SELECT (if options exist)
+      if (main.project) {
+
+        projecttSelect.value = main.project;
+        projecttSelect.dispatchEvent(new Event("change")); // trigger formSelect population
+        setTimeout(() => {
+          systemSelect.value = main.module;
+          systemSelect.dispatchEvent(new Event("change"));
+        }, 300); // wait for formSelect to populate
+
+        await ifProjectCylix(main.project);
+
+      }
+
+
       // SYSTEM SELECT (if options exist)
       if (main.module) {
+
         systemSelect.value = main.module;
         systemSelect.dispatchEvent(new Event("change")); // trigger formSelect population
 
@@ -403,6 +477,21 @@
           itHeadSelect.value = main.it_head;
         }, 300); // wait for formSelect to populate
       }
+
+      // ✅ Step 1: Select department and trigger user/head population
+      if (main.project) {
+        departmentSelect.value = main.department;
+
+        // ✅ Step 2: Trigger population and wait for it to finish
+        departmentSelect.dispatchEvent(new Event("change"));
+        setTimeout(() => {
+          userSelect.value = main.user;
+          headSelect.value = main.department_head;
+          itHeadSelect.value = main.it_head;
+        }, 300); // wait for formSelect to populate
+      }
+
+
     } catch (error) {
       console.error("Fetch error:", error);
       alert("An error occurred while fetching data.");
@@ -436,11 +525,9 @@
       detailData.forEach((item) => {
         const row = document.createElement("tr"); // ✅ FIX: create <tr> not item
         row.innerHTML = `
-          <td><input type="text" name="data_point" value="${
-            item.data_point || ""
+          <td><input type="text" name="data_point" value="${item.data_point || ""
           }" /></td>
-          <td><input type="text" name="reference_field" value="${
-            item.ref_field || ""
+          <td><input type="text" name="reference_field" value="${item.ref_field || ""
           }" /></td>
         `;
         tbody.appendChild(row);
@@ -501,16 +588,15 @@
             </a>
           </td>
           <td class="action-buttons">
-              <button type="button" onclick="removeFile('${
-                item.GDriveID
-              }',this)" id="remove">Remove</button>
+              <button type="button" onclick="removeFile('${item.GDriveID
+          }',this)" id="remove">Remove</button>
           </td>
         `;
         tbody.appendChild(row);
       });
     } catch (error) {
       console.error("Fetch error:", error);
-      alert("An error occurred while fetching uploaded files.");
+      // alert("An error occurred while fetching uploaded files.");
     }
   }
 
@@ -535,56 +621,6 @@
     );
   }
 
-  function makeSelectReadOnly(select) {
-    // Prevent mouse clicks and keyboard changes
-    select.addEventListener("mousedown", (e) => e.preventDefault());
-    select.addEventListener("keydown", (e) => e.preventDefault());
-
-    // Optional: style to indicate it's readonly
-    select.style.backgroundColor = "#f3f3f3";
-    select.style.pointerEvents = "none"; // disables mouse, but keeps value
-  }
-
-  function loadDefaultsUserInfo(user) {
-    if (user) {
-      // ✅ Step 1: Select department and trigger user/head population
-      if (user.department) {
-        departmentSelect.value = user.department;
-
-        // ✅ Step 2: Trigger population and wait for it to finish
-        departmentSelect.dispatchEvent(new Event("change"));
-        setTimeout(() => {
-
-          makeSelectReadOnly(document.getElementById("integrator"));
-          makeSelectReadOnly(document.getElementById("developer"));
-          makeSelectReadOnly(document.getElementById("qa"));
-
-          userSelect.value = user.name;
-          userSelect.dispatchEvent(new Event("change"));
-
-          headSelect.value = user.name;
-          headSelect.dispatchEvent(new Event("change"));
-
-          itHeadSelect.value = user.name;
-          itHeadSelect.dispatchEvent(new Event("change"));
-
-          if (user.role === "User") {
-            document.getElementById("req_status").value = "For Head Approval";
-          } else if (user.role === "Head") {
-            document.getElementById("req_status").value = "For IT Approval";
-          } else if (user.role === "Integrator") {
-
-            document.getElementById("integrator").value = user.name;
-            document.getElementById("integrator_id").value = user.userId;
-          } else {
-            document.getElementById("req_status").value = "Approved";
-          }
-
-
-        }, 300); // wait for formSelect to populate
-      }
-    }
-  }
 
   // Get default values (used when modal opens)
   window.getDefaults = async function (uuid, mode) {
@@ -610,12 +646,18 @@
       const statusTable = document.getElementById("status_update");
       if (loginPrject === "CYLIX") {
         statusTable.style.display = "table"; // or "block"
-        document.getElementById("attachments").removeAttribute("required");
       } else {
         statusTable.style.display = "none";
       }
 
-      loadDefaultsUserInfo(user);
+      // PROJECT SELECT (if options exist)
+      projecttSelect.value = user.project;
+      projecttSelect.dispatchEvent(new Event("change")); // trigger formSelect population
+
+      if (user.project === "CNIMS") {
+        document.getElementById("attachments").removeAttribute("required");
+      }
+
     } else if (mode === "Edit") {
       document.getElementById("modalTitle").textContent =
         "SERVICE REQUEST UPDATE";
@@ -637,6 +679,8 @@
       await getData(uuid);
       await getDataDetails(uuid);
       await getDataFiles(uuid);
+
+
     } else if (mode === "View") {
       document.getElementById("modalTitle").textContent = "SERVICE REQUEST";
       document.getElementById("submitText").textContent = "Print";

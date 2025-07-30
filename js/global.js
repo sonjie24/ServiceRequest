@@ -58,3 +58,38 @@ async function getDepartments(projectName) {
     console.log("An error occurred while fetching department.");
   }
 }
+
+async function getCylix() {
+  try {
+    const res = await fetch(`${API_BASE_URL}/get-cylix`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      // If you need to send body data, add it here:
+      // body: JSON.stringify({ key: "value" }),
+    });
+
+    if (!res.ok) {
+      throw new Error(`HTTP error! Status: ${res.status}`);
+    }
+
+    const data = await res.json();
+
+    if (data.data && data.data.length > 0) {
+      const cylix = data.data;
+      saveCylixSession(cylix);
+    } else {
+      alert(data.message || "No department returned.");
+    }
+  } catch (error) {
+    console.error("Fetch error:", error);
+    alert("An error occurred while fetching department.");
+  }
+}
+
+
+function cleanSessionData(){
+  sessionStorage.removeItem("functionalities");
+  sessionStorage.removeItem("department");
+}
