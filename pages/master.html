@@ -685,11 +685,11 @@
       });
 
       function notifyMasterListChange() {
+        loadMasterList();
         try {
           if (typeof socket !== "undefined" && socket && socket.readyState === WebSocket.OPEN) {
             socket.send("refresh_masterlist");
           } else {
-            loadMasterList();
             console.warn("⚠️ Socket not connected. Skipping refresh_masterlist notification.");
           }
         } catch (e) {
