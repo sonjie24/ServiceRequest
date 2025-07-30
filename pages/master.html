@@ -685,13 +685,19 @@
       });
 
       function notifyMasterListChange() {
-        if (socket.readyState === WebSocket.OPEN) {
-          socket.send("refresh_masterlist");
-          console.log("📤 Sent: refresh_masterlist");
-        } else {
-          console.warn("❗ WebSocket not open.");
+        try {
+          if (typeof socket !== "undefined" && socket && socket.readyState === WebSocket.OPEN) {
+            socket.send("refresh_masterlist");
+          } else {
+            console.warn("⚠️ Socket not connected. Skipping refresh_masterlist notification.");
+          }
+        } catch (e) {
+          console.error("❌ notifyMasterListChange error:", e);
         }
       }
+
+
+  
     </script>
     <script>
       function showNotification(message, duration = 3000) {
