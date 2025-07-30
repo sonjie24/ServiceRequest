@@ -282,11 +282,11 @@
         }
       }
 
-      // if (userRole === 'Admin') {
-      //   if (record.dev_status !== 'Deployed' & record.dev_status !== 'QA' & record.dev_status !== 'For Deployment') {
-      //     buttons += `<button onclick="assignRecord('${record.uuid}')">Assign</button>`;
-      //   }
-      // }
+      if (userRole === 'Admin') {
+        if (record.dev_status === 'Deployed') {
+          buttons += `<button onclick="fileRecord('${record.uuid}')">File</button>`;
+        }
+      }
 
       return `<td class="action-buttons secondary-text">${buttons}</td>`;
     }
@@ -486,6 +486,11 @@
 
     function doneFixedRecord(id) {
       mode = "Done Fixed";
+      openModal(id);
+    }
+
+    function fileRecord(id) {
+      mode = "File";
       openModal(id);
     }
  

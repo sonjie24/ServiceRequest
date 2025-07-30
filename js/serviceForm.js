@@ -780,6 +780,17 @@
       await getDataFiles(uuid);
 
       document.getElementById("cylix_status").value = "Completed";
+    } else if (mode === "File") {
+
+      document.getElementById("modalTitle").textContent = "FILE SERVICE REQUEST";
+      document.getElementById("submitText").textContent = "FILE";
+      document.getElementById("attachments").removeAttribute("required");
+
+      await getData(uuid);
+      await getDataDetails(uuid);
+      await getDataFiles(uuid);
+
+      document.getElementById("cylix_status").value = "Filed";
     }
 
     submitBtn.disabled = false;
