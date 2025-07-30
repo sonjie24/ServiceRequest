@@ -118,9 +118,12 @@
     const selectedDepartment = departmentSelect.value;
 
     // Clear existing options
-    userSelect.innerHTML = '<option value="" disabled selected>Select User</option>';
-    headSelect.innerHTML = '<option value="" disabled selected>Select Head</option>';
-    itHeadSelect.innerHTML = '<option value="" disabled selected>Select IT Head</option>';
+    userSelect.innerHTML =
+      '<option value="" disabled selected>Select User</option>';
+    headSelect.innerHTML =
+      '<option value="" disabled selected>Select Head</option>';
+    itHeadSelect.innerHTML =
+      '<option value="" disabled selected>Select IT Head</option>';
 
     // Reset disabled state
     userSelect.disabled = headSelect.disabled = itHeadSelect.disabled = true;
@@ -134,7 +137,9 @@
 
     // ✅ Populate Users
     if (Array.isArray(data.User)) {
-      data.User.forEach((u) => userSelect.appendChild(createOption(u.name, u.name, u.id)));
+      data.User.forEach((u) =>
+        userSelect.appendChild(createOption(u.name, u.name, u.id))
+      );
       userSelect.disabled = false;
     } else {
       console.warn(`⚠️ No users found for department '${selectedDepartment}'.`);
@@ -142,7 +147,9 @@
 
     // ✅ Populate Heads
     if (Array.isArray(data.Head)) {
-      data.Head.forEach((h) => headSelect.appendChild(createOption(h.name, h.name, h.id)));
+      data.Head.forEach((h) =>
+        headSelect.appendChild(createOption(h.name, h.name, h.id))
+      );
       headSelect.disabled = false;
     } else {
       console.warn(`⚠️ No heads found for department '${selectedDepartment}'.`);
@@ -150,10 +157,14 @@
 
     // ✅ Populate IT Heads
     if (Array.isArray(data["IT Head"])) {
-      data["IT Head"].forEach((it) => itHeadSelect.appendChild(createOption(it.name, it.name, it.id)));
+      data["IT Head"].forEach((it) =>
+        itHeadSelect.appendChild(createOption(it.name, it.name, it.id))
+      );
       itHeadSelect.disabled = false;
     } else {
-      console.warn(`⚠️ No IT Heads found for department '${selectedDepartment}'.`);
+      console.warn(
+        `⚠️ No IT Heads found for department '${selectedDepartment}'.`
+      );
     }
   });
 
@@ -162,7 +173,8 @@
     if (!selectElement) return;
     selectElement.addEventListener("change", () => {
       const selected = selectElement.options[selectElement.selectedIndex];
-      document.getElementById(hiddenInputId).value = selected?.getAttribute("data-code") || "";
+      document.getElementById(hiddenInputId).value =
+        selected?.getAttribute("data-code") || "";
     });
   }
 
@@ -170,8 +182,6 @@
   bindCodeUpdate(userSelect, "user_id");
   bindCodeUpdate(headSelect, "department_head_id");
   bindCodeUpdate(itHeadSelect, "it_head_id");
-
-
 
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // Add row function (global for onclick)
@@ -187,23 +197,24 @@
 
   // print function (global for onclick)
   window.printModal = function () {
-   const modalForm = document.querySelector("#createModal .form-container");
-  const clone = modalForm.cloneNode(true);
+    const modalForm = document.querySelector("#createModal .form-container");
+    const clone = modalForm.cloneNode(true);
 
-  // Replace form fields with their values
-  clone.querySelectorAll("input, select, textarea").forEach((el) => {
-    const text = el.tagName === "SELECT"
-      ? el.options[el.selectedIndex]?.text || ""
-      : el.value;
+    // Replace form fields with their values
+    clone.querySelectorAll("input, select, textarea").forEach((el) => {
+      const text =
+        el.tagName === "SELECT"
+          ? el.options[el.selectedIndex]?.text || ""
+          : el.value;
 
-    const span = document.createElement("span");
-    span.textContent = text;
-    el.replaceWith(span);
-  });
+      const span = document.createElement("span");
+      span.textContent = text;
+      el.replaceWith(span);
+    });
 
-  const printWindow = window.open("", "", "width=1000,height=700");
+    const printWindow = window.open("", "", "width=1000,height=700");
 
-  printWindow.document.write(`
+    printWindow.document.write(`
     <html>
       <head>
         <title>Print Form</title>
@@ -229,12 +240,8 @@
     </html>
   `);
 
-  printWindow.document.close();
-};
-
-
-  
- 
+    printWindow.document.close();
+  };
 
   function toggleFormReadOnly(formId, mode = "View", exceptions = []) {
     const form = document.getElementById(formId);
@@ -570,7 +577,6 @@
 
   // Get default values (used when modal opens)
   window.getDefaults = async function (uuid, mode) {
-
     const submitBtn = document.getElementById("submitBtn");
     submitBtn.disabled = true;
 
@@ -597,11 +603,11 @@
       // } else {
       //   statusTable.style.display = "table"; // or "block"
       // }
-    
-      if ((loginPrject==="CYLIX")) {
-         statusTable.style.display = "table"; // or "block"
-         document.getElementById("attachments").removeAttribute("required");
-      }else{
+
+      if (loginPrject === "CYLIX") {
+        statusTable.style.display = "table"; // or "block"
+        document.getElementById("attachments").removeAttribute("required");
+      } else {
         statusTable.style.display = "none";
       }
 
@@ -610,36 +616,31 @@
       document.getElementById("modalTitle").textContent =
         "SERVICE REQUEST UPDATE";
       document.getElementById("submitText").textContent = "UPDATE";
-    
+
       // Show table only if userRole is allowed
       const statusTable = document.getElementById("status_update");
-      if ((loginPrject==="CYLIX")) {
-         statusTable.style.display = "table"; // or "block"
-         document.getElementById("attachments").removeAttribute("required");
-      }else{
+      if (loginPrject === "CYLIX") {
+        statusTable.style.display = "table"; // or "block"
+        document.getElementById("attachments").removeAttribute("required");
+      } else {
         statusTable.style.display = "none";
       }
 
-
-      if ((user.role ==="Admin")) {
-         document.getElementById("service_request_no").readOnly=false;
+      if (user.role === "Admin") {
+        document.getElementById("service_request_no").readOnly = false;
       }
 
       await getData(uuid);
       await getDataDetails(uuid);
       await getDataFiles(uuid);
-
-    }else if (mode === "View") {
-      document.getElementById("modalTitle").textContent =
-        "SERVICE REQUEST";
+    } else if (mode === "View") {
+      document.getElementById("modalTitle").textContent = "SERVICE REQUEST";
       document.getElementById("submitText").textContent = "Print";
 
       await getData(uuid);
       await getDataDetails(uuid);
       await getDataFiles(uuid);
-
     } else if (mode === "Cancel") {
-
       toggleFormReadOnly("entryForm", "View", [
         "attachments",
         "memo",
@@ -648,7 +649,6 @@
       document.getElementById("modalTitle").textContent =
         "SERVICE REQUEST CANCELLATION";
       document.getElementById("submitText").textContent = "CANCEL";
-      
 
       await getData(uuid);
       await getDataDetails(uuid);
@@ -833,7 +833,8 @@
       document.getElementById("cylix_status").value = "Completed";
     } else if (mode === "File") {
       toggleFormReadOnly("entryForm", "View", ["memo"]);
-      document.getElementById("modalTitle").textContent = "FILE SERVICE REQUEST";
+      document.getElementById("modalTitle").textContent =
+        "FILE SERVICE REQUEST";
       document.getElementById("submitText").textContent = "FILE";
       document.getElementById("attachments").removeAttribute("required");
 
@@ -843,12 +844,13 @@
 
       document.getElementById("cylix_status").value = "Filed";
     } else if (mode === "View") {
-         toggleFormReadOnly("entryForm", "View", [
+      toggleFormReadOnly("entryForm", "View", [
         "attachments",
         "memo",
         "dataTable",
       ]);
-      document.getElementById("modalTitle").textContent = "FILE SERVICE REQUEST";
+      document.getElementById("modalTitle").textContent =
+        "FILE SERVICE REQUEST";
       document.getElementById("submitText").textContent = "FILE";
       document.getElementById("attachments").removeAttribute("required");
 
@@ -911,7 +913,6 @@
         document.getElementById("formSelect").disabled = true;
 
         window.parent.closeModal();
-
       } else {
         alert(`Error: ${result.message || "Something went wrong"}`);
       }
@@ -944,17 +945,24 @@
     modal.addEventListener("show.bs.modal", () => {
       getDefaults();
     });
-  }  
-
+  }
 
   function validateForm() {
-    const concernCheckboxes = document.querySelectorAll('input[name="concern_type"]');
-    const priorityCheckboxes = document.querySelectorAll('input[name="priority_type"]');
+    const concernCheckboxes = document.querySelectorAll(
+      'input[name="concern_type"]'
+    );
+    const priorityCheckboxes = document.querySelectorAll(
+      'input[name="priority_type"]'
+    );
     const committedDateCheckbox = document.getElementById("priority_set");
     const committedDateInput = document.getElementById("committed_date");
 
-    const concernSelected = Array.from(concernCheckboxes).some(cb => cb.checked);
-    const prioritySelected = Array.from(priorityCheckboxes).some(cb => cb.checked);
+    const concernSelected = Array.from(concernCheckboxes).some(
+      (cb) => cb.checked
+    );
+    const prioritySelected = Array.from(priorityCheckboxes).some(
+      (cb) => cb.checked
+    );
 
     if (!concernSelected) {
       alert("Please select at least one Concern Type.");
@@ -973,7 +981,4 @@
 
     return true;
   }
-
-
-
 })();

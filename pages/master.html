@@ -108,6 +108,8 @@
     <script src="../js/config.js"></script>
     <script>
       let mode = "Add";
+
+      const projectLogin = getlogInProject();
       const user = getUserSession();
       async function loadMasterList() {
         try {
@@ -538,9 +540,9 @@
         }
 
         let logoutPath = ""; // Or your logout route if it's server-based
-        if (user.project === "CYLIX") {
+        if (projectLogin === "CYLIX") {
           logoutPath = "cylix.html";
-        } else if (user.project === "CNIMS") {
+        } else if (projectLogin === "CNIMS") {
           logoutPath = "cnims.html";
         }
         document.getElementById("logoutLink").href =
