@@ -2,16 +2,13 @@
   const repoName = "ServiceRequest"; // Update if needed
   const hostname = window.location.hostname;
 
-
   let basePath = "";
   if (hostname.includes("github.io") || hostname.includes("20.20.40.221")) {
     // GitHub Pages can't make backend calls directly unless it's public API or proxied
     basePath = `/${repoName}/`;
   } else {
-    basePath = '/';
+    basePath = "/";
   }
-
-
 
   // Set base path for GitHub Pages or local
   const isGithub = hostname.includes("github.io");
@@ -26,7 +23,6 @@
   let apiBaseUrl = "";
 
   if (hostname.includes("20.20.40.221")) {
-
     apiBaseUrl = "http://20.20.40.221:5678/webhook"; // Fallback
   } else {
     // GitHub Pages can't make backend calls directly unless it's public API or proxied
@@ -36,3 +32,5 @@
   // Expose API_BASE_URL to other scripts
   window.API_BASE_URL = apiBaseUrl;
 })();
+
+

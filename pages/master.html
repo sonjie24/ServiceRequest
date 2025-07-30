@@ -441,20 +441,23 @@
                     </label>`;
         }
 
-         if (record.project?.toLowerCase() === "cbmis") {
+        if (record.project?.toLowerCase() === "cbmis") {
           buttons = `<label class="secondary-text">
                           City of Bogo
                     </label>`;
         }
 
-       
+        if (record.project?.toLowerCase() === "ccmis") {
+          buttons = `<label class="secondary-text">
+                          City of Caracar
+                    </label>`;
+        }
 
         return `<td>${buttons}</td>`;
       }
 
 
-
-
+      
       function setupSearch() {
         const searchInput = document.getElementById("searchInput");
         searchInput.addEventListener("input", function () {
@@ -546,6 +549,9 @@
         openModal(id);
       }
 
+
+ 
+    
       // ✅ Runs every 30 seconds
       // setInterval(() => {
       //   loadMasterList(); // call async function

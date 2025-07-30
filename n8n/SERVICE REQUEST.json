@@ -2782,23 +2782,6 @@
     },
     {
       "parameters": {
-        "respondWith": "allIncomingItems",
-        "options": {
-          "responseCode": 200,
-          "responseKey": "data"
-        }
-      },
-      "type": "n8n-nodes-base.respondToWebhook",
-      "typeVersion": 1.4,
-      "position": [
-        -608,
-        2176
-      ],
-      "id": "76ca00a0-b24f-433c-9901-ff17998942d6",
-      "name": "Respond to Webhook5"
-    },
-    {
-      "parameters": {
         "documentId": {
           "__rl": true,
           "value": "1v6ookIRqanQDN1VVpSU1ME11yXClhn6QOyuTVrUHt40",
@@ -2838,40 +2821,6 @@
           "name": "Google Sheets account"
         }
       }
-    },
-    {
-      "parameters": {
-        "respondWith": "allIncomingItems",
-        "options": {
-          "responseCode": 200,
-          "responseKey": "data"
-        }
-      },
-      "type": "n8n-nodes-base.respondToWebhook",
-      "typeVersion": 1.4,
-      "position": [
-        -608,
-        2352
-      ],
-      "id": "7a87694a-11e4-4c92-b11c-efbec4659158",
-      "name": "Respond to Webhook6"
-    },
-    {
-      "parameters": {
-        "respondWith": "allIncomingItems",
-        "options": {
-          "responseCode": 200,
-          "responseKey": "data"
-        }
-      },
-      "type": "n8n-nodes-base.respondToWebhook",
-      "typeVersion": 1.4,
-      "position": [
-        -640,
-        1344
-      ],
-      "id": "b448b429-4fdc-46c7-a7e6-97ed53c0249d",
-      "name": "Respond to Webhook7"
     },
     {
       "parameters": {
@@ -3056,74 +3005,6 @@
         1744
       ],
       "typeVersion": 3.2
-    },
-    {
-      "parameters": {
-        "respondWith": "allIncomingItems",
-        "options": {
-          "responseCode": 200,
-          "responseKey": "data"
-        }
-      },
-      "type": "n8n-nodes-base.respondToWebhook",
-      "typeVersion": 1.4,
-      "position": [
-        -640,
-        1488
-      ],
-      "id": "1f74a0c8-459b-458f-9b64-c65b1603bf73",
-      "name": "Respond to Webhook8"
-    },
-    {
-      "parameters": {
-        "respondWith": "allIncomingItems",
-        "options": {
-          "responseCode": 200,
-          "responseKey": "data"
-        }
-      },
-      "type": "n8n-nodes-base.respondToWebhook",
-      "typeVersion": 1.4,
-      "position": [
-        -624,
-        1648
-      ],
-      "id": "0761e3bf-9098-43d2-835f-71566271f8bb",
-      "name": "Respond to Webhook9"
-    },
-    {
-      "parameters": {
-        "respondWith": "allIncomingItems",
-        "options": {
-          "responseCode": 200,
-          "responseKey": "data"
-        }
-      },
-      "type": "n8n-nodes-base.respondToWebhook",
-      "typeVersion": 1.4,
-      "position": [
-        -624,
-        1824
-      ],
-      "id": "18ff98c0-8891-43c1-a1d1-ef27f6247d1b",
-      "name": "Respond to Webhook10"
-    },
-    {
-      "parameters": {
-        "respondWith": "allIncomingItems",
-        "options": {
-          "responseCode": 200,
-          "responseKey": "data"
-        }
-      },
-      "type": "n8n-nodes-base.respondToWebhook",
-      "typeVersion": 1.4,
-      "position": [
-        -624,
-        1984
-      ],
-      "id": "4ed164d5-6d45-497b-b801-4d0d99354bfe",
-      "name": "Respond to Webhook11"
     },
     {
       "parameters": {
@@ -3381,8 +3262,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -448,
-        2800
+        -112,
+        2832
       ],
       "id": "36be0f71-a08d-4be5-abdc-caabb0a0776d",
       "name": "Code1"
@@ -3398,8 +3279,8 @@
       "type": "n8n-nodes-base.respondToWebhook",
       "typeVersion": 1.4,
       "position": [
-        -224,
-        2800
+        112,
+        2832
       ],
       "id": "15544c51-cd78-486c-8bdf-b2b1907a9b38",
       "name": "Respond to Webhook15"
@@ -3407,7 +3288,7 @@
     {
       "parameters": {
         "content": "## Get Functionalities\n",
-        "height": 316,
+        "height": 1404,
         "width": 1596
       },
       "type": "n8n-nodes-base.stickyNote",
@@ -3432,7 +3313,7 @@
           "__rl": true,
           "value": 1825278315,
           "mode": "list",
-          "cachedResultName": "Functionalities",
+          "cachedResultName": "CNIMS Functionalities",
           "cachedResultUrl": "https://docs.google.com/spreadsheets/d/15OwyB5a62wnfGMBxbJ26etmdRIbvQ5kWw1JlU0eqEuc/edit#gid=1825278315"
         },
         "options": {}
@@ -3440,8 +3321,8 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.6,
       "position": [
-        -688,
-        2800
+        -352,
+        2832
       ],
       "id": "e6bb8427-706d-4295-95b7-7916e165549f",
       "name": "get All10",
@@ -3465,97 +3346,12 @@
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2,
       "position": [
-        -944,
-        2800
+        -880,
+        3696
       ],
       "id": "5939ee99-4cbf-4348-aa26-b08731a55587",
       "name": "get3",
       "webhookId": "899cf05f-32e5-4dfc-af7f-db7dcd5ce26a"
-    },
-    {
-      "parameters": {
-        "respondWith": "allIncomingItems",
-        "options": {
-          "responseCode": 200,
-          "responseKey": "data"
-        }
-      },
-      "type": "n8n-nodes-base.respondToWebhook",
-      "typeVersion": 1.4,
-      "position": [
-        -1264,
-        3520
-      ],
-      "id": "5ccd4d23-3c41-42f6-a6c7-ec1f821d5fb5",
-      "name": "Respond to Webhook16"
-    },
-    {
-      "parameters": {
-        "content": "## Get Department/Head/IT Head/User\n",
-        "height": 336,
-        "width": 2604
-      },
-      "type": "n8n-nodes-base.stickyNote",
-      "position": [
-        -2016,
-        3376
-      ],
-      "typeVersion": 1,
-      "id": "ed49e589-6802-4326-b80c-f10c735adfac",
-      "name": "Sticky Note8"
-    },
-    {
-      "parameters": {
-        "documentId": {
-          "__rl": true,
-          "value": "1v6ookIRqanQDN1VVpSU1ME11yXClhn6QOyuTVrUHt40",
-          "mode": "list",
-          "cachedResultName": "Service Request",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1v6ookIRqanQDN1VVpSU1ME11yXClhn6QOyuTVrUHt40/edit?usp=drivesdk"
-        },
-        "sheetName": {
-          "__rl": true,
-          "value": 1622259695,
-          "mode": "list",
-          "cachedResultName": "Users CNIMS",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1v6ookIRqanQDN1VVpSU1ME11yXClhn6QOyuTVrUHt40/edit#gid=1622259695"
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.googleSheets",
-      "typeVersion": 4.6,
-      "position": [
-        -1696,
-        3520
-      ],
-      "id": "3590cd9d-6c1e-428f-aaff-2e28691f54ca",
-      "name": "get All11",
-      "alwaysOutputData": true,
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "De72zkM6aTeGmMSX",
-          "name": "Google Sheets account"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "httpMethod": "POST",
-        "path": "get-department",
-        "responseMode": "responseNode",
-        "options": {
-          "allowedOrigins": "*"
-        }
-      },
-      "type": "n8n-nodes-base.webhook",
-      "typeVersion": 2,
-      "position": [
-        -1920,
-        3520
-      ],
-      "id": "7251014a-1e85-4687-80ed-f14ffb14a6e6",
-      "name": "get4",
-      "webhookId": "555bdcef-fdc0-4a6a-9f37-14ed078b409e"
     },
     {
       "parameters": {
@@ -3758,7 +3554,7 @@
     },
     {
       "parameters": {
-        "jsCode": "const data = $input.all().map(item => item.json);\n\nconst filtered = data.filter(obj => \n  Object.keys(obj).length > 0  &&   obj.dev_status !== \"Completed\"\n   \n  \n);\n return filtered;\n\n\n\n"
+        "jsCode": "const data = $input.all().map(item => item.json);\n\n// Get the user's project from the switch node\nconst project = $('3. Switch Node1').first().json.body.user.project;\n\n// Apply filter:\n// - If project is \"CYLIX\", include all records (except empty and \"Filed\")\n// - Otherwise, include only those with matching project\nconst filtered = data.filter(obj => \n  Object.keys(obj).length > 0 &&\n  obj.cylix_status !== \"Filed\" &&\n  (project === \"CYLIX\" || obj.Project === project)\n);\n\nreturn filtered.map(item => ({ json: item }));\n"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -3768,19 +3564,6 @@
       ],
       "id": "51148702-804c-4921-879d-fb4d3ff353bf",
       "name": "Code3"
-    },
-    {
-      "parameters": {
-        "jsCode": "const data = $input.all();\nconst result = {};\nlet itHead = null;\n\n// --- Pass 1: Detect IT Head ---\ndata.forEach(item => {\n  const row = item.json;\n  const role = (row.Role || '').trim().toLowerCase();\n\n  if (role === 'it head') {\n    itHead = {\n      id: row.ID,\n      name: row.EmployeeName,\n      username: row.UseName,\n      position: row.Position\n    };\n  }\n});\n\n// --- Pass 2: Build Department Structure ---\ndata.forEach(item => {\n  const row = item.json;\n  const dept = row.Department || 'Unknown';\n  const role = (row.Role || '').trim().toLowerCase();\n\n  if (!result[dept]) {\n    result[dept] = { \"Head\": [], \"IT Head\": [], \"User\": [] };\n  }\n\n  const employee = {\n    id: row.ID,\n    name: row.EmployeeName,\n    username: row.UseName,\n    position: row.Position\n  };\n\n  // ✅ Add to Head if role = Head\n  if (role === 'head' || role === 'it head') {\n    result[dept][\"Head\"].push(employee);\n  }\n\n  // ✅ Add all employees (heads & users) under User list\n  if (role === 'head' || role === 'user' || role === 'it head') {\n    result[dept][\"User\"].push(employee);\n  }\n});\n\n// --- Pass 3: Attach IT Head to all departments ---\nif (itHead) {\n  Object.keys(result).forEach(dept => {\n    result[dept][\"IT Head\"] = [itHead];\n  });\n}\n\n// --- Optional: Sort all lists by name ---\nObject.keys(result).forEach(dept => {\n  [\"Head\", \"User\"].forEach(role => {\n    result[dept][role].sort((a, b) => a.name.localeCompare(b.name));\n  });\n});\n\nreturn [{ json: result }];\n"
-      },
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [
-        -1488,
-        3520
-      ],
-      "id": "e3e43f67-2513-4aff-82fd-f2f1932474db",
-      "name": "Code4"
     },
     {
       "parameters": {
@@ -3806,8 +3589,8 @@
       "type": "n8n-nodes-base.respondToWebhook",
       "typeVersion": 1.4,
       "position": [
-        -448,
-        3136
+        -1248,
+        3504
       ],
       "id": "e5d75404-b4c7-4566-819c-08644f006ba2",
       "name": "Respond to Webhook18"
@@ -3816,12 +3599,12 @@
       "parameters": {
         "content": "## Get Cylix Employees\n",
         "height": 352,
-        "width": 1596
+        "width": 988
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        -1008,
-        3008
+        -2016,
+        3376
       ],
       "typeVersion": 1,
       "id": "68a073ef-6699-4887-bbdc-0a14f6705769",
@@ -3848,8 +3631,8 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.6,
       "position": [
-        -672,
-        3136
+        -1680,
+        3504
       ],
       "id": "c0afb557-1360-4345-bb8b-2dcfa257c5c3",
       "name": "get All12",
@@ -3873,8 +3656,8 @@
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2,
       "position": [
-        -912,
-        3136
+        -1920,
+        3504
       ],
       "id": "b0a33bb3-5bb8-4bfe-a328-caca15f8f9b6",
       "name": "get5",
@@ -3918,6 +3701,1566 @@
       ],
       "id": "95444635-3b3f-45b2-8873-d42414438f51",
       "name": "Code8"
+    },
+    {
+      "parameters": {
+        "respondWith": "allIncomingItems",
+        "options": {
+          "responseCode": 200,
+          "responseKey": "data"
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        -656,
+        1344
+      ],
+      "id": "0d06b259-96a8-42eb-9618-9efb10d0e7c2",
+      "name": "Respond to Webhook19"
+    },
+    {
+      "parameters": {
+        "respondWith": "allIncomingItems",
+        "options": {
+          "responseCode": 200,
+          "responseKey": "data"
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        -656,
+        1488
+      ],
+      "id": "8cb152f6-ba0c-4558-857c-2c58df48aa4f",
+      "name": "Respond to Webhook20"
+    },
+    {
+      "parameters": {
+        "respondWith": "allIncomingItems",
+        "options": {
+          "responseCode": 200,
+          "responseKey": "data"
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        -656,
+        1648
+      ],
+      "id": "35c381be-f749-4ec4-8483-f02b78df9966",
+      "name": "Respond to Webhook21"
+    },
+    {
+      "parameters": {
+        "respondWith": "allIncomingItems",
+        "options": {
+          "responseCode": 200,
+          "responseKey": "data"
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        -656,
+        1824
+      ],
+      "id": "abe968a8-8a80-423a-9823-2981a8cb9ac4",
+      "name": "Respond to Webhook22"
+    },
+    {
+      "parameters": {
+        "respondWith": "allIncomingItems",
+        "options": {
+          "responseCode": 200,
+          "responseKey": "data"
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        -656,
+        1984
+      ],
+      "id": "e887b9e8-edaa-4625-ad05-55a745eee076",
+      "name": "Respond to Webhook23"
+    },
+    {
+      "parameters": {
+        "respondWith": "allIncomingItems",
+        "options": {
+          "responseCode": 200,
+          "responseKey": "data"
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        -656,
+        2176
+      ],
+      "id": "41021d4d-2c99-42ec-b7bd-39b6b1230c77",
+      "name": "Respond to Webhook24"
+    },
+    {
+      "parameters": {
+        "respondWith": "allIncomingItems",
+        "options": {
+          "responseCode": 200,
+          "responseKey": "data"
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        -656,
+        2352
+      ],
+      "id": "78f5aa4a-109f-407d-9e7f-5d7f695dfe7a",
+      "name": "Respond to Webhook25"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "version": 2,
+                  "leftValue": "",
+                  "caseSensitive": true,
+                  "typeValidation": "strict"
+                },
+                "conditions": [
+                  {
+                    "id": "8d43cde4-027a-4ca7-a24c-6f74f12d6238",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "leftValue": "={{ $json.body.projectName }}",
+                    "rightValue": "CNIMS"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "CNIMS"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "version": 2,
+                  "leftValue": "",
+                  "caseSensitive": true,
+                  "typeValidation": "strict"
+                },
+                "conditions": [
+                  {
+                    "id": "399a0fbd-6be5-48e9-9f66-04cf385cb418",
+                    "operator": {
+                      "name": "filter.operator.equals",
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "leftValue": "={{ $json.body.projectName }}",
+                    "rightValue": "CBMIS"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "CBMIS"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "version": 2,
+                  "leftValue": "",
+                  "caseSensitive": true,
+                  "typeValidation": "strict"
+                },
+                "conditions": [
+                  {
+                    "id": "a69d387d-a174-42b3-bc5f-c8b46b7c2375",
+                    "operator": {
+                      "name": "filter.operator.equals",
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "leftValue": "={{ $json.body.projectName }}",
+                    "rightValue": "CTMIS"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "CTMIS"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "5091517a-aaf1-401d-9220-a10e9d8ecaf9",
+                    "leftValue": "={{ $json.body.projectName }}",
+                    "rightValue": "CCMIS",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "CCMIS"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "e6edc879-0d09-415e-85cf-260bd4cdb68c",
+                    "leftValue": "={{ $json.body.projectName }}",
+                    "rightValue": "MDMIS",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "MDMIS"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "d9d52551-6a82-4546-9cab-5154c41243d8",
+                    "leftValue": "={{ $json.body.projectName }}",
+                    "rightValue": "CYLIX",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "CYLIX"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "7f07b0bf-4b2e-4a02-9b79-2088785fa9e0",
+      "name": "3. Switch Node2",
+      "type": "n8n-nodes-base.switch",
+      "position": [
+        -912,
+        3232
+      ],
+      "typeVersion": 3.2
+    },
+    {
+      "parameters": {
+        "jsCode": "// Input: items from Google Sheet\nconst items = $input.all();\n\nconst result = {};  // result must be an object\n\nfor (const item of items) {\n  const row = item.json;\n\n  const system = row.SystemName?.trim();\n  const formName = row.FormName?.trim();\n  const formNo = row.FormNo?.trim();\n\n  if (!result[system]) {\n    result[system] = [];\n  }\n\n  result[system].push({\n    name: formName,\n    code: formNo\n  });\n}\n\n// Wrap in Functionalities and return\nreturn [\n  {\n    json: {\n      Functionalities: result\n    }\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -112,
+        2992
+      ],
+      "id": "7d941a44-7b49-4391-bb6d-9fe46c938941",
+      "name": "Code9"
+    },
+    {
+      "parameters": {
+        "respondWith": "allIncomingItems",
+        "options": {
+          "responseCode": 200,
+          "responseKey": "data"
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        112,
+        2992
+      ],
+      "id": "022686b5-a6bc-42e1-b76a-851dc01b662a",
+      "name": "Respond to Webhook26"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "15OwyB5a62wnfGMBxbJ26etmdRIbvQ5kWw1JlU0eqEuc",
+          "mode": "list",
+          "cachedResultName": "Service Request Defaults",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/15OwyB5a62wnfGMBxbJ26etmdRIbvQ5kWw1JlU0eqEuc/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1703862775,
+          "mode": "list",
+          "cachedResultName": "CBMIS Functionalities",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/15OwyB5a62wnfGMBxbJ26etmdRIbvQ5kWw1JlU0eqEuc/edit#gid=1703862775"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        -352,
+        2992
+      ],
+      "id": "a22f1395-090f-41d4-9dfc-bdef19a263f4",
+      "name": "get All13",
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "De72zkM6aTeGmMSX",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Input: items from Google Sheet\nconst items = $input.all();\n\nconst result = {};  // result must be an object\n\nfor (const item of items) {\n  const row = item.json;\n\n  const system = row.SystemName?.trim();\n  const formName = row.FormName?.trim();\n  const formNo = row.FormNo?.trim();\n\n  if (!result[system]) {\n    result[system] = [];\n  }\n\n  result[system].push({\n    name: formName,\n    code: formNo\n  });\n}\n\n// Wrap in Functionalities and return\nreturn [\n  {\n    json: {\n      Functionalities: result\n    }\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -112,
+        3152
+      ],
+      "id": "d9bf7111-8734-4668-ae56-4dd032485335",
+      "name": "Code10"
+    },
+    {
+      "parameters": {
+        "respondWith": "allIncomingItems",
+        "options": {
+          "responseCode": 200,
+          "responseKey": "data"
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        112,
+        3152
+      ],
+      "id": "87dc03a3-5ca1-4a48-b50c-a606f042f30e",
+      "name": "Respond to Webhook27"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "15OwyB5a62wnfGMBxbJ26etmdRIbvQ5kWw1JlU0eqEuc",
+          "mode": "list",
+          "cachedResultName": "Service Request Defaults",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/15OwyB5a62wnfGMBxbJ26etmdRIbvQ5kWw1JlU0eqEuc/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1825278315,
+          "mode": "list",
+          "cachedResultName": "CNIMS Functionalities",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/15OwyB5a62wnfGMBxbJ26etmdRIbvQ5kWw1JlU0eqEuc/edit#gid=1825278315"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        -352,
+        3152
+      ],
+      "id": "14ec07fb-3891-47dd-a26d-ce61b17a0401",
+      "name": "get All14",
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "De72zkM6aTeGmMSX",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Input: items from Google Sheet\nconst items = $input.all();\n\nconst result = {};  // result must be an object\n\nfor (const item of items) {\n  const row = item.json;\n\n  const system = row.SystemName?.trim();\n  const formName = row.FormName?.trim();\n  const formNo = row.FormNo?.trim();\n\n  if (!result[system]) {\n    result[system] = [];\n  }\n\n  result[system].push({\n    name: formName,\n    code: formNo\n  });\n}\n\n// Wrap in Functionalities and return\nreturn [\n  {\n    json: {\n      Functionalities: result\n    }\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -112,
+        3312
+      ],
+      "id": "ae8180a2-1af1-4bb1-8014-4ddd062d545a",
+      "name": "Code11"
+    },
+    {
+      "parameters": {
+        "respondWith": "allIncomingItems",
+        "options": {
+          "responseCode": 200,
+          "responseKey": "data"
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        112,
+        3312
+      ],
+      "id": "4ca51571-4dfb-49b2-b2ac-0f94fc2211ee",
+      "name": "Respond to Webhook28"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "15OwyB5a62wnfGMBxbJ26etmdRIbvQ5kWw1JlU0eqEuc",
+          "mode": "list",
+          "cachedResultName": "Service Request Defaults",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/15OwyB5a62wnfGMBxbJ26etmdRIbvQ5kWw1JlU0eqEuc/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1825278315,
+          "mode": "list",
+          "cachedResultName": "CNIMS Functionalities",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/15OwyB5a62wnfGMBxbJ26etmdRIbvQ5kWw1JlU0eqEuc/edit#gid=1825278315"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        -352,
+        3312
+      ],
+      "id": "31a24911-4807-46e8-8922-83cc5fee52a7",
+      "name": "get All15",
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "De72zkM6aTeGmMSX",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Input: items from Google Sheet\nconst items = $input.all();\n\nconst result = {};  // result must be an object\n\nfor (const item of items) {\n  const row = item.json;\n\n  const system = row.SystemName?.trim();\n  const formName = row.FormName?.trim();\n  const formNo = row.FormNo?.trim();\n\n  if (!result[system]) {\n    result[system] = [];\n  }\n\n  result[system].push({\n    name: formName,\n    code: formNo\n  });\n}\n\n// Wrap in Functionalities and return\nreturn [\n  {\n    json: {\n      Functionalities: result\n    }\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -112,
+        3504
+      ],
+      "id": "3a197ac7-da2f-4cb8-b7c7-8fea3a68afd8",
+      "name": "Code12"
+    },
+    {
+      "parameters": {
+        "respondWith": "allIncomingItems",
+        "options": {
+          "responseCode": 200,
+          "responseKey": "data"
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        112,
+        3504
+      ],
+      "id": "c30fc2a1-5bf3-47ff-b751-05a4543b96c9",
+      "name": "Respond to Webhook29"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "15OwyB5a62wnfGMBxbJ26etmdRIbvQ5kWw1JlU0eqEuc",
+          "mode": "list",
+          "cachedResultName": "Service Request Defaults",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/15OwyB5a62wnfGMBxbJ26etmdRIbvQ5kWw1JlU0eqEuc/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1825278315,
+          "mode": "list",
+          "cachedResultName": "CNIMS Functionalities",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/15OwyB5a62wnfGMBxbJ26etmdRIbvQ5kWw1JlU0eqEuc/edit#gid=1825278315"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        -352,
+        3504
+      ],
+      "id": "d1061575-8ab0-4a31-91d6-2606b6d960fb",
+      "name": "get All16",
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "De72zkM6aTeGmMSX",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Input: items from Google Sheet\nconst items = $input.all();\n\nconst result = {};  // result must be an object\n\nfor (const item of items) {\n  const row = item.json;\n\n  const system = row.SystemName?.trim();\n  const formName = row.FormName?.trim();\n  const formNo = row.FormNo?.trim();\n\n  if (!result[system]) {\n    result[system] = [];\n  }\n\n  result[system].push({\n    name: formName,\n    code: formNo\n  });\n}\n\n// Wrap in Functionalities and return\nreturn [\n  {\n    json: {\n      Functionalities: result\n    }\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -112,
+        3696
+      ],
+      "id": "e89f9920-fb8a-4fd5-bc3a-ceefc603d287",
+      "name": "Code13"
+    },
+    {
+      "parameters": {
+        "respondWith": "allIncomingItems",
+        "options": {
+          "responseCode": 200,
+          "responseKey": "data"
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        112,
+        3696
+      ],
+      "id": "3bb1f585-a209-4aad-bf1b-8e541cba3ad8",
+      "name": "Respond to Webhook30"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "15OwyB5a62wnfGMBxbJ26etmdRIbvQ5kWw1JlU0eqEuc",
+          "mode": "list",
+          "cachedResultName": "Service Request Defaults",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/15OwyB5a62wnfGMBxbJ26etmdRIbvQ5kWw1JlU0eqEuc/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1825278315,
+          "mode": "list",
+          "cachedResultName": "CNIMS Functionalities",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/15OwyB5a62wnfGMBxbJ26etmdRIbvQ5kWw1JlU0eqEuc/edit#gid=1825278315"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        -352,
+        3696
+      ],
+      "id": "33edbd85-14dd-4f9d-b7db-ed0d5a8315f2",
+      "name": "get All17",
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "De72zkM6aTeGmMSX",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "0eccf128-e14e-46c7-ba89-413a6376e075",
+              "leftValue": "={{ $json.ID }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -272,
+        -3264
+      ],
+      "id": "ead4cd7b-e499-4fed-a6a7-5d2dd5b85399",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "version": 2,
+                  "leftValue": "",
+                  "caseSensitive": true,
+                  "typeValidation": "strict"
+                },
+                "conditions": [
+                  {
+                    "id": "8d43cde4-027a-4ca7-a24c-6f74f12d6238",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "leftValue": "={{ $json.body.project }}",
+                    "rightValue": "CNIMS"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "CNIMS"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "version": 2,
+                  "leftValue": "",
+                  "caseSensitive": true,
+                  "typeValidation": "strict"
+                },
+                "conditions": [
+                  {
+                    "id": "399a0fbd-6be5-48e9-9f66-04cf385cb418",
+                    "operator": {
+                      "name": "filter.operator.equals",
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "leftValue": "={{ $json.body.project }}",
+                    "rightValue": "CBMIS"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "CBMIS"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "version": 2,
+                  "leftValue": "",
+                  "caseSensitive": true,
+                  "typeValidation": "strict"
+                },
+                "conditions": [
+                  {
+                    "id": "a69d387d-a174-42b3-bc5f-c8b46b7c2375",
+                    "operator": {
+                      "name": "filter.operator.equals",
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "leftValue": "={{ $json.body.project }}",
+                    "rightValue": "CTMIS"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "CTMIS"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "5091517a-aaf1-401d-9220-a10e9d8ecaf9",
+                    "leftValue": "={{ $json.body.project }}",
+                    "rightValue": "CCMIS",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "CCMIS"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "e6edc879-0d09-415e-85cf-260bd4cdb68c",
+                    "leftValue": "={{ $json.body.project }}",
+                    "rightValue": "MDMIS",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "MDMIS"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "d9d52551-6a82-4546-9cab-5154c41243d8",
+                    "leftValue": "={{ $json.body.project }}",
+                    "rightValue": "CYLIX",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "CYLIX"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "1569fef4-fb8a-4d69-a4ec-9b1e0a945b95",
+      "name": "3. Switch Node3",
+      "type": "n8n-nodes-base.switch",
+      "position": [
+        -1680,
+        -3808
+      ],
+      "typeVersion": 3.2
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1v6ookIRqanQDN1VVpSU1ME11yXClhn6QOyuTVrUHt40",
+          "mode": "list",
+          "cachedResultName": "Service Request",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1v6ookIRqanQDN1VVpSU1ME11yXClhn6QOyuTVrUHt40/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1622259695,
+          "mode": "list",
+          "cachedResultName": "Users CNIMS",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1v6ookIRqanQDN1VVpSU1ME11yXClhn6QOyuTVrUHt40/edit#gid=1622259695"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "ID",
+              "lookupValue": "={{ $json.body.id }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        -992,
+        -4320
+      ],
+      "id": "c545a2f4-8864-47e1-8892-549eae4429fb",
+      "name": "CNIMS1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "De72zkM6aTeGmMSX",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1v6ookIRqanQDN1VVpSU1ME11yXClhn6QOyuTVrUHt40",
+          "mode": "list",
+          "cachedResultName": "Service Request",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1v6ookIRqanQDN1VVpSU1ME11yXClhn6QOyuTVrUHt40/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1539716016,
+          "mode": "list",
+          "cachedResultName": "Users",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1v6ookIRqanQDN1VVpSU1ME11yXClhn6QOyuTVrUHt40/edit#gid=1539716016"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "UseName",
+              "lookupValue": "={{ $json.body.username }}"
+            },
+            {
+              "lookupColumn": "Password",
+              "lookupValue": "={{ $json.body.password }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        -992,
+        -4128
+      ],
+      "id": "cc655d2a-b6cc-403b-b92f-4e3ebbd0bf15",
+      "name": "CBMIS1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "De72zkM6aTeGmMSX",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1v6ookIRqanQDN1VVpSU1ME11yXClhn6QOyuTVrUHt40",
+          "mode": "list",
+          "cachedResultName": "Service Request",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1v6ookIRqanQDN1VVpSU1ME11yXClhn6QOyuTVrUHt40/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1539716016,
+          "mode": "list",
+          "cachedResultName": "Users",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1v6ookIRqanQDN1VVpSU1ME11yXClhn6QOyuTVrUHt40/edit#gid=1539716016"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "UseName",
+              "lookupValue": "={{ $json.body.username }}"
+            },
+            {
+              "lookupColumn": "Password",
+              "lookupValue": "={{ $json.body.password }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        -992,
+        -3920
+      ],
+      "id": "6db88a32-a105-4bbe-840c-23d6ad9b419e",
+      "name": "CTMIS1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "De72zkM6aTeGmMSX",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1v6ookIRqanQDN1VVpSU1ME11yXClhn6QOyuTVrUHt40",
+          "mode": "list",
+          "cachedResultName": "Service Request",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1v6ookIRqanQDN1VVpSU1ME11yXClhn6QOyuTVrUHt40/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1539716016,
+          "mode": "list",
+          "cachedResultName": "Users",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1v6ookIRqanQDN1VVpSU1ME11yXClhn6QOyuTVrUHt40/edit#gid=1539716016"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "UseName",
+              "lookupValue": "={{ $json.body.username }}"
+            },
+            {
+              "lookupColumn": "Password",
+              "lookupValue": "={{ $json.body.password }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        -992,
+        -3744
+      ],
+      "id": "565cfae7-7d37-498a-9ef4-79c10ac1ecc6",
+      "name": "CCMIS",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "De72zkM6aTeGmMSX",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1v6ookIRqanQDN1VVpSU1ME11yXClhn6QOyuTVrUHt40",
+          "mode": "list",
+          "cachedResultName": "Service Request",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1v6ookIRqanQDN1VVpSU1ME11yXClhn6QOyuTVrUHt40/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1539716016,
+          "mode": "list",
+          "cachedResultName": "Users",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1v6ookIRqanQDN1VVpSU1ME11yXClhn6QOyuTVrUHt40/edit#gid=1539716016"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "UseName",
+              "lookupValue": "={{ $json.body.username }}"
+            },
+            {
+              "lookupColumn": "Password",
+              "lookupValue": "={{ $json.body.password }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        -976,
+        -3552
+      ],
+      "id": "598e8edd-d4f8-4657-9dbf-3e0eaf344206",
+      "name": "MDMIS1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "De72zkM6aTeGmMSX",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1v6ookIRqanQDN1VVpSU1ME11yXClhn6QOyuTVrUHt40",
+          "mode": "list",
+          "cachedResultName": "Service Request",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1v6ookIRqanQDN1VVpSU1ME11yXClhn6QOyuTVrUHt40/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1539716016,
+          "mode": "list",
+          "cachedResultName": "Users Cylix",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1v6ookIRqanQDN1VVpSU1ME11yXClhn6QOyuTVrUHt40/edit#gid=1539716016"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "ID",
+              "lookupValue": "={{ $json.body.id }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        -976,
+        -3392
+      ],
+      "id": "158e262a-1769-4fb7-b0e2-260b370f552e",
+      "name": "CYLIX1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "De72zkM6aTeGmMSX",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "login-id",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -1920,
+        -3744
+      ],
+      "id": "fc4cc4b4-a0e1-48b0-a92d-028a01f5c2be",
+      "name": "Webhook5",
+      "webhookId": "2e60f5e2-c417-40b5-a11e-009b55039841"
+    },
+    {
+      "parameters": {
+        "respondWith": "allIncomingItems",
+        "options": {
+          "responseCode": 200,
+          "responseKey": "data"
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        0,
+        -3376
+      ],
+      "id": "882d50cf-a41c-4474-9f40-7f453527330b",
+      "name": "Respond to Webhook5"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        -512,
+        -3264
+      ],
+      "id": "589c8202-3c87-4a6f-8c22-68f45edbc1a6",
+      "name": "Merge6"
+    },
+    {
+      "parameters": {
+        "respondWith": "allIncomingItems",
+        "options": {
+          "responseKey": "error"
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        0,
+        -3152
+      ],
+      "id": "83582388-99e4-42ac-bff6-873db47b5209",
+      "name": "Respond to Webhook6"
+    },
+    {
+      "parameters": {
+        "content": "## LOGIN\n**Double click** to edit me. [Guide](https://docs.n8n.io/workflows/sticky-notes/)",
+        "height": 1424,
+        "width": 2592
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -2016,
+        -4400
+      ],
+      "typeVersion": 1,
+      "id": "a5355747-72ba-4a21-b815-bbd74d17c952",
+      "name": "Sticky Note11"
+    },
+    {
+      "parameters": {
+        "jsCode": "const data = $input.first().json.body;\n\nconst result = {\n  Id: data.Id || 0,\n  EmployeeName: data.EmployeeName || '',\n  UseName: data.UseName || '',\n  Password: data.Password || '',\n  Project: data.Project || ''\n  };\n\nreturn [{ json: { data: result } }];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -976,
+        -3184
+      ],
+      "id": "22fa8e3f-d1d8-4528-88d9-a27ece589d56",
+      "name": "Temp1"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Get input data\nconst items = $input.all();\n\n// Sort by EmployeeName\nitems.sort((a, b) => {\n  const nameA = a.json.EmployeeName.toUpperCase();\n  const nameB = b.json.EmployeeName.toUpperCase();\n  return nameA.localeCompare(nameB);\n});\n\n// Return sorted items\nreturn items;\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1472,
+        3504
+      ],
+      "id": "e48585c7-a34b-4a1a-8519-17ded820e2c2",
+      "name": "Code4"
+    },
+    {
+      "parameters": {
+        "content": "## Get Department/Head/IT Head/User\n",
+        "height": 832,
+        "width": 1596
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1008,
+        4096
+      ],
+      "typeVersion": 1,
+      "id": "517818b8-5169-4ed3-b528-85c5bfae7333",
+      "name": "Sticky Note8"
+    },
+    {
+      "parameters": {
+        "respondWith": "allIncomingItems",
+        "options": {
+          "responseCode": 200,
+          "responseKey": "data"
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        272,
+        4192
+      ],
+      "id": "b03cb165-cdd0-41ad-9ce1-f8e22c9a0f87",
+      "name": "Respond to Webhook31"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1v6ookIRqanQDN1VVpSU1ME11yXClhn6QOyuTVrUHt40",
+          "mode": "list",
+          "cachedResultName": "Service Request",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1v6ookIRqanQDN1VVpSU1ME11yXClhn6QOyuTVrUHt40/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1622259695,
+          "mode": "list",
+          "cachedResultName": "Users CNIMS",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1v6ookIRqanQDN1VVpSU1ME11yXClhn6QOyuTVrUHt40/edit#gid=1622259695"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        -160,
+        4192
+      ],
+      "id": "30bf93d8-e392-4023-9619-6149518ab208",
+      "name": "get All18",
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "De72zkM6aTeGmMSX",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "get-department",
+        "responseMode": "responseNode",
+        "options": {
+          "allowedOrigins": "*"
+        }
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -880,
+        4448
+      ],
+      "id": "69e7f72d-d961-4e6a-a633-1419b27ada2b",
+      "name": "get6",
+      "webhookId": "555bdcef-fdc0-4a6a-9f37-14ed078b409e"
+    },
+    {
+      "parameters": {
+        "jsCode": "const data = $input.all();\nconst result = {};\nlet itHead = null;\n\n// --- Pass 1: Detect IT Head ---\ndata.forEach(item => {\n  const row = item.json;\n  const role = (row.Role || '').trim().toLowerCase();\n\n  if (role === 'it head') {\n    itHead = {\n      id: row.ID,\n      name: row.EmployeeName,\n      username: row.UseName,\n      position: row.Position\n    };\n  }\n});\n\n// --- Pass 2: Build Department Structure ---\ndata.forEach(item => {\n  const row = item.json;\n  const dept = row.Department || 'Unknown';\n  const role = (row.Role || '').trim().toLowerCase();\n\n  if (!result[dept]) {\n    result[dept] = { \"Head\": [], \"IT Head\": [], \"User\": [] };\n  }\n\n  const employee = {\n    id: row.ID,\n    name: row.EmployeeName,\n    username: row.UseName,\n    position: row.Position\n  };\n\n  // ✅ Add to Head if role = Head\n  if (role === 'head' || role === 'it head') {\n    result[dept][\"Head\"].push(employee);\n  }\n\n  // ✅ Add all employees (heads & users) under User list\n  if (role === 'head' || role === 'user' || role === 'it head') {\n    result[dept][\"User\"].push(employee);\n  }\n});\n\n// --- Pass 3: Attach IT Head to all departments ---\nif (itHead) {\n  Object.keys(result).forEach(dept => {\n    result[dept][\"IT Head\"] = [itHead];\n  });\n}\n\n// --- Optional: Sort all lists by name ---\nObject.keys(result).forEach(dept => {\n  [\"Head\", \"User\"].forEach(role => {\n    result[dept][role].sort((a, b) => a.name.localeCompare(b.name));\n  });\n});\n\nreturn [{ json: result }];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        48,
+        4192
+      ],
+      "id": "27d413ed-15eb-4810-9a5e-5be8a37147df",
+      "name": "Code14"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "version": 2,
+                  "leftValue": "",
+                  "caseSensitive": true,
+                  "typeValidation": "strict"
+                },
+                "conditions": [
+                  {
+                    "id": "8d43cde4-027a-4ca7-a24c-6f74f12d6238",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "leftValue": "={{ $json.body.projectName }}",
+                    "rightValue": "CNIMS"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "CNIMS"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "version": 2,
+                  "leftValue": "",
+                  "caseSensitive": true,
+                  "typeValidation": "strict"
+                },
+                "conditions": [
+                  {
+                    "id": "399a0fbd-6be5-48e9-9f66-04cf385cb418",
+                    "operator": {
+                      "name": "filter.operator.equals",
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "leftValue": "={{ $json.body.projectName }}",
+                    "rightValue": "CBMIS"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "CBMIS"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "version": 2,
+                  "leftValue": "",
+                  "caseSensitive": true,
+                  "typeValidation": "strict"
+                },
+                "conditions": [
+                  {
+                    "id": "a69d387d-a174-42b3-bc5f-c8b46b7c2375",
+                    "operator": {
+                      "name": "filter.operator.equals",
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "leftValue": "={{ $json.body.projectName }}",
+                    "rightValue": "CTMIS"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "CTMIS"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "5091517a-aaf1-401d-9220-a10e9d8ecaf9",
+                    "leftValue": "={{ $json.body.projectName }}",
+                    "rightValue": "CCMIS",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "CCMIS"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "e6edc879-0d09-415e-85cf-260bd4cdb68c",
+                    "leftValue": "={{ $json.body.projectName }}",
+                    "rightValue": "MDMIS",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "MDMIS"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "d9d52551-6a82-4546-9cab-5154c41243d8",
+                    "leftValue": "={{ $json.body.projectName }}",
+                    "rightValue": "CYLIX",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "CYLIX"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "576607a4-01dd-4a3f-ab8e-57b8fb7a48a3",
+      "name": "3. Switch Node4",
+      "type": "n8n-nodes-base.switch",
+      "position": [
+        -656,
+        4384
+      ],
+      "typeVersion": 3.2
+    },
+    {
+      "parameters": {
+        "respondWith": "allIncomingItems",
+        "options": {
+          "responseCode": 200,
+          "responseKey": "data"
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        256,
+        4432
+      ],
+      "id": "50e0a068-80b5-41b9-98e8-f9182493e694",
+      "name": "Respond to Webhook7"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1v6ookIRqanQDN1VVpSU1ME11yXClhn6QOyuTVrUHt40",
+          "mode": "list",
+          "cachedResultName": "Service Request",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1v6ookIRqanQDN1VVpSU1ME11yXClhn6QOyuTVrUHt40/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 805631201,
+          "mode": "list",
+          "cachedResultName": "Users CBMIS",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1v6ookIRqanQDN1VVpSU1ME11yXClhn6QOyuTVrUHt40/edit#gid=805631201"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        -176,
+        4432
+      ],
+      "id": "fd294fc8-7477-452d-a459-78e7c932cfae",
+      "name": "get All19",
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "De72zkM6aTeGmMSX",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const data = $input.all();\nconst result = {};\nlet itHead = null;\n\n// --- Pass 1: Detect IT Head ---\ndata.forEach(item => {\n  const row = item.json;\n  const role = (row.Role || '').trim().toLowerCase();\n\n  if (role === 'it head') {\n    itHead = {\n      id: row.ID,\n      name: row.EmployeeName,\n      username: row.UseName,\n      position: row.Position\n    };\n  }\n});\n\n// --- Pass 2: Build Department Structure ---\ndata.forEach(item => {\n  const row = item.json;\n  const dept = row.Department || 'Unknown';\n  const role = (row.Role || '').trim().toLowerCase();\n\n  if (!result[dept]) {\n    result[dept] = { \"Head\": [], \"IT Head\": [], \"User\": [] };\n  }\n\n  const employee = {\n    id: row.ID,\n    name: row.EmployeeName,\n    username: row.UseName,\n    position: row.Position\n  };\n\n  // ✅ Add to Head if role = Head\n  if (role === 'head' || role === 'it head') {\n    result[dept][\"Head\"].push(employee);\n  }\n\n  // ✅ Add all employees (heads & users) under User list\n  if (role === 'head' || role === 'user' || role === 'it head') {\n    result[dept][\"User\"].push(employee);\n  }\n});\n\n// --- Pass 3: Attach IT Head to all departments ---\nif (itHead) {\n  Object.keys(result).forEach(dept => {\n    result[dept][\"IT Head\"] = [itHead];\n  });\n}\n\n// --- Optional: Sort all lists by name ---\nObject.keys(result).forEach(dept => {\n  [\"Head\", \"User\"].forEach(role => {\n    result[dept][role].sort((a, b) => a.name.localeCompare(b.name));\n  });\n});\n\nreturn [{ json: result }];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        32,
+        4432
+      ],
+      "id": "1ff3bd04-54e2-4c07-b7b5-fd913842eed5",
+      "name": "Code15"
+    },
+    {
+      "parameters": {
+        "respondWith": "allIncomingItems",
+        "options": {
+          "responseCode": 200,
+          "responseKey": "data"
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        272,
+        4624
+      ],
+      "id": "608861ad-a2a7-4960-b10a-a217c4243ae6",
+      "name": "Respond to Webhook8"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1v6ookIRqanQDN1VVpSU1ME11yXClhn6QOyuTVrUHt40",
+          "mode": "list",
+          "cachedResultName": "Service Request",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1v6ookIRqanQDN1VVpSU1ME11yXClhn6QOyuTVrUHt40/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 620791755,
+          "mode": "list",
+          "cachedResultName": "Users CCMIS",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1v6ookIRqanQDN1VVpSU1ME11yXClhn6QOyuTVrUHt40/edit#gid=620791755"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        -160,
+        4624
+      ],
+      "id": "1a4c975b-b2eb-4f4b-92b4-d2d22ccee782",
+      "name": "get All11",
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "De72zkM6aTeGmMSX",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const data = $input.all();\nconst result = {};\nlet itHead = null;\n\n// --- Pass 1: Detect IT Head ---\ndata.forEach(item => {\n  const row = item.json;\n  const role = (row.Role || '').trim().toLowerCase();\n\n  if (role === 'it head') {\n    itHead = {\n      id: row.ID,\n      name: row.EmployeeName,\n      username: row.UseName,\n      position: row.Position\n    };\n  }\n});\n\n// --- Pass 2: Build Department Structure ---\ndata.forEach(item => {\n  const row = item.json;\n  const dept = row.Department || 'Unknown';\n  const role = (row.Role || '').trim().toLowerCase();\n\n  if (!result[dept]) {\n    result[dept] = { \"Head\": [], \"IT Head\": [], \"User\": [] };\n  }\n\n  const employee = {\n    id: row.ID,\n    name: row.EmployeeName,\n    username: row.UseName,\n    position: row.Position\n  };\n\n  // ✅ Add to Head if role = Head\n  if (role === 'head' || role === 'it head') {\n    result[dept][\"Head\"].push(employee);\n  }\n\n  // ✅ Add all employees (heads & users) under User list\n  if (role === 'head' || role === 'user' || role === 'it head') {\n    result[dept][\"User\"].push(employee);\n  }\n});\n\n// --- Pass 3: Attach IT Head to all departments ---\nif (itHead) {\n  Object.keys(result).forEach(dept => {\n    result[dept][\"IT Head\"] = [itHead];\n  });\n}\n\n// --- Optional: Sort all lists by name ---\nObject.keys(result).forEach(dept => {\n  [\"Head\", \"User\"].forEach(role => {\n    result[dept][role].sort((a, b) => a.name.localeCompare(b.name));\n  });\n});\n\nreturn [{ json: result }];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        48,
+        4624
+      ],
+      "id": "32bdeba6-2566-4834-bc04-31efd1f1c226",
+      "name": "Code16"
     }
   ],
   "pinData": {
@@ -5110,72 +6453,6 @@
         }
       }
     ],
-    "Create folder": [
-      {
-        "json": {
-          "kind": "drive#file",
-          "id": "1_pveRhn6VJoRmQP3LdSAP2K2I2oOeNZ5",
-          "name": "d5be9a80-c10b-4e9f-af72-965f9e1a0845",
-          "mimeType": "application/vnd.google-apps.folder"
-        }
-      }
-    ],
-    "Webhook2": [
-      {
-        "json": {
-          "headers": {
-            "host": "20.20.40.221:5678",
-            "connection": "keep-alive",
-            "content-length": "93660",
-            "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36 Edg/138.0.0.0",
-            "content-type": "multipart/form-data; boundary=----WebKitFormBoundary2KoX3UKBJQJDgsFt",
-            "accept": "*/*",
-            "origin": "http://127.0.0.1:5500",
-            "referer": "http://127.0.0.1:5500/",
-            "accept-encoding": "gzip, deflate",
-            "accept-language": "en-US,en;q=0.9"
-          },
-          "params": {},
-          "query": {},
-          "body": {
-            "uuid": "70f18c4f-384a-471d-a3b4-724bdee3af03",
-            "type": "actual",
-            "project": "CNIMS",
-            "date_requested": "2025-07-24",
-            "service_request_no": "Generating",
-            "department": "CTO",
-            "module": "AGRICULTURE",
-            "system_form_name": "CMIS00042",
-            "concern_type_new": "Yes",
-            "concern_type_del": "Yes",
-            "committed_date": "",
-            "data_point": [
-              "tert",
-              "tewt",
-              "",
-              ""
-            ],
-            "reference_field": [
-              "tewt",
-              "tret",
-              "",
-              ""
-            ],
-            "user": "ttwet",
-            "department_head": "tewt",
-            "it_head": "tewt",
-            "integrator": "Mark Jayson Ubas",
-            "developer": "tewt",
-            "qa": "tew",
-            "print_out_date": "",
-            "system_print_date": "",
-            "patch_date": ""
-          },
-          "webhookUrl": "http://localhost:5678/webhook/create",
-          "executionMode": "production"
-        }
-      }
-    ],
     "Split Out2": [
       {
         "json": {
@@ -5222,42 +6499,6 @@
           "name": "Screenshot 2025-07-17 at 8.01.42 AM.png",
           "webViewLink": "https://drive.google.com/file/d/114909CCQwSqD5KI0pcWWwiENgHTvcABy/view?usp=drivesdk",
           "foldername": "6ba66db8-47a8-48ce-95d6-c41a95846b96"
-        }
-      }
-    ],
-    "Webhook3": [
-      {
-        "json": {
-          "headers": {
-            "host": "500e18becc4f.ngrok-free.app",
-            "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36 Edg/138.0.0.0",
-            "content-length": "51",
-            "accept": "*/*",
-            "accept-encoding": "gzip, deflate, br, zstd",
-            "accept-language": "en-US,en;q=0.9",
-            "content-type": "application/json",
-            "origin": "http://127.0.0.1:5500",
-            "priority": "u=1, i",
-            "referer": "http://127.0.0.1:5500/",
-            "sec-ch-ua": "\"Not)A;Brand\";v=\"8\", \"Chromium\";v=\"138\", \"Microsoft Edge\";v=\"138\"",
-            "sec-ch-ua-mobile": "?0",
-            "sec-ch-ua-platform": "\"Windows\"",
-            "sec-fetch-dest": "empty",
-            "sec-fetch-mode": "cors",
-            "sec-fetch-site": "cross-site",
-            "x-forwarded-for": "119.92.236.5",
-            "x-forwarded-host": "500e18becc4f.ngrok-free.app",
-            "x-forwarded-proto": "https"
-          },
-          "params": {},
-          "query": {},
-          "body": {
-            "username": "sa",
-            "password": "sa",
-            "project": "CNIMS"
-          },
-          "webhookUrl": "http://localhost:5678/webhook/login",
-          "executionMode": "production"
         }
       }
     ],
@@ -5312,12 +6553,12 @@
           "query": {},
           "body": {
             "user": {
-              "userId": 2,
+              "userId": 27,
               "name": "Lyngie Cansana",
-              "email": "",
+              "email": "markubas24@gmail.com",
               "department": "",
               "project": "CYLIX",
-              "role": "Integrator"
+              "role": "Admin"
             }
           },
           "webhookUrl": "http://localhost:5678/webhook/get-all",
@@ -5384,7 +6625,7 @@
           "params": {},
           "query": {},
           "body": {
-            "uuid": "3934b055-aed1-4105-b207-df1a62e46b73"
+            "uuid": "3ab0d2be-3916-42c1-9ece-eaa7b6290ae5"
           },
           "webhookUrl": "http://localhost:5678/webhook/get-data",
           "executionMode": "production"
@@ -5418,7 +6659,7 @@
           "params": {},
           "query": {},
           "body": {
-            "uuid": "2daa991d-47a7-429d-aef3-539ea86c403a"
+            "uuid": "3ab0d2be-3916-42c1-9ece-eaa7b6290ae5"
           },
           "webhookUrl": "http://localhost:5678/webhook/get-data",
           "executionMode": "production"
@@ -5460,40 +6701,6 @@
       }
     ],
     "get3": [
-      {
-        "json": {
-          "headers": {
-            "host": "f33f9373d24d.ngrok-free.app",
-            "user-agent": "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Mobile Safari/537.36 Edg/138.0.0.0",
-            "content-length": "23",
-            "accept": "*/*",
-            "accept-encoding": "gzip, deflate, br, zstd",
-            "accept-language": "en-US,en;q=0.9",
-            "content-type": "application/json",
-            "origin": "http://127.0.0.1:5500",
-            "priority": "u=1, i",
-            "referer": "http://127.0.0.1:5500/",
-            "sec-ch-ua": "\"Not)A;Brand\";v=\"8\", \"Chromium\";v=\"138\", \"Microsoft Edge\";v=\"138\"",
-            "sec-ch-ua-mobile": "?1",
-            "sec-ch-ua-platform": "\"Android\"",
-            "sec-fetch-dest": "empty",
-            "sec-fetch-mode": "cors",
-            "sec-fetch-site": "cross-site",
-            "x-forwarded-for": "180.190.187.34",
-            "x-forwarded-host": "f33f9373d24d.ngrok-free.app",
-            "x-forwarded-proto": "https"
-          },
-          "params": {},
-          "query": {},
-          "body": {
-            "projectName": "CBMIS"
-          },
-          "webhookUrl": "http://localhost:5678/webhook/get-all",
-          "executionMode": "production"
-        }
-      }
-    ],
-    "get4": [
       {
         "json": {
           "headers": {
@@ -5631,6 +6838,151 @@
       }
     ],
     "get5": [
+      {
+        "json": {
+          "headers": {
+            "host": "f33f9373d24d.ngrok-free.app",
+            "user-agent": "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Mobile Safari/537.36 Edg/138.0.0.0",
+            "content-length": "23",
+            "accept": "*/*",
+            "accept-encoding": "gzip, deflate, br, zstd",
+            "accept-language": "en-US,en;q=0.9",
+            "content-type": "application/json",
+            "origin": "http://127.0.0.1:5500",
+            "priority": "u=1, i",
+            "referer": "http://127.0.0.1:5500/",
+            "sec-ch-ua": "\"Not)A;Brand\";v=\"8\", \"Chromium\";v=\"138\", \"Microsoft Edge\";v=\"138\"",
+            "sec-ch-ua-mobile": "?1",
+            "sec-ch-ua-platform": "\"Android\"",
+            "sec-fetch-dest": "empty",
+            "sec-fetch-mode": "cors",
+            "sec-fetch-site": "cross-site",
+            "x-forwarded-for": "180.190.187.34",
+            "x-forwarded-host": "f33f9373d24d.ngrok-free.app",
+            "x-forwarded-proto": "https"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "projectName": "CBMIS"
+          },
+          "webhookUrl": "http://localhost:5678/webhook/get-all",
+          "executionMode": "production"
+        }
+      }
+    ],
+    "Webhook3": [
+      {
+        "json": {
+          "headers": {
+            "host": "500e18becc4f.ngrok-free.app",
+            "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36 Edg/138.0.0.0",
+            "content-length": "51",
+            "accept": "*/*",
+            "accept-encoding": "gzip, deflate, br, zstd",
+            "accept-language": "en-US,en;q=0.9",
+            "content-type": "application/json",
+            "origin": "http://127.0.0.1:5500",
+            "priority": "u=1, i",
+            "referer": "http://127.0.0.1:5500/",
+            "sec-ch-ua": "\"Not)A;Brand\";v=\"8\", \"Chromium\";v=\"138\", \"Microsoft Edge\";v=\"138\"",
+            "sec-ch-ua-mobile": "?0",
+            "sec-ch-ua-platform": "\"Windows\"",
+            "sec-fetch-dest": "empty",
+            "sec-fetch-mode": "cors",
+            "sec-fetch-site": "cross-site",
+            "x-forwarded-for": "119.92.236.5",
+            "x-forwarded-host": "500e18becc4f.ngrok-free.app",
+            "x-forwarded-proto": "https"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "username": "sa",
+            "password": "sa",
+            "project": "CYLIX"
+          },
+          "webhookUrl": "http://localhost:5678/webhook/login",
+          "executionMode": "production"
+        }
+      }
+    ],
+    "Webhook2": [
+      {
+        "json": {
+          "headers": {
+            "host": "500e18becc4f.ngrok-free.app",
+            "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36",
+            "content-length": "3428",
+            "accept": "*/*",
+            "accept-encoding": "gzip, deflate, br, zstd",
+            "accept-language": "en-US,en;q=0.9",
+            "content-type": "multipart/form-data; boundary=----WebKitFormBoundarycLfysy3i3X9mM9ch",
+            "origin": "https://sonjie24.github.io",
+            "priority": "u=1, i",
+            "referer": "https://sonjie24.github.io/",
+            "sec-ch-ua": "\"Not)A;Brand\";v=\"8\", \"Chromium\";v=\"138\", \"Google Chrome\";v=\"138\"",
+            "sec-ch-ua-mobile": "?0",
+            "sec-ch-ua-platform": "\"Windows\"",
+            "sec-fetch-dest": "empty",
+            "sec-fetch-mode": "cors",
+            "sec-fetch-site": "cross-site",
+            "x-forwarded-for": "210.5.107.106",
+            "x-forwarded-host": "500e18becc4f.ngrok-free.app",
+            "x-forwarded-proto": "https"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "uuid": "b88d0fe8-5927-41b7-84a3-eeb3c761777c",
+            "type": "actual",
+            "project": "CBMIS",
+            "date_requested": "2025-07-15",
+            "service_request_no": "Generating",
+            "department": "OFFICE OF THE CITY CIVIL REGISTRAR",
+            "module": "LCR",
+            "system_form_name": "Death Report",
+            "system_form_no": "CMIS00898",
+            "concern_type_rev": "Yes",
+            "priority_set": "Yes",
+            "committed_date": "",
+            "data_point": [
+              "FUNCTION TO SEPARATE PRINT THE AGE BELLOW 18 yrs. old",
+              "FUNCTION TO SEPARATE PRINT ALL THE RECIDENCE OF BOGO CITY ON DEATH REPORT"
+            ],
+            "reference_field": [
+              "",
+              ""
+            ],
+            "user": "Eva R. Laput",
+            "user_id": "19",
+            "department_head_id": "",
+            "it_head_id": "",
+            "integrator_id": "",
+            "developer_id": "",
+            "qa_id": "",
+            "print_out_date": "",
+            "system_print_date": "",
+            "patch_date": "",
+            "req_status": [
+              "Pending"
+            ],
+            "cylix_status": [
+              "Pending"
+            ],
+            "dev_status": [
+              "Pending"
+            ],
+            "memo": [
+              ""
+            ]
+          },
+          "webhookUrl": "http://localhost:5678/webhook/create",
+          "executionMode": "production"
+        }
+      }
+    ],
+    "get6": [
       {
         "json": {
           "headers": {
@@ -6474,29 +7826,7 @@
       "main": [
         [
           {
-            "node": "get All10",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "get All11": {
-      "main": [
-        [
-          {
-            "node": "Code4",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "get4": {
-      "main": [
-        [
-          {
-            "node": "get All11",
+            "node": "3. Switch Node2",
             "type": "main",
             "index": 0
           }
@@ -6587,7 +7917,7 @@
       "main": [
         [
           {
-            "node": "Respond to Webhook10",
+            "node": "Respond to Webhook22",
             "type": "main",
             "index": 0
           }
@@ -6598,7 +7928,7 @@
       "main": [
         [
           {
-            "node": "Respond to Webhook11",
+            "node": "Respond to Webhook23",
             "type": "main",
             "index": 0
           }
@@ -6609,18 +7939,7 @@
       "main": [
         [
           {
-            "node": "Respond to Webhook6",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Code4": {
-      "main": [
-        [
-          {
-            "node": "Respond to Webhook16",
+            "node": "Respond to Webhook25",
             "type": "main",
             "index": 0
           }
@@ -6631,7 +7950,7 @@
       "main": [
         [
           {
-            "node": "Respond to Webhook9",
+            "node": "Respond to Webhook21",
             "type": "main",
             "index": 0
           }
@@ -6642,7 +7961,7 @@
       "main": [
         [
           {
-            "node": "Respond to Webhook18",
+            "node": "Code4",
             "type": "main",
             "index": 0
           }
@@ -6664,7 +7983,7 @@
       "main": [
         [
           {
-            "node": "Respond to Webhook5",
+            "node": "Respond to Webhook24",
             "type": "main",
             "index": 0
           }
@@ -6675,7 +7994,7 @@
       "main": [
         [
           {
-            "node": "Respond to Webhook7",
+            "node": "Respond to Webhook19",
             "type": "main",
             "index": 0
           }
@@ -6683,6 +8002,474 @@
       ]
     },
     "Code8": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook20",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Respond to Webhook25": {
+      "main": [
+        []
+      ]
+    },
+    "Code9": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook26",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "get All13": {
+      "main": [
+        [
+          {
+            "node": "Code9",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "3. Switch Node2": {
+      "main": [
+        [
+          {
+            "node": "get All10",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "get All13",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "get All14",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "get All15",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "get All16",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "get All17",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code10": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook27",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "get All14": {
+      "main": [
+        [
+          {
+            "node": "Code10",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code11": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook28",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "get All15": {
+      "main": [
+        [
+          {
+            "node": "Code11",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code12": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook29",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "get All16": {
+      "main": [
+        [
+          {
+            "node": "Code12",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code13": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook30",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "get All17": {
+      "main": [
+        [
+          {
+            "node": "Code13",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook5",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Respond to Webhook6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "3. Switch Node3": {
+      "main": [
+        [
+          {
+            "node": "CNIMS1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Temp1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "CBMIS1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Temp1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "CTMIS1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Temp1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "CCMIS",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Temp1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "MDMIS1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Temp1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "CYLIX1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Temp1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CNIMS1": {
+      "main": [
+        [
+          {
+            "node": "Merge6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CBMIS1": {
+      "main": [
+        [
+          {
+            "node": "Merge6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CTMIS1": {
+      "main": [
+        [
+          {
+            "node": "Merge6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CCMIS": {
+      "main": [
+        [
+          {
+            "node": "Merge6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MDMIS1": {
+      "main": [
+        [
+          {
+            "node": "Merge6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CYLIX1": {
+      "main": [
+        [
+          {
+            "node": "Merge6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook5": {
+      "main": [
+        [
+          {
+            "node": "3. Switch Node3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge6": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Temp1": {
+      "main": [
+        [
+          {
+            "node": "Merge6",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Code4": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook18",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "get All18": {
+      "main": [
+        [
+          {
+            "node": "Code14",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "get6": {
+      "main": [
+        [
+          {
+            "node": "3. Switch Node4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code14": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook31",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "3. Switch Node4": {
+      "main": [
+        [
+          {
+            "node": "get All18",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "get All19",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [],
+        [
+          {
+            "node": "get All11",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "get All19": {
+      "main": [
+        [
+          {
+            "node": "Code15",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code15": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook7",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "get All11": {
+      "main": [
+        [
+          {
+            "node": "Code16",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code16": {
       "main": [
         [
           {
@@ -6698,7 +8485,7 @@
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "44587bed-cd8a-4f74-a616-9a75b1e21d3a",
+  "versionId": "c7a9135b-a773-45c7-8b12-6bf20569b5c0",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "79ba0250104cb859eb8c1b1b109f0cc7dd733baeb546dc1733e16d3cfa2b8719"
