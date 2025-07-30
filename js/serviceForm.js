@@ -781,7 +781,7 @@
 
       document.getElementById("cylix_status").value = "Completed";
     } else if (mode === "File") {
-
+      toggleFormReadOnly("entryForm", "View", ["memo"]);
       document.getElementById("modalTitle").textContent = "FILE SERVICE REQUEST";
       document.getElementById("submitText").textContent = "FILE";
       document.getElementById("attachments").removeAttribute("required");
