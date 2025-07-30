@@ -72,9 +72,6 @@
             await getFunctionalities();
             await getDepartments();
             await getCylix();
-
-            savelogInProject(project);
-            saveUserSession(userData);
             window.location.href = `${BASE_PATH}pages/master.html`;
           } else {
             alert(data.message || "Login failed.");
@@ -121,13 +118,16 @@
 
       async function getDepartments() {
         try {
+
+          const user = getUserSession();
+          const projectName = user.project;
+
           const res = await fetch(`${API_BASE_URL}/get-department`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
             },
-            // If you need to send body data, add it here:
-            // body: JSON.stringify({ key: "value" }),
+            body: JSON.stringify({ projectName }),
           });
 
           if (!res.ok) {
