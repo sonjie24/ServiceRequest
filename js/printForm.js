@@ -74,9 +74,16 @@
         .no-print {
           display: none !important;
         }
-            .employee-id {
-            display: none;
-          }
+        .employee-id {
+          display: none;
+        }
+        #memo-table {
+          display: none;
+        }
+
+        #memo-table.show-in-print {
+        display: table;
+        }
 
           h2 {
             text-align: center;
@@ -99,6 +106,16 @@
 
     printWindow.document.close();
   };
+
+     window.addEventListener('beforeprint', function () {
+    const memo = document.getElementById('memo');
+    const table = document.getElementById('memo-table');
+    if (memo.value.trim() !== '') {
+      table.classList.add('show-in-print');
+    } else {
+      table.classList.remove('show-in-print');
+    }
+  });
 
   function mapDataToForm(main) {
     const fieldMap = {
