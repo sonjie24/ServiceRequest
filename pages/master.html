@@ -324,7 +324,7 @@
         }
 
         if (userRole === "Admin") {
-          if (record.dev_status === "Deployed") {
+          if (record.dev_status === "Deployed" && record.req_status === "Approved") {
             buttons += `<button onclick="fileRecord('${record.uuid}')">File</button>`;
           }
         }
