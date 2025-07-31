@@ -29,14 +29,19 @@
 
     <script src="../js/session.js"></script>
     <script src="../js/config.js"></script>
-    <!-- <script src="../js/global.js"></script> -->
+    <script src="../js/global.js"></script>
 
-    <script>
+ 
+
+    <!-- <script>
+      const basePath = window.location.origin + '/ServiceRequest'; // Adjust as needed
       const script = document.createElement('script');
-      script.src =  `${BASE_PATH}js/global.js`;
+      script.src = basePath + '/js/global.js';
       script.defer = true;
       document.head.appendChild(script);
-    </script>
+        console.log(script);
+    </script> -->
+
     
     <script>
       const project = "CYLIX";
