@@ -10,14 +10,11 @@
     basePath = "/";
   }
 
-  // Set base path for GitHub Pages or local
-  const isGithub = hostname.includes("github.io");
-  const base = document.createElement("base");
-  base.href = basePath;
-  document.head.prepend(base);
 
   // Expose basePath to other scripts
   window.BASE_PATH = basePath;
+
+  alert(basePath);
 
   // Set API base URL based on hostname
   let apiBaseUrl = "";
