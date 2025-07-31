@@ -243,7 +243,7 @@
         }
 
         if (userRole === "Admin") {
-          if (record.cylix_status !== "Accepted") {
+          if (record.cylix_status !== "For Filing") {
             buttons += `<button onclick="cancelRecord('${record.uuid}')">Cancel</button>`;
           }
         }
@@ -324,7 +324,7 @@
         }
 
         if (userRole === "Admin") {
-          if (record.dev_status === "Deployed" && record.req_status === "Approved") {
+          if (record.cylix_status === "For Filing") {
             buttons += `<button onclick="fileRecord('${record.uuid}')">File</button>`;
           }
         }
@@ -450,7 +450,7 @@
 
         if (record.project?.toLowerCase() === "ccmis") {
           buttons = `<label class="secondary-text">
-                          City of Caracar
+                          City of Carcar
                     </label>`;
         }
 
@@ -696,28 +696,28 @@
       });
     </script>
     <script>
-      const socket = new WebSocket("ws://20.20.40.221:8080");
+      // const socket = new WebSocket("ws://20.20.40.221:8080");
 
-      socket.addEventListener("open", () => {
-        console.log("✅ Connected to WebSocket server");
-      });
+      // socket.addEventListener("open", () => {
+      //   console.log("✅ Connected to WebSocket server");
+      // });
 
-      socket.addEventListener("message", (event) => {
-        console.log("📩 Received WebSocket message:", event.data);
+      // socket.addEventListener("message", (event) => {
+      //   console.log("📩 Received WebSocket message:", event.data);
 
-        if (event.data === "refresh_masterlist") {
-          loadMasterList(); // Your existing function to refresh the masterlist
-          showNotification("🔄 Master list has been updated.");
-        }
-      });
+      //   if (event.data === "refresh_masterlist") {
+      //     loadMasterList(); // Your existing function to refresh the masterlist
+      //     showNotification("🔄 Master list has been updated.");
+      //   }
+      // });
 
-      socket.addEventListener("close", () => {
-        console.log("❌ WebSocket connection closed");
-      });
+      // socket.addEventListener("close", () => {
+      //   console.log("❌ WebSocket connection closed");
+      // });
 
-      socket.addEventListener("error", (error) => {
-        console.error("⚠️ WebSocket error:", error);
-      });
+      // socket.addEventListener("error", (error) => {
+      //   console.error("⚠️ WebSocket error:", error);
+      // });
 
       function notifyMasterListChange() {
         loadMasterList();
