@@ -721,15 +721,15 @@
 
       function notifyMasterListChange() {
         loadMasterList();
-        // try {
-        //   if (typeof socket !== "undefined" && socket && socket.readyState === WebSocket.OPEN) {
-        //     socket.send("refresh_masterlist");
-        //   } else {
-        //     console.warn("⚠️ Socket not connected. Skipping refresh_masterlist notification.");
-        //   }
-        // } catch (e) {
-        //   console.error("❌ notifyMasterListChange error:", e);
-        // }
+        try {
+          if (typeof socket !== "undefined" && socket && socket.readyState === WebSocket.OPEN) {
+            socket.send("refresh_masterlist");
+          } else {
+            console.warn("⚠️ Socket not connected. Skipping refresh_masterlist notification.");
+          }
+        } catch (e) {
+          console.error("❌ notifyMasterListChange error:", e);
+        }
       }
 
 
