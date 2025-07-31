@@ -443,7 +443,7 @@
       const main = result.data[0] || {};
 
       mapDataToForm(main); // <-- Populate main form fields
-      console.log(main);
+
 
       // PROJECT SELECT (if options exist)
       if (main.project) {
@@ -485,18 +485,18 @@
         }, 300); // wait for formSelect to populate
       }
 
-      // ✅ Step 1: Select department and trigger user/head population
-      if (main.project) {
-        departmentSelect.value = main.department;
+      // // ✅ Step 1: Select department and trigger user/head population
+      // if (main.project) {
+      //   departmentSelect.value = main.department;
 
-        // ✅ Step 2: Trigger population and wait for it to finish
-        departmentSelect.dispatchEvent(new Event("change"));
-        setTimeout(() => {
-          userSelect.value = main.user;
-          headSelect.value = main.department_head;
-          itHeadSelect.value = main.it_head;
-        }, 300); // wait for formSelect to populate
-      }
+      //   // ✅ Step 2: Trigger population and wait for it to finish
+      //   departmentSelect.dispatchEvent(new Event("change"));
+      //   setTimeout(() => {
+      //     userSelect.value = main.user;
+      //     headSelect.value = main.department_head;
+      //     itHeadSelect.value = main.it_head;
+      //   }, 300); // wait for formSelect to populate
+      // }
 
 
     } catch (error) {
