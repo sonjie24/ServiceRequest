@@ -961,6 +961,8 @@
         body: formData,
       });
 
+      console.log(formData);
+
       const result = await response.json();
 
       if (response.ok) {
