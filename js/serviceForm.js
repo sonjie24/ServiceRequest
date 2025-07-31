@@ -875,6 +875,7 @@
       await getDataFiles(uuid);
 
       document.getElementById("dev_status").value = "Deployed";
+      document.getElementById("cylix_status").value = "For Filing";
     } else if (mode === "Done Fixed") {
       toggleFormReadOnly("entryForm", "View", ["memo"]);
       document.getElementById("modalTitle").textContent = "FIXED CONCERN";
