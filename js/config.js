@@ -23,7 +23,7 @@
   let apiBaseUrl = "";
 
   if (hostname.includes("20.20.40.221") || hostname.includes("127.0.0.1")) {
-    apiBaseUrl = "http://20.20.40.221:5679/webhook"; // Fallback
+    apiBaseUrl = "http://20.20.40.221:5678/webhook"; // Fallback
   } else {
     // GitHub Pages can't make backend calls directly unless it's public API or proxied
     apiBaseUrl = "https://72effc5616a8.ngrok-free.app/webhook"; // Replace with real prod endpoint
