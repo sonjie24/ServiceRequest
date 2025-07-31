@@ -235,6 +235,8 @@ clone.querySelectorAll("input, select, textarea").forEach((el) => {
       uuid: main.uuid,
       project: main.project || "CBMIS",
       department: main.department,
+      systemSelect: main.systemSelect,
+      formSelect: main.formSelect,
       user: main.user,
       user_id: main.user_id,
       department_head: main.department_head,
