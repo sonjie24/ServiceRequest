@@ -3,20 +3,157 @@
 
 
   // print function (global for onclick)
+//   window.printModal = function () {
+//    const modalForm = document.querySelector("#createModal .form-container");
+//   const clone = modalForm.cloneNode(true);
+
+//   // Replace form fields with their current values
+// modalForm.querySelectorAll("input, select, textarea").forEach((el) => {
+//   let selector = "";
+
+//   // Try to match by name first
+//   if (el.name) {
+//     selector = `[name="${el.name}"]`;
+//   } else if (el.id) {
+//     selector = `#${el.id}`;
+//   } else {
+//     return; // skip this element — can't safely find it in the clone
+//   }
+
+//   const cloneEl = clone.querySelector(selector);
+//   if (!cloneEl) return; // skip if not found
+
+//   if (el.type === "checkbox") {
+//     cloneEl.checked = el.checked;
+//     return;
+//   }
+
+//   if (el.tagName === "SELECT") {
+//     const text = el.options[el.selectedIndex]?.text || "";
+//     const span = document.createElement("span");
+//     span.textContent = text;
+//     cloneEl.replaceWith(span);
+//     return;
+//   }
+
+//   const span = document.createElement("span");
+//   span.textContent = el.value;
+//   cloneEl.replaceWith(span);
+// });
+
+
+
+//   const printWindow = window.open("", "", "width=1000,height=700");
+
+//   printWindow.document.write(`
+//     <html>
+//       <head>
+//         <title>Print Form</title>
+//         <style>
+//           @page {
+//             size: 8.5in 13in; /* Long bond paper */
+//             margin: .2in;
+//           }
+
+//           body {
+//             font-family: Arial, sans-serif;
+//             padding: 20px;
+//           }
+
+//           table {
+//             width: 100%;
+//             border-collapse: collapse;
+//             margin-top: 20px;
+//           }
+
+//           th, td {
+//             border: 1px solid #ccc;
+//             padding: 8px;
+//           }
+
+//           .section-title {
+//             font-weight: bold;
+//             background: #f0f0f0;
+//           }
+
+//           h2 {
+//             text-align: center;
+//           }
+
+//     @media print {
+//   input[type="checkbox"] {
+//     visibility: hidden;
+//     position: relative;
+//     width: 1em;
+//     height: 1em;
+//     margin-right: 5px;
+//   }
+
+//   input[type="checkbox"]::before {
+//     content: "☐";
+//     position: absolute;
+//     left: 0;
+//     top: 0;
+//     font-size: 1em;
+//     color: black;
+//   }
+
+//   input[type="checkbox"]:checked::before {
+//     content: "☑";
+//   }
+
+//   /* Optional: Align vertically */
+//   label.checkbox-label {
+//     display: inline-flex;
+//     align-items: center;
+//   }
+// }
+//         </style>
+//       </head>
+//       <body>
+//         ${clone.innerHTML}
+//         <script>
+//           window.onload = function() {
+//             window.print();
+//             window.onafterprint = function() {
+//               window.close();
+//             };
+//           };
+//         </script>
+//       </body>
+//     </html>
+//   `);
+
+//     // window.print(); 
+
+
+//   printWindow.document.close();
+// };
+
+// print function (global for onclick)
   window.printModal = function () {
    const modalForm = document.querySelector("#createModal .form-container");
   const clone = modalForm.cloneNode(true);
 
   // Replace form fields with their current values
-  clone.querySelectorAll("input, select, textarea").forEach((el) => {
-    const text = el.tagName === "SELECT"
-      ? el.options[el.selectedIndex]?.text || ""
-      : el.value;
+clone.querySelectorAll("input, select, textarea").forEach((el) => {
+  if (el.classList.contains("employee-id")) return;
 
-    const span = document.createElement("span");
-    span.textContent = text;
-    el.replaceWith(span);
-  });
+  let text = "";
+
+  if (el.type === "checkbox") {
+    text = el.checked ? "☑" : "☐";
+  } else if (el.tagName === "SELECT") {
+    text = el.options[el.selectedIndex]?.text || "";
+  } else {
+    // Remove trailing ID number
+    text = el.value.replace(/\b\d+\b$/, "").trim();
+  }
+
+  const span = document.createElement("span");
+  span.textContent = text;
+  el.replaceWith(span);
+});
 
   const printWindow = window.open("", "", "width=1000,height=700");
 
@@ -49,6 +186,17 @@
           .section-title {
             font-weight: bold;
             background: #f0f0f0;
+          }
+          @media print {
+        button, 
+        .employee-id {
+          display: none !important;
+        }
+        .no-print {
+          display: none !important;
+        }
+            .employee-id {
+            display: none;
           }
 
           h2 {
