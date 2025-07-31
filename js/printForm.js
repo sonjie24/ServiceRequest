@@ -146,8 +146,16 @@ clone.querySelectorAll("input, select, textarea").forEach((el) => {
   } else if (el.tagName === "SELECT") {
     text = el.options[el.selectedIndex]?.text || "";
   } else {
-    // Remove trailing ID number
-    text = el.value.replace(/\b\d+\b$/, "").trim();
+    text = el.value.trim();
+
+    // Only strip ID if input has class 'strip-id'
+    if (el.classList.contains("strip-id")) {
+      const parts = text.split(" ");
+      const last = parts[parts.length - 1];
+      if (!isNaN(last)) {
+        text = parts.slice(0, -1).join(" ");
+      }
+    }
   }
 
   const span = document.createElement("span");
