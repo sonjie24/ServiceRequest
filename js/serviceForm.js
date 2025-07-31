@@ -940,6 +940,7 @@
 
     try {
       let proc = "";
+      // alert(mode);
       if (mode === "Add") {
         proc = "/create";
       } else {
