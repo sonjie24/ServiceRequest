@@ -14,8 +14,6 @@
   // Expose basePath to other scripts
   window.BASE_PATH = basePath;
 
-  alert(basePath);
-
   // Set API base URL based on hostname
   let apiBaseUrl = "";
 
