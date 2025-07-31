@@ -29,7 +29,14 @@
 
     <script src="../js/session.js"></script>
     <script src="../js/config.js"></script>
-    <script src="../js/global.js"></script>
+    <!-- <script src="../js/global.js"></script> -->
+
+    <script>
+      const script = document.createElement('script');
+      script.src =  `${BASE_PATH}js/global.js`;
+      script.defer = true;
+      document.head.appendChild(script);
+    </script>
     
     <script>
       const project = "CYLIX";
