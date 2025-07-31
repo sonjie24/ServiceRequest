@@ -5,6 +5,8 @@
 
   let departmentData = getDepartmentSession();
 
+  console.log(departmentData);
+
  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   async function ifProjectCylix(selectedProject) {
     // 🔹 Special handling for CYLIX project
@@ -32,6 +34,11 @@
         console.error("❌ Failed to load departments:", err);
       }
     } else {
+
+      Object.keys(departmentData).forEach(department => {
+            departmentSelect.appendChild(createOption(department, department));
+          });
+          
       departmentSelect.disabled = false;
       systemSelect.disabled = false;
     }
