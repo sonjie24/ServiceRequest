@@ -52,14 +52,15 @@
         <tr>
           <th width="160px" hidden>GUID</th>
           <th onclick="sortTable(0)" width="160px">Request No ⬍</th>
-          <th width="120px">Requested Date</th>
+          <th width="90px">Requested Date</th>
           <th width="120px">Project</th>
-          <th width="250px">User/Integrator/Developer/QA</th>
-          <th width="250px">Department/Module/Form</th>
-          <th width="500px">Concern Type</th>
-          <th width="250px">Priority</th>
+          <th width="220px">User/Integrator/ Developer/ QA</th>
+          <th width="120px">Department/Module/Form</th>
+          <th width="220px">Concern Type/Priority</th>
+          <!-- <th width="250px">Priority</th> -->
+          <th width="500px">Concerns</th>
           <th width="150px">Status</th>
-          <th>Action</th>
+          <th width="40px">Action</th>
         </tr>
       </thead>
       <tbody id="masterTableBody">
@@ -127,7 +128,7 @@
 
           // ✅ extract the array
           const records = Array.isArray(json.data) ? json.data : [];
-
+          console.log(records);
           if (records.length === 0) {
             console.warn("No records found");
             document.getElementById("masterTableBody").innerHTML =
@@ -146,6 +147,18 @@
 
           records.forEach((record) => {
             const row = document.createElement("tr");
+
+             // ✅ Format Details into a small HTML list
+            const detailsHTML = record.Details?.length
+              ? `${record.Details.map(d => `<b>${d.DataPoint}</b> (Ref: ${d.Reference}) <br/><br/>`).join("")}`
+              : "";
+
+             // ✅ Format Files into clickable links
+            const filesHTML = record.Files?.length
+              ? `${record.Files.map(f => `<li><a href="${f}" target="_blank">📄 View</a></li>`).join("")}`
+              : "";
+
+
             row.innerHTML = `
             <td hidden>${record.uuid || ""}</td>
             <td><div class="secondary-text">${
@@ -169,7 +182,8 @@
             </td>
             
             <td id="concern-${record.uuid}"></td>
-            <td id="priority-${record.uuid}"></td>
+            
+            <td><div class="secondary-text">${detailsHTML} <br/> Attachemnet/s: ${filesHTML}</div></td> 
             <td>
                 
                   <label class="secondary-text">
@@ -185,6 +199,8 @@
                         📅  ${record.patch_date || ""} 
                   </label>
             </td>
+            
+
 
             <td class="action-buttons" id="actions-${record.uuid}"></td>
 
@@ -195,8 +211,8 @@
               generateActionButtons(record);
             document.getElementById(`concern-${record.uuid}`).innerHTML =
               generateConcernType(record);
-            document.getElementById(`priority-${record.uuid}`).innerHTML =
-              generatePriorityType(record);
+            // document.getElementById(`priority-${record.uuid}`).innerHTML =
+            //   generatePriorityType(record);
             document.getElementById(`user-${record.uuid}`).innerHTML =
               generateUsers(record);
             document.getElementById(`prject_desc-${record.uuid}`).innerHTML =
@@ -375,6 +391,29 @@
                   Bugs
             </label>`;
         }
+        buttons += `<br/><br/><b> Priority </b>`
+
+        if (record.priority_set?.toLowerCase() === "yes") {
+          buttons += `<label class="secondary-text">
+                        <input type="checkbox"  Checked disabled>
+                        Set Committed Date:${record.committed_date}
+                </label>`;
+        }
+
+        if (record.priority_immediate?.toLowerCase() === "yes") {
+          buttons += `<label class="secondary-text">
+                        <input type="checkbox"  Checked disabled>
+                        Immediate
+                </label>`;
+        }
+
+        if (record.priority_add?.toLowerCase() === "yes") {
+          buttons += `<label class="secondary-text">
+                        <input type="checkbox"  Checked disabled>
+                        Addtl Customization/Outside Scope
+                </label>`;
+        }
+
 
         return `<td>${buttons}</td>`;
       }
