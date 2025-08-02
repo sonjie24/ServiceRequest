@@ -17,7 +17,7 @@
   // Set API base URL based on hostname
   let apiBaseUrl = "";
 
-  if (hostname.includes("20.20.40.221") || hostname.includes("127.0.0.1")) {
+  if (hostname.includes("20.20.40.221")) {
     apiBaseUrl = "http://20.20.40.221:5678/webhook"; // Fallback
   } else {
     // GitHub Pages can't make backend calls directly unless it's public API or proxied
