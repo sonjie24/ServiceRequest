@@ -971,6 +971,8 @@
       } else {
         proc = "/update";
 
+        console.log(formData);
+
         // Remove Details
         const detailData = getDetailDataSession();
         detailData.forEach((item) => {

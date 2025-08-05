@@ -228,11 +228,13 @@
       tbody.innerHTML = "";
 
       // Loop through array to create table rows
+      let iinum =0;
       detailData.forEach((item) => {
+        iinum +=1;
         const row = document.createElement("tr"); // ✅ FIX: create <tr> not item
         row.innerHTML = `
-          <td><input type="text" name="data_point" value="1. ${
-            item.data_point || ""
+          <td><input type="text" name="data_point" value="${
+           iinum + ". " + item.data_point || ""
           }" /></td>
           <td><input type="text" name="reference_field" value="${
             item.ref_field || ""
@@ -246,7 +248,7 @@
       const rowsToAdd = Math.max(0, 5 - totalRows);
 
       // ✅ Optionally add a blank row for new entry
-      for (let i = 1; i <= rowsToAdd; i++) {
+      for (let i = totalRows; i <= rowsToAdd +1; i++) {
         const blankRow = document.createElement("tr");
         blankRow.innerHTML = `
           <td><input type="text" name="data_point" value="${i+1}. " /></td>
