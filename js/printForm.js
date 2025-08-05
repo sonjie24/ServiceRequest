@@ -231,7 +231,7 @@
       detailData.forEach((item) => {
         const row = document.createElement("tr"); // ✅ FIX: create <tr> not item
         row.innerHTML = `
-          <td><input type="text" name="data_point" value="${
+          <td><input type="text" name="data_point" value="1. ${
             item.data_point || ""
           }" /></td>
           <td><input type="text" name="reference_field" value="${
@@ -241,13 +241,21 @@
         tbody.appendChild(row);
       });
 
+      // Calculate how many blank rows to add
+      const totalRows = detailData.length;
+      const rowsToAdd = Math.max(0, 5 - totalRows);
+
       // ✅ Optionally add a blank row for new entry
-      const blankRow = document.createElement("tr");
-      blankRow.innerHTML = `
-        <td><input type="text" name="data_point" value="" /></td>
-        <td><input type="text" name="reference_field" value="" /></td>
-      `;
-      tbody.appendChild(blankRow);
+      for (let i = 1; i <= rowsToAdd; i++) {
+        const blankRow = document.createElement("tr");
+        blankRow.innerHTML = `
+          <td><input type="text" name="data_point" value="${i+1}. " /></td>
+          <td><input type="text" name="reference_field" value="" /></td>
+        `;
+        tbody.appendChild(blankRow);
+      }
+          
+ 
     } catch (error) {
       console.error("Fetch error:", error);
       alert("An error occurred while fetching data.");
