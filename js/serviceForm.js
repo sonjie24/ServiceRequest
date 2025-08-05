@@ -7,22 +7,27 @@
 
   console.log(departmentData);
 
- //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   async function ifProjectCylix(selectedProject) {
     // 🔹 Special handling for CYLIX project
     if (user.project === "CYLIX") {
       departmentSelect.disabled = true;
-      departmentSelect.innerHTML = '<option value="" disabled selected>Select Department</option>';
+      departmentSelect.innerHTML =
+        '<option value="" disabled selected>Select Department</option>';
 
       try {
-        await getDepartments(selectedProject);   // ✅ ensure data is fetched
+        await getDepartments(selectedProject); // ✅ ensure data is fetched
         departmentData = getDepartmentSession(); // ✅ get updated session data
 
         // 🔹 Populate Departments safely
-        if (departmentData && typeof departmentData === "object" && Object.keys(departmentData).length > 0) {
+        if (
+          departmentData &&
+          typeof departmentData === "object" &&
+          Object.keys(departmentData).length > 0
+        ) {
           departmentSelect.disabled = false;
           systemSelect.disabled = false;
-          Object.keys(departmentData).forEach(department => {
+          Object.keys(departmentData).forEach((department) => {
             departmentSelect.appendChild(createOption(department, department));
           });
         } else {
@@ -34,11 +39,10 @@
         console.error("❌ Failed to load departments:", err);
       }
     } else {
+      Object.keys(departmentData).forEach((department) => {
+        departmentSelect.appendChild(createOption(department, department));
+      });
 
-      Object.keys(departmentData).forEach(department => {
-            departmentSelect.appendChild(createOption(department, department));
-          });
-          
       departmentSelect.disabled = false;
       systemSelect.disabled = false;
     }
@@ -51,7 +55,6 @@
   const formNoInput = document.getElementById("system_form_no");
 
   const projects = data?.Functionalities || {};
-
 
   // Populate the project dropdown
   Object.keys(projects).forEach((project) => {
@@ -66,8 +69,10 @@
     const selectedProject = projecttSelect.value;
 
     // 🔹 Reset selects
-    systemSelect.innerHTML = '<option value="" disabled selected>Select Module</option>';
-    formSelect.innerHTML = '<option value="" disabled selected>Select Form</option>';
+    systemSelect.innerHTML =
+      '<option value="" disabled selected>Select Module</option>';
+    formSelect.innerHTML =
+      '<option value="" disabled selected>Select Form</option>';
 
     // 🔹 Disable them initially
     systemSelect.disabled = true;
@@ -76,8 +81,7 @@
 
     // 🔹 Populate System Modules for selected project
     if (selectedProject && projects[selectedProject]) {
-
-      Object.keys(projects[selectedProject]).forEach(systemName => {
+      Object.keys(projects[selectedProject]).forEach((systemName) => {
         const option = document.createElement("option");
         option.value = systemName;
         option.textContent = systemName;
@@ -86,7 +90,6 @@
     }
 
     await ifProjectCylix(selectedProject);
-
   });
 
   systemSelect.addEventListener("change", () => {
@@ -94,10 +97,14 @@
     const selectedSystem = systemSelect.value;
 
     // ✅ Get the forms array for this system
-    const forms = (projects[selectedProject] && projects[selectedProject][selectedSystem]) || [];
+    const forms =
+      (projects[selectedProject] &&
+        projects[selectedProject][selectedSystem]) ||
+      [];
 
     // Reset form dropdown
-    formSelect.innerHTML = '<option value="" disabled selected>Select Form</option>';
+    formSelect.innerHTML =
+      '<option value="" disabled selected>Select Form</option>';
     formSelect.disabled = true;
     formNoInput.value = "";
 
@@ -105,11 +112,11 @@
     if (forms.length > 0) {
       formSelect.disabled = false;
 
-      forms.forEach(formObj => {
+      forms.forEach((formObj) => {
         const option = document.createElement("option");
-        option.value = formObj.name;         // system_form_name
-        option.textContent = formObj.name;   // display name
-        option.dataset.code = formObj.code;  // store form code
+        option.value = formObj.name; // system_form_name
+        option.textContent = formObj.name; // display name
+        option.dataset.code = formObj.code; // store form code
         formSelect.appendChild(option);
       });
     }
@@ -444,10 +451,8 @@
 
       mapDataToForm(main); // <-- Populate main form fields
 
-
       // PROJECT SELECT (if options exist)
       if (main.project) {
-
         projecttSelect.value = main.project;
         projecttSelect.dispatchEvent(new Event("change")); // trigger formSelect population
         setTimeout(() => {
@@ -456,13 +461,10 @@
         }, 300); // wait for formSelect to populate
 
         await ifProjectCylix(main.project);
-
       }
-
 
       // SYSTEM SELECT (if options exist)
       if (main.module) {
-
         systemSelect.value = main.module;
         systemSelect.dispatchEvent(new Event("change")); // trigger formSelect population
 
@@ -497,8 +499,6 @@
       //     itHeadSelect.value = main.it_head;
       //   }, 300); // wait for formSelect to populate
       // }
-
-
     } catch (error) {
       console.error("Fetch error:", error);
       alert("An error occurred while fetching data.");
@@ -532,9 +532,11 @@
       detailData.forEach((item) => {
         const row = document.createElement("tr"); // ✅ FIX: create <tr> not item
         row.innerHTML = `
-          <td><input type="text" name="data_point" value="${item.data_point || ""
+          <td><input type="text" name="data_point" value="${
+            item.data_point || ""
           }" /></td>
-          <td><input type="text" name="reference_field" value="${item.ref_field || ""
+          <td><input type="text" name="reference_field" value="${
+            item.ref_field || ""
           }" /></td>
         `;
         tbody.appendChild(row);
@@ -595,8 +597,9 @@
             </a>
           </td>
           <td class="action-buttons">
-              <button type="button" onclick="removeFile('${item.GDriveID
-          }',this)" id="remove">Remove</button>
+              <button type="button" onclick="removeFile('${
+                item.GDriveID
+              }',this)" id="remove">Remove</button>
           </td>
         `;
         tbody.appendChild(row);
@@ -627,7 +630,6 @@
       ).toString(16)
     );
   }
-
 
   // Get default values (used when modal opens)
   window.getDefaults = async function (uuid, mode) {
@@ -664,7 +666,6 @@
       if (user.project === "CNIMS") {
         document.getElementById("attachments").removeAttribute("required");
       }
-
     } else if (mode === "Edit") {
       document.getElementById("modalTitle").textContent =
         "SERVICE REQUEST UPDATE";
@@ -686,8 +687,6 @@
       await getData(uuid);
       await getDataDetails(uuid);
       await getDataFiles(uuid);
-
-
     } else if (mode === "View") {
       document.getElementById("modalTitle").textContent = "SERVICE REQUEST";
       document.getElementById("submitText").textContent = "Print";
@@ -915,6 +914,32 @@
       await getDataFiles(uuid);
 
       document.getElementById("cylix_status").value = "Filed";
+    }
+
+    if (user.role !== "Admin") {
+      const selectReq = document.getElementById("req_status");
+      const optionsReq = ["Pending"];
+
+      for (const value of optionsReq) {
+        const option = selectReq.querySelector(`option[value="${value}"]`);
+        if (option) option.remove();
+      }
+
+      const selectCylix = document.getElementById("cylix_status");
+      const optionsCylix = ["Pending","Filed", "For Filing"];
+
+      for (const value of optionsCylix) {
+        const option = selectCylix.querySelector(`option[value="${value}"]`);
+        if (option) option.remove();
+      }
+
+      const selectDev = document.getElementById("dev_status");
+      const optionsDev = ["Pending"];
+
+      for (const value of optionsDev) {
+        const option = selectDev.querySelector(`option[value="${value}"]`);
+        if (option) option.remove();
+      }
     }
 
     submitBtn.disabled = false;
