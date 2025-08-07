@@ -187,19 +187,8 @@
 
   async function getData(record) {
     try {
-      // const res = await fetch(`${API_BASE_URL}/get-data-main`, {
-      //   method: "POST",
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //   },
-      //   body: JSON.stringify({ uuid }),
-      // });
-
-      // if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
-
-      // const result = await res.json();
+ 
       const main = record;
-      console.log(main);
       mapDataToForm(main); // <-- Populate main form field
     } catch (error) {
       console.error("Fetch error:", error);
@@ -212,9 +201,7 @@
      
       const detailData = record.Details;
 
-      console.log(detailData);
-
-      // Get table body element
+        // Get table body element
       const tbody = document.getElementById("details_data");
 
       // Clear existing rows
