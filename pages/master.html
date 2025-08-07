@@ -114,6 +114,7 @@
 
       const projectLogin = getlogInProject();
       const user = getUserSession();
+
       async function loadMasterList() {
         try {
           const projectName = user.project;
@@ -128,7 +129,7 @@
 
           // ✅ extract the array
           const records = Array.isArray(json.data) ? json.data : [];
-          console.log(records);
+         
           if (records.length === 0) {
             console.warn("No records found");
             document.getElementById("masterTableBody").innerHTML =
@@ -227,8 +228,10 @@
         console.log("✅ Async function executed silently after action");
         const userRole = user.role; // Define this to return role from session or cookie
         let buttons = "";
+        const safeRecord = JSON.stringify(record).replace(/"/g, '&quot;'); // escape quotes for HTML
 
-        buttons += `<button onclick="viewRecord('${record.uuid}')">View</button>`;
+
+        buttons += `<button onclick="viewRecord(${safeRecord})">View</button>`;
 
         if (
           userRole === "User" ||
@@ -519,9 +522,9 @@
         openModal(id);
       }
 
-      function viewRecord(id) {
-        mode = "View";
-        openViewPrint(id);
+      function viewRecord(record) {
+        mode = "View";       
+        openViewPrint(record);
       }
 
       function editRecord(id) {
@@ -670,7 +673,7 @@
         modalBody.innerHTML = "Loading...";
       }
 
-      function openViewPrint(uuid = null) {
+      function openViewPrint(record = null) {
         const modal = document.getElementById("createModal");
         const modalBody = document.getElementById("modalBody");
 
@@ -693,7 +696,7 @@
                 if (typeof getDefaults === "function") {
                   clearInterval(tryGetDefaults);
                   // ✅ Now the DOM is guaranteed to be ready
-                  getDefaults(uuid, mode);
+                  getDefaults(record, mode);
                 }
               }, 100); // Poll every 100ms until DOM is ready
             };

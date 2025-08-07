@@ -107,13 +107,13 @@
     printWindow.document.close();
   };
 
-     window.addEventListener('beforeprint', function () {
-    const memo = document.getElementById('memo');
-    const table = document.getElementById('memo-table');
-    if (memo.value.trim() !== '') {
-      table.classList.add('show-in-print');
+  window.addEventListener("beforeprint", function () {
+    const memo = document.getElementById("memo");
+    const table = document.getElementById("memo-table");
+    if (memo.value.trim() !== "") {
+      table.classList.add("show-in-print");
     } else {
-      table.classList.remove('show-in-print');
+      table.classList.remove("show-in-print");
     }
   });
 
@@ -184,21 +184,22 @@
       }
     }
   }
-  async function getData(uuid) {
+
+  async function getData(record) {
     try {
-      const res = await fetch(`${API_BASE_URL}/get-data-main`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ uuid }),
-      });
+      // const res = await fetch(`${API_BASE_URL}/get-data-main`, {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      //   body: JSON.stringify({ uuid }),
+      // });
 
-      if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
+      // if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
 
-      const result = await res.json();
-      const main = result.data[0] || {};
-
+      // const result = await res.json();
+      const main = record;
+      console.log(main);
       mapDataToForm(main); // <-- Populate main form field
     } catch (error) {
       console.error("Fetch error:", error);
@@ -206,20 +207,12 @@
     }
   }
 
-  async function getDataDetails(uuid) {
+  async function getDataDetails(record) {
     try {
-      const res = await fetch(`${API_BASE_URL}/get-data-detail`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ uuid }),
-      });
+     
+      const detailData = record.Details;
 
-      if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
-
-      const result = await res.json();
-      const detailData = result.data || [];
+      console.log(detailData);
 
       // Get table body element
       const tbody = document.getElementById("details_data");
@@ -228,16 +221,16 @@
       tbody.innerHTML = "";
 
       // Loop through array to create table rows
-      let iinum =0;
+      let iinum = 0;
       detailData.forEach((item) => {
-        iinum +=1;
+        iinum += 1;
         const row = document.createElement("tr"); // ✅ FIX: create <tr> not item
         row.innerHTML = `
           <td><input type="text" name="data_point" value="${
-           iinum + ". " + item.data_point || ""
+            iinum + ". " + item.DataPoint || ""
           }" /></td>
           <td><input type="text" name="reference_field" value="${
-            item.ref_field || ""
+            item.Reference || ""
           }" /></td>
         `;
         tbody.appendChild(row);
@@ -248,16 +241,14 @@
       const rowsToAdd = Math.max(0, 5 - totalRows);
 
       // ✅ Optionally add a blank row for new entry
-      for (let i = totalRows; i <= rowsToAdd +1; i++) {
+      for (let i = totalRows; i <= rowsToAdd + 1; i++) {
         const blankRow = document.createElement("tr");
         blankRow.innerHTML = `
-          <td><input type="text" name="data_point" value="${i+1}. " /></td>
+          <td><input type="text" name="data_point" value="${i + 1}. " /></td>
           <td><input type="text" name="reference_field" value="" /></td>
         `;
         tbody.appendChild(blankRow);
       }
-          
- 
     } catch (error) {
       console.error("Fetch error:", error);
       alert("An error occurred while fetching data.");
@@ -293,7 +284,7 @@
   }
 
   // Get default values (used when modal opens)
-  window.getDefaults = async function (uuid, mode) {
+  window.getDefaults = async function (record, mode) {
     if (mode === "View") {
       document.getElementById("modalTitle").textContent = "SERVICE REQUEST";
       document.getElementById("submitText").textContent = "Print";
@@ -304,8 +295,8 @@
         "dataTable",
       ]);
 
-      await getData(uuid);
-      await getDataDetails(uuid);
+      await getData(record);
+      await getDataDetails(record);
     }
   };
 })();
