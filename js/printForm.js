@@ -199,7 +199,7 @@
   async function getDataDetails(record) {
     try {
      
-      const detailData = record.Details;
+      const detailData = record.details;
 
         // Get table body element
       const tbody = document.getElementById("details_data");
@@ -214,10 +214,10 @@
         const row = document.createElement("tr"); // ✅ FIX: create <tr> not item
         row.innerHTML = `
           <td><input type="text" name="data_point" value="${
-            iinum + ". " + item.DataPoint || ""
+            iinum + ". " + item.data_point || ""
           }" /></td>
           <td><input type="text" name="reference_field" value="${
-            item.Reference || ""
+            item.reference_field || ""
           }" /></td>
         `;
         tbody.appendChild(row);

@@ -150,13 +150,13 @@
             const row = document.createElement("tr");
 
              // ✅ Format Details into a small HTML list
-            const detailsHTML = record.Details?.length
-              ? `${record.Details.map(d => `<b>${d.DataPoint}</b> (Ref: ${d.Reference}) <br/><br/>`).join("")}`
+            const detailsHTML = record.details?.length
+              ? `${record.details.map(d => `<b>${d.data_point}</b> (Ref: ${d.ref_field}) <br/><br/>`).join("")}`
               : "";
 
              // ✅ Format Files into clickable links
-            const filesHTML = record.Files?.length
-              ? `${record.Files.map(f => `<li><a href="${f}" target="_blank">📄 View</a></li>`).join("")}`
+            const filesHTML = record.files?.length
+              ? `${record.files.map(f => `<li><a href="${f.Link}" target="_blank">📄 View</a></li>`).join("")}`
               : "";
 
 
