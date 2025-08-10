@@ -129,7 +129,7 @@
 
           // ✅ extract the array
           const records = Array.isArray(json.data) ? json.data : [];
-         
+
           if (records.length === 0) {
             console.warn("No records found");
             document.getElementById("masterTableBody").innerHTML =
@@ -149,16 +149,25 @@
           records.forEach((record) => {
             const row = document.createElement("tr");
 
-             // ✅ Format Details into a small HTML list
+            // ✅ Format Details into a small HTML list
             const detailsHTML = record.details?.length
-              ? `${record.details.map(d => `<b>${d.data_point}</b> (Ref: ${d.ref_field}) <br/><br/>`).join("")}`
+              ? `${record.details
+                  .map(
+                    (d) =>
+                      `<b>${d.data_point}</b> (Ref: ${d.ref_field}) <br/><br/>`
+                  )
+                  .join("")}`
               : "";
 
-             // ✅ Format Files into clickable links
+            // ✅ Format Files into clickable links
             const filesHTML = record.files?.length
-              ? `${record.files.map(f => `<li><a href="${f.Link}" target="_blank">📄 View</a></li>`).join("")}`
+              ? `${record.files
+                  .map(
+                    (f) =>
+                      `<li><a href="${f.Link}" target="_blank">📄 View</a></li>`
+                  )
+                  .join("")}`
               : "";
-
 
             row.innerHTML = `
             <td hidden>${record.uuid || ""}</td>
@@ -184,7 +193,9 @@
             
             <td id="concern-${record.uuid}"></td>
             
-            <td><div class="secondary-text">${detailsHTML} <br/> Attachemnet/s: ${filesHTML}  <br/>  Note/Memo: <br/>  ${record.memo} </div></td> 
+            <td><div class="secondary-text">${detailsHTML} <br/> Attachemnet/s: ${filesHTML}  <br/>  Note/Memo: <br/>  ${
+              record.memo
+            } </div></td> 
             <td>
                 
                   <label class="secondary-text">
@@ -219,6 +230,8 @@
             document.getElementById(`prject_desc-${record.uuid}`).innerHTML =
               generateProjectDesc(record);
           });
+
+          setupSearch();
         } catch (error) {
           console.error("❌ Failed to load master list:", error);
         }
@@ -228,8 +241,7 @@
         console.log("✅ Async function executed silently after action");
         const userRole = user.role; // Define this to return role from session or cookie
         let buttons = "";
-        const safeRecord = JSON.stringify(record).replace(/"/g, '&quot;'); // escape quotes for HTML
-
+        const safeRecord = JSON.stringify(record).replace(/"/g, "&quot;"); // escape quotes for HTML
 
         buttons += `<button onclick="viewRecord(${safeRecord})">View</button>`;
 
@@ -314,12 +326,14 @@
         if (userRole === "Developer" || userRole === "Hybrid") {
           if (
             (record.developer === "") &
-            (record.dev_status === "For Development" ||record.dev_status === "Pending")
+            (record.dev_status === "For Development" ||
+              record.dev_status === "Pending")
           ) {
             buttons += `<button onclick="acceptDeveloperRecord(${safeRecord})">Accept</button>`;
           }
           if (
-            (record.dev_status === "For Development" || record.dev_status === "Pending") &
+            (record.dev_status === "For Development" ||
+              record.dev_status === "Pending") &
             (record.developer === user.name)
           ) {
             buttons += `<button onclick="acceptDeveloperRecord(${safeRecord})">Accept</button>`;
@@ -394,7 +408,7 @@
                   Bugs
             </label>`;
         }
-        buttons += `<br/><br/><b><div class="secondary-text"> Priority </div></b>`
+        buttons += `<br/><br/><b><div class="secondary-text"> Priority </div></b>`;
 
         if (record.priority_set?.toLowerCase() === "yes") {
           buttons += `<label class="secondary-text">
@@ -416,7 +430,6 @@
                         Addtl Customization/Outside Scope
                 </label>`;
         }
-
 
         return `<td>${buttons}</td>`;
       }
@@ -476,7 +489,7 @@
         return `<td>${buttons}</td>`;
       }
 
-        function generateProjectDesc(record) {
+      function generateProjectDesc(record) {
         let buttons = "";
         if (record.project?.toLowerCase() === "cnims") {
           buttons = `<label class="secondary-text">
@@ -499,31 +512,38 @@
         return `<td>${buttons}</td>`;
       }
 
-
-      
       function setupSearch() {
         const searchInput = document.getElementById("searchInput");
+
         searchInput.addEventListener("input", function () {
-          const filter = this.value.toLowerCase();
+          const filters = this.value
+            .toLowerCase()
+            .split(";")
+            .map((f) => f.trim())
+            .filter((f) => f);
+
           const rows = document.querySelectorAll("#masterTableBody tr");
 
           rows.forEach((row) => {
             const cells = Array.from(row.cells);
-            const matches = cells.some((cell) =>
-              cell.textContent.toLowerCase().includes(filter)
+
+            const matchesAll = filters.every((filter) =>
+              cells.some((cell) =>
+                cell.textContent.toLowerCase().includes(filter)
+              )
             );
-            row.style.display = matches ? "" : "none";
+
+            row.style.display = matchesAll ? "" : "none";
           });
         });
       }
-
       function addRecord(record) {
         mode = "Add";
         openModal(record);
       }
 
       function viewRecord(record) {
-        mode = "View";       
+        mode = "View";
         openViewPrint(record);
       }
 
@@ -592,9 +612,6 @@
         openModal(record);
       }
 
-
- 
-    
       // ✅ Runs every 30 seconds
       // setInterval(() => {
       //   loadMasterList(); // call async function
@@ -604,7 +621,6 @@
 
       window.addEventListener("DOMContentLoaded", () => {
         loadMasterList();
-        setupSearch();
 
         document.getElementById("employeeName").textContent = user.name;
         document.getElementById("employeeRole").textContent =
@@ -680,7 +696,6 @@
         const pageTmp = "pages/view_print.html";
         const scriptFile = "js/printForm.js";
 
-
         fetch(`${BASE_PATH}${pageTmp}`)
           .then((res) => res.text())
           .then((html) => {
@@ -712,9 +727,7 @@
         modalBody.innerHTML = "Loading...";
       }
 
-
       function closeModal() {
-        notifyMasterListChange();
         document.getElementById("createModal").style.display = "none";
       }
 
@@ -763,6 +776,7 @@
 
       function notifyMasterListChange() {
         loadMasterList();
+
         // try {
         //   if (typeof socket !== "undefined" && socket && socket.readyState === WebSocket.OPEN) {
         //     socket.send("refresh_masterlist");
@@ -773,7 +787,6 @@
         //   console.error("❌ notifyMasterListChange error:", e);
         // }
       }
-  
     </script>
     <script>
       function showNotification(message, duration = 3000) {

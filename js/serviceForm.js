@@ -1007,8 +1007,10 @@
         alert("Form submitted successfully!");
         form.reset();
         document.getElementById("formSelect").disabled = true;
-
+        window.parent.loadMasterList();
         window.parent.closeModal();
+       
+        
       } else {
         alert(`Error: ${result.message || "Something went wrong"}`);
       }
