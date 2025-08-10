@@ -247,35 +247,35 @@
               userRole === "Hybrid") &
             (record.req_status !== "Approved")
           ) {
-            buttons += `<button onclick="editRecord('${record.uuid}')">Edit</button>`;
+            buttons += `<button onclick="editRecord(${safeRecord})">Edit</button>`;
           } else if (userRole === "Admin") {
-            buttons += `<button onclick="editRecord('${record.uuid}')">Edit</button>`;
+            buttons += `<button onclick="editRecord(${safeRecord})">Edit</button>`;
           } else if (userRole === "Head") {
             if (record.cylix_status !== "Accepted") {
-              buttons += `<button onclick="editRecord('${record.uuid}')">Edit</button>`;
+              buttons += `<button onclick="editRecord(${safeRecord})">Edit</button>`;
             }
           } else if (userRole === "IT Head") {
             if (record.cylix_status !== "Accepted") {
-              buttons += `<button onclick="editRecord('${record.uuid}')">Edit</button>`;
+              buttons += `<button onclick="editRecord(${safeRecord})">Edit</button>`;
             }
           }
         }
 
         if (userRole === "Admin") {
           if (record.cylix_status !== "For Filing") {
-            buttons += `<button onclick="cancelRecord('${record.uuid}')">Cancel</button>`;
+            buttons += `<button onclick="cancelRecord(${safeRecord})">Cancel</button>`;
           }
         }
 
         if (userRole === "Head") {
           if (record.req_status === "For Head Approval") {
-            buttons += `<button onclick="approvedHeadRecord('${record.uuid}')">Approve</button>`;
+            buttons += `<button onclick="approvedHeadRecord(${safeRecord})">Approve</button>`;
           }
         }
 
         if (userRole === "IT Head") {
           if (record.req_status === "For IT Approval") {
-            buttons += `<button onclick="approvedITRecord('${record.uuid}')">Approve</button>`;
+            buttons += `<button onclick="approvedITRecord(${safeRecord})">Approve</button>`;
           }
         }
 
@@ -285,29 +285,29 @@
           userRole === "Hybrid"
         ) {
           if (record.integrator === "") {
-            buttons += `<button onclick="acceptRecord('${record.uuid}')">Accept</button>`;
+            buttons += `<button onclick="acceptRecord(${safeRecord})">Accept</button>`;
           }
 
           if ((record.qa === "") & (record.dev_status === "For QA")) {
-            buttons += `<button onclick="acceptQARecord('${record.uuid}')">Accept</button>`;
+            buttons += `<button onclick="acceptQARecord(${safeRecord})">Accept</button>`;
           }
 
           if ((record.qa === user.name) & (record.dev_status === "For QA")) {
-            buttons += `<button onclick="acceptQARecord('${record.uuid}')">Accept</button>`;
+            buttons += `<button onclick="acceptQARecord(${safeRecord})">Accept</button>`;
           }
 
           if (record.dev_status === "QA") {
-            buttons += `<button onclick="doneQARecord('${record.uuid}')">Done</button>`;
+            buttons += `<button onclick="doneQARecord(${safeRecord})">Done</button>`;
           }
 
           if (record.dev_status === "For Deployment") {
-            buttons += `<button onclick="deployedRecord('${record.uuid}')">Deploy</button>`;
+            buttons += `<button onclick="deployedRecord(${safeRecord})">Deploy</button>`;
           }
         }
 
         if (userRole === "Admin") {
           if (record.integrator === "") {
-            buttons += `<button onclick="acceptAdminRecord('${record.uuid}')">Accept</button>`;
+            buttons += `<button onclick="acceptAdminRecord(${safeRecord})">Accept</button>`;
           }
         }
 
@@ -316,16 +316,16 @@
             (record.developer === "") &
             (record.dev_status === "For Development" ||record.dev_status === "Pending")
           ) {
-            buttons += `<button onclick="acceptDeveloperRecord('${record.uuid}')">Accept</button>`;
+            buttons += `<button onclick="acceptDeveloperRecord(${safeRecord})">Accept</button>`;
           }
           if (
             (record.dev_status === "For Development" || record.dev_status === "Pending") &
             (record.developer === user.name)
           ) {
-            buttons += `<button onclick="acceptDeveloperRecord('${record.uuid}')">Accept</button>`;
+            buttons += `<button onclick="acceptDeveloperRecord(${safeRecord})">Accept</button>`;
           }
           if (record.dev_status === "Ongoing") {
-            buttons += `<button onclick="doneDevelopentRecord('${record.uuid}')">Done</button>`;
+            buttons += `<button onclick="doneDevelopentRecord(${safeRecord})">Done</button>`;
           }
         }
 
@@ -338,13 +338,13 @@
             (record.dev_status === "Deployed") &
             (record.user === user.name)
           ) {
-            buttons += `<button onclick="doneFixedRecord('${record.uuid}')">Done</button>`;
+            buttons += `<button onclick="doneFixedRecord(${safeRecord})">Done</button>`;
           }
         }
 
         if (userRole === "Admin") {
           if (record.cylix_status === "For Filing") {
-            buttons += `<button onclick="fileRecord('${record.uuid}')">File</button>`;
+            buttons += `<button onclick="fileRecord(${safeRecord})">File</button>`;
           }
         }
 
@@ -517,9 +517,9 @@
         });
       }
 
-      function addRecord(id) {
+      function addRecord(record) {
         mode = "Add";
-        openModal(id);
+        openModal(record);
       }
 
       function viewRecord(record) {
@@ -527,69 +527,69 @@
         openViewPrint(record);
       }
 
-      function editRecord(id) {
+      function editRecord(record) {
         mode = "Edit";
-        openModal(id);
+        openModal(record);
       }
 
-      function approvedHeadRecord(id) {
+      function approvedHeadRecord(record) {
         mode = "Approve Head";
-        openModal(id);
+        openModal(record);
       }
 
-      function approvedITRecord(id) {
+      function approvedITRecord(record) {
         mode = "Approve IT";
-        openModal(id);
+        openModal(record);
       }
 
-      function cancelRecord(id) {
+      function cancelRecord(record) {
         mode = "Cancel";
-        openModal(id);
+        openModal(record);
       }
 
-      function acceptRecord(id) {
+      function acceptRecord(record) {
         mode = "Accept";
-        openModal(id);
+        openModal(record);
       }
 
-      function acceptAdminRecord(id) {
+      function acceptAdminRecord(record) {
         mode = "Accept Admin";
-        openModal(id);
+        openModal(record);
       }
 
-      function acceptDeveloperRecord(id) {
+      function acceptDeveloperRecord(record) {
         mode = "Accept Development";
-        openModal(id);
+        openModal(record);
       }
 
-      function doneDevelopentRecord(id) {
+      function doneDevelopentRecord(record) {
         mode = "Done Development";
-        openModal(id);
+        openModal(record);
       }
 
-      function acceptQARecord(id) {
+      function acceptQARecord(record) {
         mode = "Accept QA";
-        openModal(id);
+        openModal(record);
       }
 
-      function doneQARecord(id) {
+      function doneQARecord(record) {
         mode = "Done QA";
-        openModal(id);
+        openModal(record);
       }
 
-      function deployedRecord(id) {
+      function deployedRecord(record) {
         mode = "Deploy";
-        openModal(id);
+        openModal(record);
       }
 
-      function doneFixedRecord(id) {
+      function doneFixedRecord(record) {
         mode = "Done Fixed";
-        openModal(id);
+        openModal(record);
       }
 
-      function fileRecord(id) {
+      function fileRecord(record) {
         mode = "File";
-        openModal(id);
+        openModal(record);
       }
 
 
@@ -627,7 +627,7 @@
         ).src = `${BASE_PATH}resources/notify.mp3`;
       });
 
-      function openModal(uuid = null) {
+      function openModal(record = null) {
         const modal = document.getElementById("createModal");
         const modalBody = document.getElementById("modalBody");
 
@@ -657,7 +657,7 @@
                 if (typeof getDefaults === "function") {
                   clearInterval(tryGetDefaults);
                   // ✅ Now the DOM is guaranteed to be ready
-                  getDefaults(uuid, mode);
+                  getDefaults(record, mode);
                 }
               }, 100); // Poll every 100ms until DOM is ready
             };

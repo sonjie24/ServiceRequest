@@ -434,20 +434,20 @@
       }
     }
   }
-  async function getData(uuid) {
+  async function getData(record) {
     try {
-      const res = await fetch(`${API_BASE_URL}/get-data-main`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ uuid }),
-      });
+      // const res = await fetch(`${API_BASE_URL}/get-data-main`, {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      //   body: JSON.stringify({ uuid }),
+      // });
 
-      if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
+      // if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
 
-      const result = await res.json();
-      const main = result.data[0] || {};
+      // const result = await res.json();
+      const main = record || {};
 
       mapDataToForm(main); // <-- Populate main form fields
 
@@ -505,20 +505,27 @@
     }
   }
 
-  async function getDataDetails(uuid) {
+
+  async function getDataDetails(record) {
     try {
-      const res = await fetch(`${API_BASE_URL}/get-data-detail`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ uuid }),
-      });
+      // const res = await fetch(`${API_BASE_URL}/get-data-detail`, {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      //   body: JSON.stringify({ uuid }),
+      // });
 
-      if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
+      // if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
 
-      const result = await res.json();
-      const detailData = result.data || [];
+      // const result = await res.json();
+
+     
+      if (sessionStorage.getItem("detailData") !== null) {
+        sessionStorage.removeItem("detailData");
+      }
+
+      const detailData = record.details || [];
 
       saveDetailDataSession(detailData);
 
@@ -555,20 +562,20 @@
     }
   }
 
-  async function getDataFiles(uuid) {
+  async function getDataFiles(record) {
     try {
-      const res = await fetch(`${API_BASE_URL}/get-data-files`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ uuid }),
-      });
+      // const res = await fetch(`${API_BASE_URL}/get-data-files`, {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      //   body: JSON.stringify({ uuid }),
+      // });
 
-      if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
+      // if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
 
-      const result = await res.json();
-      const sub1 = result.data || {};
+      // const result = await res.json();
+      const sub1 = record.files || {};
 
       // ✅ FIXED: Correct tbody reference
       const tbody = document.getElementById("uploadedFilesBody");
@@ -632,7 +639,7 @@
   }
 
   // Get default values (used when modal opens)
-  window.getDefaults = async function (uuid, mode) {
+  window.getDefaults = async function (record, mode) {
     const submitBtn = document.getElementById("submitBtn");
     submitBtn.disabled = true;
 
@@ -684,31 +691,34 @@
         document.getElementById("service_request_no").readOnly = false;
       }
 
-      await getData(uuid);
-      await getDataDetails(uuid);
-      await getDataFiles(uuid);
+      await getData(record);
+      await getDataDetails(record);
+      await getDataFiles(record);
     } else if (mode === "View") {
       document.getElementById("modalTitle").textContent = "SERVICE REQUEST";
       document.getElementById("submitText").textContent = "Print";
 
-      await getData(uuid);
-      await getDataDetails(uuid);
-      await getDataFiles(uuid);
+      await getData(record);
+      await getDataDetails(record);
+      await getDataFiles(record);
     } else if (mode === "Cancel") {
       toggleFormReadOnly("entryForm", "View", [
         "attachments",
         "memo",
         "dataTable",
       ]);
+      document.getElementById("attachments").removeAttribute("required");
       document.getElementById("modalTitle").textContent =
         "SERVICE REQUEST CANCELLATION";
       document.getElementById("submitText").textContent = "CANCEL";
 
-      await getData(uuid);
-      await getDataDetails(uuid);
-      await getDataFiles(uuid);
+      await getData(record);
+      await getDataDetails(record);
+      await getDataFiles(record);
 
       document.getElementById("req_status").value = "Cancelled";
+      document.getElementById("cylix_status").value = "Cancelled";
+      document.getElementById("dev_status").value = "Cancelled";
     } else if (mode === "Approve Head") {
       toggleFormReadOnly("entryForm", "View", [
         "attachments",
@@ -719,9 +729,9 @@
         "SERVICE REQUEST APPROVAL";
       document.getElementById("submitText").textContent = "APPROVE";
       document.getElementById("attachments").removeAttribute("required");
-      await getData(uuid);
-      await getDataDetails(uuid);
-      await getDataFiles(uuid);
+      await getData(record);
+      await getDataDetails(record);
+      await getDataFiles(record);
 
       headSelect.value = user.name;
       headSelect.dispatchEvent(new Event("change"));
@@ -737,9 +747,9 @@
       document.getElementById("submitText").textContent = "APPROVE";
       document.getElementById("attachments").removeAttribute("required");
 
-      await getData(uuid);
-      await getDataDetails(uuid);
-      await getDataFiles(uuid);
+      await getData(record);
+      await getDataDetails(record);
+      await getDataFiles(record);
 
       itHeadSelect.value = user.name;
       itHeadSelect.dispatchEvent(new Event("change"));
@@ -756,9 +766,9 @@
       document.getElementById("submitText").textContent = "ACCEPT";
       document.getElementById("attachments").removeAttribute("required");
 
-      await getData(uuid);
-      await getDataDetails(uuid);
-      await getDataFiles(uuid);
+      await getData(record);
+      await getDataDetails(record);
+      await getDataFiles(record);
 
       document.getElementById("cylix_status").value = "Accepted";
       document.getElementById("dev_status").value = "For Development";
@@ -783,9 +793,9 @@
       document.getElementById("developer").setAttribute("required", "required");
       document.getElementById("qa").setAttribute("required", "required");
 
-      await getData(uuid);
-      await getDataDetails(uuid);
-      await getDataFiles(uuid);
+      await getData(record);
+      await getDataDetails(record);
+      await getDataFiles(record);
 
       document.getElementById("cylix_status").value = "Accepted";
       document.getElementById("dev_status").value = "For Development";
@@ -801,9 +811,9 @@
       document.getElementById("submitText").textContent = "ACCEPT";
       document.getElementById("attachments").removeAttribute("required");
 
-      await getData(uuid);
-      await getDataDetails(uuid);
-      await getDataFiles(uuid);
+      await getData(record);
+      await getDataDetails(record);
+      await getDataFiles(record);
 
       document.getElementById("dev_status").value = "Ongoing";
       document.getElementById("developer").value = user.name || "";
@@ -818,9 +828,9 @@
       document.getElementById("submitText").textContent = "DONE";
       document.getElementById("attachments").removeAttribute("required");
 
-      await getData(uuid);
-      await getDataDetails(uuid);
-      await getDataFiles(uuid);
+      await getData(record);
+      await getDataDetails(record);
+      await getDataFiles(record);
 
       document.getElementById("dev_status").value = "For QA";
     } else if (mode === "Accept QA") {
@@ -833,9 +843,9 @@
       document.getElementById("submitText").textContent = "ACCEPT";
       document.getElementById("attachments").removeAttribute("required");
 
-      await getData(uuid);
-      await getDataDetails(uuid);
-      await getDataFiles(uuid);
+      await getData(record);
+      await getDataDetails(record);
+      await getDataFiles(record);
 
       document.getElementById("dev_status").value = "QA";
       document.getElementById("qa").value = user.name || "";
@@ -850,9 +860,9 @@
       document.getElementById("submitText").textContent = "DONE";
       document.getElementById("attachments").removeAttribute("required");
 
-      await getData(uuid);
-      await getDataDetails(uuid);
-      await getDataFiles(uuid);
+      await getData(record);
+      await getDataDetails(record);
+      await getDataFiles(record);
 
       document.getElementById("dev_status").value = "For Deployment";
     } else if (mode === "Deploy") {
@@ -869,9 +879,9 @@
         .getElementById("patch_date")
         .setAttribute("required", "required");
 
-      await getData(uuid);
-      await getDataDetails(uuid);
-      await getDataFiles(uuid);
+      await getData(record);
+      await getDataDetails(record);
+      await getDataFiles(record);
 
       document.getElementById("dev_status").value = "Deployed";
       document.getElementById("cylix_status").value = "For Filing";
@@ -881,9 +891,9 @@
       document.getElementById("submitText").textContent = "FIXED";
       document.getElementById("attachments").removeAttribute("required");
 
-      await getData(uuid);
-      await getDataDetails(uuid);
-      await getDataFiles(uuid);
+      await getData(record);
+      await getDataDetails(record);
+      await getDataFiles(record);
 
       document.getElementById("cylix_status").value = "Completed";
     } else if (mode === "File") {
@@ -893,9 +903,9 @@
       document.getElementById("submitText").textContent = "FILE";
       document.getElementById("attachments").removeAttribute("required");
 
-      await getData(uuid);
-      await getDataDetails(uuid);
-      await getDataFiles(uuid);
+      await getData(record);
+      await getDataDetails(record);
+      await getDataFiles(record);
 
       document.getElementById("cylix_status").value = "Filed";
     } else if (mode === "View") {
@@ -909,9 +919,9 @@
       document.getElementById("submitText").textContent = "FILE";
       document.getElementById("attachments").removeAttribute("required");
 
-      await getData(uuid);
-      await getDataDetails(uuid);
-      await getDataFiles(uuid);
+      await getData(record);
+      await getDataDetails(record);
+      await getDataFiles(record);
 
       document.getElementById("cylix_status").value = "Filed";
     }
@@ -926,7 +936,7 @@
       }
 
       const selectCylix = document.getElementById("cylix_status");
-      const optionsCylix = ["Pending","Filed", "For Filing"];
+      const optionsCylix = ["Pending", "Filed", "For Filing"];
 
       for (const value of optionsCylix) {
         const option = selectCylix.querySelector(`option[value="${value}"]`);
