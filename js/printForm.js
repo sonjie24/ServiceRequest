@@ -215,7 +215,7 @@
             iinum + ". " + item.data_point || ""
           }" /></td>
           <td><input type="text" name="reference_field" value="${
-            item.reference_field || ""
+            item.ref_field || ""
           }" /></td>
         `;
         tbody.appendChild(row);
