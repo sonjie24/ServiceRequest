@@ -103,8 +103,8 @@
       </body>
     </html>
   `);
-
-    printWindow.document.close();
+ 
+     printWindow.document.close();
   };
 
   window.addEventListener("beforeprint", function () {
@@ -187,7 +187,6 @@
 
   async function getData(record) {
     try {
- 
       const main = record;
       mapDataToForm(main); // <-- Populate main form field
     } catch (error) {
@@ -198,10 +197,9 @@
 
   async function getDataDetails(record) {
     try {
-     
       const detailData = record.details;
 
-        // Get table body element
+      // Get table body element
       const tbody = document.getElementById("details_data");
 
       // Clear existing rows
@@ -225,7 +223,7 @@
 
       // Calculate how many blank rows to add
       const totalRows = detailData.length;
-      const rowsToAdd = Math.max(0, 5 - totalRows);
+      const rowsToAdd = Math.max(0, 4 - totalRows);
 
       // ✅ Optionally add a blank row for new entry
       for (let i = totalRows; i <= rowsToAdd + 1; i++) {
@@ -273,6 +271,7 @@
   // Get default values (used when modal opens)
   window.getDefaults = async function (record, mode) {
     if (mode === "View") {
+      document.getElementById("createModal").style.display = "none";
       document.getElementById("modalTitle").textContent = "SERVICE REQUEST";
       document.getElementById("submitText").textContent = "Print";
 
@@ -284,6 +283,8 @@
 
       await getData(record);
       await getDataDetails(record);
+
+      await printModal();
     }
   };
 })();
