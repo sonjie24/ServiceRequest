@@ -5,7 +5,6 @@
 
   let departmentData = getDepartmentSession();
 
-  console.log(departmentData);
 
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   async function ifProjectCylix(selectedProject) {
@@ -981,8 +980,6 @@
       } else {
         proc = "/update";
 
-        console.log(formData);
-
         // Remove Details
         const detailData = getDetailDataSession();
         detailData.forEach((item) => {
@@ -999,12 +996,11 @@
         body: formData,
       });
 
-      console.log(formData);
 
       const result = await response.json();
-
+ 
       if (response.ok) {
-        alert("Form submitted successfully!");
+        alert("Form submitted successfully! Reference No:   " + result.data[0].data[0].service_request_no);
         form.reset();
         document.getElementById("formSelect").disabled = true;
         window.parent.loadMasterList();
