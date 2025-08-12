@@ -509,6 +509,12 @@
                     </label>`;
         }
 
+        if (record.project?.toLowerCase() === "mdmis") {
+          buttons = `<label class="secondary-text">
+                          Municipality of Dumnajug
+                    </label>`;
+        }
+
         return `<td>${buttons}</td>`;
       }
 
