@@ -1,86 +1,860 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Fullscreen Modal Example</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-    }
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Workload</title>
+    <link rel="stylesheet" href="../style/main.css" />
+  </head>
 
-    /* Fullscreen Modal Container */
-    .modal {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background-color: rgba(0, 0, 0, 0.6);
-      display: none;
-      z-index: 9999;
-    }
+  <body>
+    <!-- <h1>SERVICE REQUEST</h1> -->
+    <div class="header-bar">
+      <div class="user-info-section">
 
-    /* Modal Content takes full space */
-    .modal-content {
-      background-color: #fff;
-      width: 100%;
-      height: 100%;
-      padding: 20px;
-      box-sizing: border-box;
-      overflow-y: auto;
-      position: relative;
-    }
 
-    /* Close button */
-    .close {
-      position: absolute;
-      top: 15px;
-      right: 20px;
-      font-size: 28px;
-      font-weight: bold;
-      color: #333;
+        <d iv class="user-details">
+          <span class="user-name"
+            >👤 <strong id="employeeName">John Doe</strong></span
+          >
+          <span class="user-role" id="employeeRole">Integrator</span>
+
+          <!-- <div class="user-actions">
+            <a href="change-password.html" class="user-action-link"
+              >Change Password</a
+            >
+            <span class="divider">|</span>
+            <a href="#" id="logoutLink" class="user-action-link logout"
+              >Logout</a
+            >
+          </div> -->
+        </div>
+
+        <div class="menu-links">
+          <a href="master.html" class="menu-link"> ⬅ Back</a>
+          <!-- <button onclick="openModals()">Workloads</button> -->
+          <a href="workloads.html" class="menu-link readonly">Workloads</a>
+          <a href="history.html" class="menu-link readonly" >History</a>
+          <a onclick="addRecord()" class="menu-link add-new readonly">➕ Add New</a>
+
+
+        </div>
+
+            <!-- Back Button -->
+   
+
+        <style>
+
+
+  /* Readonly (disabled) style */
+  .menu-link.readonly {
+    pointer-events: none;   /* disable clicking */
+    color: gray;            /* gray color */
+    cursor: default;        /* no hand cursor */
+    text-decoration: none;  /* no underline */
+    opacity: 0.6;           /* make it look faded */
+  }
+      /* Back button */
+    .back-button button {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 6px;
       cursor: pointer;
+      font-size: 14px;
     }
 
-    /* Optional: Button styling */
-    button {
-      margin: 40px;
-      padding: 10px 20px;
-      font-size: 16px;
-    }
+</style>
+      </div>
 
-    /* Prevent background scroll when modal is open */
-    body.modal-open {
-      overflow: hidden;
-    }
-  </style>
-</head>
-<body>
-
-  <!-- Trigger Button -->
-  <!-- <button onclick="openModal()">Open Fullscreen Modal</button> -->
-
-  <!-- Fullscreen Modal -->
-  <div id="fullscreenModal" class="modal">
-    <div class="modal-content">
-      <span class="close" onclick="closeModal()">&times;</span>
-      <h2>Fullscreen Modal</h2>
-      <p>This modal takes up the full browser window.</p>
-      <p>You can load dynamic content here or even embed an iframe.</p>
+      <!-- ✅ Search bar inside the same header -->
+      <div class="search-section">
+        <input
+          class="searchInput"
+          type="text"
+          id="searchInput"
+          placeholder="Search by..."
+        />
+      </div>
     </div>
-  </div>
 
-  <script>
-    function openModal() {
-      document.getElementById("fullscreenModal").style.display = "block";
-      document.body.classList.add("modal-open");
-    }
+    <table id="masterTable">
+      <thead>
+        <tr>
+          <th width="160px" hidden>GUID</th>
+          <th onclick="sortTable(0)" width="160px">Request No ⬍</th>
+          <th width="90px">Requested Date</th>
+          <th width="120px">Project</th>
+          <th width="220px">User/Integrator/ Developer/ QA</th>
+          <th width="120px">Department/Module/Form</th>
+          <th width="220px">Concern Type/Priority</th>
+          <!-- <th width="250px">Priority</th> -->
+          <th width="500px">Concerns</th>
+          <th width="150px">Status</th>
+          <th width="40px">Action</th>
+        </tr>
+      </thead>
+      <tbody id="masterTableBody">
+        <!-- Rows will be inserted here -->
+      </tbody>
+    </table>
 
-    function closeModal() {
-      document.getElementById("fullscreenModal").style.display = "none";
-      document.body.classList.remove("modal-open");
+    <!-- Modal -->
+    <div id="createModal" class="modal" style="display: none">
+      <div class="modal-content">
+        <span class="close-btn" onclick="closeModal()">&times;</span>
+        <div id="modalBody">Loading...</div>
+      </div>
+    </div>
+
+    <!-- Fullscreen Modal -->
+    <div id="fullModal" class="Fullscreenmodal" style="display: none">
+      <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <h2>Fullscreen Modal</h2>
+        <p>This modal takes up the full browser window.</p>
+        <p>You can load dynamic content here or even embed an iframe.</p>
+      </div>
+    </div>
+
+    <div
+      id="notification"
+      style="
+        display: none;
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 99999;
+        background-color: #333;
+        color: white;
+        padding: 15px 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+        font-size: 14px;
+      "
+    >
+      🔄 Data has been updated. Check your workloads!
+    </div>
+    <audio id="notifySound" preload="auto"></audio>
+
+    <script src="../js/session.js"></script>
+    <script src="../js/config.js"></script>
+    <script src="../js/global.js"></script>
+    <script>
+      let mode = "Add";
+
+      const projectLogin = getlogInProject();
+      const user = getUserSession();
+
+      async function loadMasterList() {
+        try {
+          const projectName = user.project;
+          const response = await fetch(`${API_BASE_URL}/get-all`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ user }),
+          });
+
+          const text = await response.text();
+          const json = text ? JSON.parse(text) : { data: [] }; // always return {data:[]}
+
+          // ✅ extract the array
+          const records = Array.isArray(json.data) ? json.data : [];
+
+          if (records.length === 0) {
+            console.warn("No records found");
+            document.getElementById("masterTableBody").innerHTML =
+              "<tr><td colspan='9'>No data available</td></tr>";
+            return;
+          }
+
+          const tableBody = document.getElementById("masterTableBody");
+          tableBody.innerHTML = "";
+
+          if (!records || records.length === 0) {
+            tableBody.innerHTML =
+              "<tr><td colspan='6'>No data available</td></tr>";
+            return;
+          }
+
+          records.forEach((record) => {
+            const row = document.createElement("tr");
+
+            // ✅ Format Details into a small HTML list
+            const detailsHTML = record.details?.length
+              ? `${record.details
+                  .map(
+                    (d) =>
+                      `<b>${d.data_point}</b> (Ref: ${d.ref_field}) <br/><br/>`
+                  )
+                  .join("")}`
+              : "";
+
+            // ✅ Format Files into clickable links
+            const filesHTML = record.files?.length
+              ? `${record.files
+                  .map(
+                    (f) =>
+                      `<li><a href="${f.Link}" target="_blank">📄 View</a></li>`
+                  )
+                  .join("")}`
+              : "";
+
+            row.innerHTML = `
+            <td hidden>${record.uuid || ""}</td>
+            <td><div class="secondary-text">${
+              record.service_request_no || "No Data"
+            }</div></td>
+            <td><div class="secondary-text">${
+              record.date_requested || ""
+            }</div></td>
+            <td id="prject_desc-${record.uuid}"></td>
+            <td id="user-${record.uuid}"></td>
+            <td>
+              <label class="secondary-text">►${
+                record.department.toUpperCase() || ""
+              }</label>
+              <label class="secondary-text">►${
+                record.module.toUpperCase() || ""
+              }</label>
+              <label class="secondary-text">►${
+                record.system_form_name.toUpperCase() || ""
+              }</label>
+            </td>
+            
+            <td id="concern-${record.uuid}"></td>
+            
+            <td><div class="secondary-text">${detailsHTML} <br/> Attachemnet/s: ${filesHTML}  <br/>  Note/Memo: <br/>  ${
+              record.memo
+            } </div></td> 
+            <td>
+                
+                  <label class="secondary-text">
+                        🏛️ ${record.req_status || ""}
+                  </label>
+                  <label class="secondary-text"> 
+                        🏢 ${record.cylix_status || "N/A"}
+                  </label>
+                  <label class="secondary-text"> 
+                        💻 ${record.dev_status || "N/A"}  
+                  </label>
+                  <label class="secondary-text"> 
+                        📅  ${record.patch_date || ""} 
+                  </label>
+            </td>
+            
+
+
+            <td class="action-buttons" id="actions-${record.uuid}"></td>
+
+          `;
+            tableBody.appendChild(row);
+            // Inject buttons based on role
+            document.getElementById(`actions-${record.uuid}`).innerHTML =
+              generateActionButtons(record);
+            document.getElementById(`concern-${record.uuid}`).innerHTML =
+              generateConcernType(record);
+            // document.getElementById(`priority-${record.uuid}`).innerHTML =
+            //   generatePriorityType(record);
+            document.getElementById(`user-${record.uuid}`).innerHTML =
+              generateUsers(record);
+            document.getElementById(`prject_desc-${record.uuid}`).innerHTML =
+              generateProjectDesc(record);
+          });
+
+          setupSearch();
+        } catch (error) {
+          console.error("❌ Failed to load master list:", error);
+        }
+      }
+
+      function generateActionButtons(record) {
+        console.log("✅ Async function executed silently after action");
+        const userRole = user.role; // Define this to return role from session or cookie
+        let buttons = "";
+        const safeRecord = JSON.stringify(record).replace(/"/g, "&quot;"); // escape quotes for HTML
+
+        buttons += `<button onclick="viewRecord(${safeRecord})">View</button>`;
+
+        if (
+          userRole === "User" ||
+          userRole === "Integrator" ||
+          userRole === "Hybrid" ||
+          userRole === "Admin" ||
+          userRole === "Head" ||
+          userRole === "IT Head"
+        ) {
+          if (
+            (userRole === "User" ||
+              userRole === "Integrator" ||
+              userRole === "Hybrid") &
+            (record.req_status !== "Approved")
+          ) {
+            buttons += `<button onclick="editRecord(${safeRecord})">Edit</button>`;
+          } else if (userRole === "Admin") {
+            buttons += `<button onclick="editRecord(${safeRecord})">Edit</button>`;
+          } else if (userRole === "Head") {
+            if (record.cylix_status !== "Accepted") {
+              buttons += `<button onclick="editRecord(${safeRecord})">Edit</button>`;
+            }
+          } else if (userRole === "IT Head") {
+            if (record.cylix_status !== "Accepted") {
+              buttons += `<button onclick="editRecord(${safeRecord})">Edit</button>`;
+            }
+          }
+        }
+
+        if (userRole === "Admin") {
+          if (record.cylix_status !== "For Filing") {
+            buttons += `<button onclick="cancelRecord(${safeRecord})">Cancel</button>`;
+          }
+        }
+
+        if (userRole === "Head") {
+          if (record.req_status === "For Head Approval") {
+            buttons += `<button onclick="approvedHeadRecord(${safeRecord})">Approve</button>`;
+          }
+        }
+
+        if (userRole === "IT Head") {
+          if (record.req_status === "For IT Approval") {
+            buttons += `<button onclick="approvedITRecord(${safeRecord})">Approve</button>`;
+          }
+        }
+
+        if (
+          userRole === "QA" ||
+          userRole === "Integrator" ||
+          userRole === "Hybrid"
+        ) {
+          if (record.integrator === "") {
+            buttons += `<button onclick="acceptRecord(${safeRecord})">Accept</button>`;
+          }
+
+          if ((record.qa === "") & (record.dev_status === "For QA")) {
+            buttons += `<button onclick="acceptQARecord(${safeRecord})">Accept</button>`;
+          }
+
+          if ((record.qa === user.name) & (record.dev_status === "For QA")) {
+            buttons += `<button onclick="acceptQARecord(${safeRecord})">Accept</button>`;
+          }
+
+          if (record.dev_status === "QA") {
+            buttons += `<button onclick="doneQARecord(${safeRecord})">Done</button>`;
+          }
+
+          if (record.dev_status === "For Deployment") {
+            buttons += `<button onclick="deployedRecord(${safeRecord})">Deploy</button>`;
+          }
+        }
+
+        if (userRole === "Admin") {
+          if (record.integrator === "") {
+            buttons += `<button onclick="acceptAdminRecord(${safeRecord})">Accept</button>`;
+          }
+        }
+
+        if (userRole === "Developer" || userRole === "Hybrid") {
+          if (
+            (record.developer === "") &
+            (record.dev_status === "For Development" ||
+              record.dev_status === "Pending")
+          ) {
+            buttons += `<button onclick="acceptDeveloperRecord(${safeRecord})">Accept</button>`;
+          }
+          if (
+            (record.dev_status === "For Development" ||
+              record.dev_status === "Pending") &
+            (record.developer === user.name)
+          ) {
+            buttons += `<button onclick="acceptDeveloperRecord(${safeRecord})">Accept</button>`;
+          }
+          if (record.dev_status === "Ongoing") {
+            buttons += `<button onclick="doneDevelopentRecord(${safeRecord})">Done</button>`;
+          }
+        }
+
+        if (
+          userRole === "User" ||
+          userRole === "Head" ||
+          userRole === "IT Head"
+        ) {
+          if (
+            (record.dev_status === "Deployed") &
+            (record.user === user.name)
+          ) {
+            buttons += `<button onclick="doneFixedRecord(${safeRecord})">Done</button>`;
+          }
+        }
+
+        if (userRole === "Admin") {
+          if (record.cylix_status === "For Filing") {
+            buttons += `<button onclick="fileRecord(${safeRecord})">File</button>`;
+          }
+        }
+
+        return `<td class="action-buttons secondary-text">${buttons}</td>`;
+      }
+
+      function generateConcernType(record) {
+        let buttons = "";
+        if (record.concern_type_new?.toLowerCase() === "yes") {
+          buttons += `<label class="secondary-text">
+                  <input type="checkbox"  Checked disabled>
+                  New (Function/Field/Entry/Column/Row)
+            </label>`;
+        }
+
+        if (record.concern_type_rev?.toLowerCase() === "yes") {
+          buttons += `<label class="secondary-text">
+                  <input type="checkbox"  Checked disabled>
+                  Revision (Enhancement of Existing)
+            </label>`;
+        }
+
+        if (record.concern_type_del?.toLowerCase() === "yes") {
+          buttons += `<label class="secondary-text">
+                  <input type="checkbox"  Checked disabled>
+                  Delete (Dropped Query/Function/Row/Column/Data Point)
+            </label>`;
+        }
+
+        if (record.concern_type_cos?.toLowerCase() === "yes") {
+          buttons += `<label class="secondary-text">
+                  <input type="checkbox"  Checked disabled>
+                  Cosmetic (Fonts/Color/Header/Footer)
+            </label>`;
+        }
+
+        if (record.concern_type_data?.toLowerCase() === "yes") {
+          buttons += `<label class="secondary-text">
+                  <input type="checkbox"  Checked disabled>
+                  Data (Override/Deletion)
+            </label>`;
+        }
+
+        if (record.concern_type_bugs?.toLowerCase() === "yes") {
+          buttons += `<label class="secondary-text">
+                  <input type="checkbox"  Checked disabled>
+                  Bugs
+            </label>`;
+        }
+        buttons += `<br/><br/><b><div class="secondary-text"> Priority </div></b>`;
+
+        if (record.priority_set?.toLowerCase() === "yes") {
+          buttons += `<label class="secondary-text">
+                        <input type="checkbox"  Checked disabled>
+                        Set Committed Date:${record.committed_date}
+                </label>`;
+        }
+
+        if (record.priority_immediate?.toLowerCase() === "yes") {
+          buttons += `<label class="secondary-text">
+                        <input type="checkbox"  Checked disabled>
+                        Immediate
+                </label>`;
+        }
+
+        if (record.priority_add?.toLowerCase() === "yes") {
+          buttons += `<label class="secondary-text">
+                        <input type="checkbox"  Checked disabled>
+                        Addtl Customization/Outside Scope
+                </label>`;
+        }
+
+        return `<td>${buttons}</td>`;
+      }
+
+      function generatePriorityType(record) {
+        let buttons = "";
+        if (record.priority_set?.toLowerCase() === "yes") {
+          buttons += `<label class="secondary-text">
+                        <input type="checkbox"  Checked disabled>
+                        Set Committed Date:${record.committed_date}
+                </label>`;
+        }
+
+        if (record.priority_immediate?.toLowerCase() === "yes") {
+          buttons += `<label class="secondary-text">
+                        <input type="checkbox"  Checked disabled>
+                        Immediate
+                </label>`;
+        }
+
+        if (record.priority_add?.toLowerCase() === "yes") {
+          buttons += `<label class="secondary-text">
+                        <input type="checkbox"  Checked disabled>
+                        Addtl Customization/Outside Scope
+                </label>`;
+        }
+
+        return `<td>${buttons}</td>`;
+      }
+
+      function generateUsers(record) {
+        let buttons = "";
+        if (record.user?.toLowerCase() !== "") {
+          buttons += `<label class="secondary-text">
+                          👤 ${record.user || ""}
+                    </label>`;
+        }
+
+        if (record.integrator?.toLowerCase() !== "") {
+          buttons += `<label class="secondary-text">
+                          🔗 ${record.integrator}
+                    </label>`;
+        }
+
+        if (record.developer?.toLowerCase() !== "") {
+          buttons += `<label class="secondary-text">
+                          👨‍💻 ${record.developer || ""}
+                    </label>`;
+        }
+
+        if (record.qa?.toLowerCase() !== "") {
+          buttons += `<label class="secondary-text">
+                          ✅ ${record.qa || ""}
+                    </label>`;
+        }
+
+        return `<td>${buttons}</td>`;
+      }
+
+      function generateProjectDesc(record) {
+        let buttons = "";
+        if (record.project?.toLowerCase() === "cnims") {
+          buttons = `<label class="secondary-text">
+                          City of Naga
+                    </label>`;
+        }
+
+        if (record.project?.toLowerCase() === "cbmis") {
+          buttons = `<label class="secondary-text">
+                          City of Bogo
+                    </label>`;
+        }
+
+        if (record.project?.toLowerCase() === "ccmis") {
+          buttons = `<label class="secondary-text">
+                          City of Carcar
+                    </label>`;
+        }
+
+        if (record.project?.toLowerCase() === "mdmis") {
+          buttons = `<label class="secondary-text">
+                          Municipality of Dumanjug
+                    </label>`;
+        }
+
+        return `<td>${buttons}</td>`;
+      }
+
+      function setupSearch() {
+        const searchInput = document.getElementById("searchInput");
+
+        searchInput.addEventListener("input", function () {
+          const filters = this.value
+            .toLowerCase()
+            .split(";")
+            .map((f) => f.trim())
+            .filter((f) => f);
+
+          const rows = document.querySelectorAll("#masterTableBody tr");
+
+          rows.forEach((row) => {
+            const cells = Array.from(row.cells);
+
+            const matchesAll = filters.every((filter) =>
+              cells.some((cell) =>
+                cell.textContent.toLowerCase().includes(filter)
+              )
+            );
+
+            row.style.display = matchesAll ? "" : "none";
+          });
+        });
+      }
+      function addRecord(record) {
+        mode = "Add";
+        openModal(record);
+      }
+
+      function viewRecord(record) {
+        mode = "View";
+        openViewPrint(record);
+      }
+
+      function editRecord(record) {
+        mode = "Edit";
+        openModal(record);
+      }
+
+      function approvedHeadRecord(record) {
+        mode = "Approve Head";
+        openModal(record);
+      }
+
+      function approvedITRecord(record) {
+        mode = "Approve IT";
+        openModal(record);
+      }
+
+      function cancelRecord(record) {
+        mode = "Cancel";
+        openModal(record);
+      }
+
+      function acceptRecord(record) {
+        mode = "Accept";
+        openModal(record);
+      }
+
+      function acceptAdminRecord(record) {
+        mode = "Accept Admin";
+        openModal(record);
+      }
+
+      function acceptDeveloperRecord(record) {
+        mode = "Accept Development";
+        openModal(record);
+      }
+
+      function doneDevelopentRecord(record) {
+        mode = "Done Development";
+        openModal(record);
+      }
+
+      function acceptQARecord(record) {
+        mode = "Accept QA";
+        openModal(record);
+      }
+
+      function doneQARecord(record) {
+        mode = "Done QA";
+        openModal(record);
+      }
+
+      function deployedRecord(record) {
+        mode = "Deploy";
+        openModal(record);
+      }
+
+      function doneFixedRecord(record) {
+        mode = "Done Fixed";
+        openModal(record);
+      }
+
+      function fileRecord(record) {
+        mode = "File";
+        openModal(record);
+      }
+
+        window.addEventListener("DOMContentLoaded", () => {
+    const data = JSON.parse(localStorage.getItem("selectedRecord"));
+    if (data) {
+      document.getElementById("workloadTableBody").innerHTML = `
+        <tr>
+          <td>${data.service_request_no}</td>
+          <td>${data.date_requested}</td>
+          <td>${data.project}</td>
+          <td>${data.concern_type_bugs === "yes" ? "Bug" : ""}</td>
+          <td>${data.memo}</td>
+        </tr>
+      `;
     }
-  </script>
-</body>
+  });
+
+      // ✅ Runs every 30 seconds
+      // setInterval(() => {
+      //   loadMasterList(); // call async function
+      //   console.log("✅ Async function executed silently after 30s");
+      // }, 3600000);
+      // setInterval(generateActionButtons, 3600000);
+
+      window.addEventListener("DOMContentLoaded", () => {
+        loadMasterList();
+
+        document.getElementById("employeeName").textContent = user.name;
+        document.getElementById("employeeRole").textContent =
+          user.role.toUpperCase() + " - " + user.project;
+
+        if (user.isdirect === "True") {
+          document.querySelector(".user-actions").style.display = "none";
+        }
+
+        let logoutPath = ""; // Or your logout route if it's server-based
+        if (projectLogin === "CYLIX") {
+          logoutPath = "cylix.html";
+        } else if (projectLogin === "CNIMS") {
+          logoutPath = "cnims.html";
+        }
+        document.getElementById("logoutLink").href =
+          `${BASE_PATH}pages/` + logoutPath;
+        document.getElementById(
+          "notifySound"
+        ).src = `${BASE_PATH}resources/notify.mp3`;
+      });
+
+      function openModal(record = null) {
+        const modal = document.getElementById("createModal");
+        const modalBody = document.getElementById("modalBody");
+
+        let pageTmp = "";
+        let scriptFile = "";
+
+        if (mode === "View") {
+          pageTmp = "pages/view_print.html";
+          scriptFile = "js/serviceForm.js";
+        } else {
+          pageTmp = "pages/serviceForm.html";
+          scriptFile = "js/serviceForm.js";
+        }
+
+        fetch(`${BASE_PATH}${pageTmp}`)
+          .then((res) => res.text())
+          .then((html) => {
+            modalBody.innerHTML = html;
+
+            const script = document.createElement("script");
+            script.src = `${BASE_PATH}${scriptFile}`;
+            script.defer = true;
+
+            // 🧠 Move getDefaults here, once the script is fully loaded
+            script.onload = () => {
+              const tryGetDefaults = setInterval(() => {
+                if (typeof getDefaults === "function") {
+                  clearInterval(tryGetDefaults);
+                  // ✅ Now the DOM is guaranteed to be ready
+                  getDefaults(record, mode);
+                }
+              }, 100); // Poll every 100ms until DOM is ready
+            };
+
+            modalBody.appendChild(script), mode;
+          })
+          .catch((err) => {
+            modalBody.innerHTML = "<p>⚠️ Failed to load the entry form.</p>";
+            console.error(err);
+          });
+
+        modal.style.display = "block";
+        modalBody.innerHTML = "Loading...";
+      }
+
+      function openViewPrint(record = null) {
+        const modal = document.getElementById("createModal");
+        const modalBody = document.getElementById("modalBody");
+
+        const pageTmp = "pages/view_print.html";
+        const scriptFile = "js/printForm.js";
+
+        fetch(`${BASE_PATH}${pageTmp}`)
+          .then((res) => res.text())
+          .then((html) => {
+            modalBody.innerHTML = html;
+
+            const script = document.createElement("script");
+            script.src = `${BASE_PATH}${scriptFile}`;
+            script.defer = true;
+
+            // 🧠 Move getDefaults here, once the script is fully loaded
+            script.onload = () => {
+              const tryGetDefaults = setInterval(() => {
+                if (typeof getDefaults === "function") {
+                  clearInterval(tryGetDefaults);
+                  // ✅ Now the DOM is guaranteed to be ready
+                  getDefaults(record, mode);
+                }
+              }, 100); // Poll every 100ms until DOM is ready
+            };
+
+            modalBody.appendChild(script), mode;
+          })
+          .catch((err) => {
+            modalBody.innerHTML = "<p>⚠️ Failed to load the entry form.</p>";
+            console.error(err);
+          });
+
+        modal.style.display = "block";
+        modalBody.innerHTML = "Loading...";
+      }
+
+      function closeModal() {
+        document.getElementById("createModal").style.display = "none";
+      }
+
+      // Do NOT close modal when clicking outside
+      window.addEventListener("click", function (event) {
+        const modal = document.getElementById("createModal");
+        const modalContent = document.querySelector(".modal-content");
+
+        // Check if clicked outside modalContent, but do nothing
+        if (event.target === modal) {
+          // Do nothing (don't close)
+          event.stopPropagation();
+        }
+      });
+
+      document.addEventListener("keydown", function (event) {
+        const modal = document.getElementById("createModal");
+        if (event.key === "Escape" && modal.style.display === "block") {
+          event.preventDefault(); // Prevent ESC from closing
+        }
+      });
+    </script>
+    <script>
+      // const socket = new WebSocket("ws://20.20.40.221:8080");
+
+      // socket.addEventListener("open", () => {
+      //   console.log("✅ Connected to WebSocket server");
+      // });
+
+      // socket.addEventListener("message", (event) => {
+      //   console.log("📩 Received WebSocket message:", event.data);
+
+      //   if (event.data === "refresh_masterlist") {
+      //     loadMasterList(); // Your existing function to refresh the masterlist
+      //     showNotification("🔄 Master list has been updated.");
+      //   }
+      // });
+
+      // socket.addEventListener("close", () => {
+      //   console.log("❌ WebSocket connection closed");
+      // });
+
+      // socket.addEventListener("error", (error) => {
+      //   console.error("⚠️ WebSocket error:", error);
+      // });
+
+      function notifyMasterListChange() {
+        loadMasterList();
+
+        // try {
+        //   if (typeof socket !== "undefined" && socket && socket.readyState === WebSocket.OPEN) {
+        //     socket.send("refresh_masterlist");
+        //   } else {
+        //     console.warn("⚠️ Socket not connected. Skipping refresh_masterlist notification.");
+        //   }
+        // } catch (e) {
+        //   console.error("❌ notifyMasterListChange error:", e);
+        // }
+      }
+    </script>
+    <script>
+      function showNotification(message, duration = 3000) {
+        const notification = document.getElementById("notification");
+        notification.textContent = message;
+        notification.style.display = "block";
+
+        // Play sound
+        const sound = document.getElementById("notifySound");
+        if (sound) sound.play();
+
+        setTimeout(() => {
+          notification.style.display = "none";
+        }, duration);
+      }
+    </script>
+  </body>
 </html>

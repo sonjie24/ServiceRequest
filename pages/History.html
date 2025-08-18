@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Master List</title>
+    <title>Workload</title>
     <link rel="stylesheet" href="../style/main.css" />
   </head>
 
@@ -11,13 +11,15 @@
     <!-- <h1>SERVICE REQUEST</h1> -->
     <div class="header-bar">
       <div class="user-info-section">
-        <div class="user-details">
+
+
+        <d iv class="user-details">
           <span class="user-name"
             >👤 <strong id="employeeName">John Doe</strong></span
           >
           <span class="user-role" id="employeeRole">Integrator</span>
 
-          <div class="user-actions">
+          <!-- <div class="user-actions">
             <a href="change-password.html" class="user-action-link"
               >Change Password</a
             >
@@ -25,16 +27,45 @@
             <a href="#" id="logoutLink" class="user-action-link logout"
               >Logout</a
             >
-          </div>
+          </div> -->
         </div>
 
         <div class="menu-links">
+          <a href="master.html" class="menu-link"> ⬅ Back</a>
           <!-- <button onclick="openModals()">Workloads</button> -->
+          <a href="workloads.html" class="menu-link readonly">Workloads</a>
+          <a href="history.html" class="menu-link readonly" >History</a>
+          <a onclick="addRecord()" class="menu-link add-new readonly">➕ Add New</a>
 
-        <a href="/pages/workload.html" class="menu-link">Workloads</a>
-          <a href="/pages/History.html" class="menu-link">History</a>
-          <a onclick="addRecord()" class="menu-link add-new">➕ Add New</a>
+
         </div>
+
+            <!-- Back Button -->
+   
+
+        <style>
+
+
+  /* Readonly (disabled) style */
+  .menu-link.readonly {
+    pointer-events: none;   /* disable clicking */
+    color: gray;            /* gray color */
+    cursor: default;        /* no hand cursor */
+    text-decoration: none;  /* no underline */
+    opacity: 0.6;           /* make it look faded */
+  }
+      /* Back button */
+    .back-button button {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+</style>
       </div>
 
       <!-- ✅ Search bar inside the same header -->
@@ -245,10 +276,6 @@
         const safeRecord = JSON.stringify(record).replace(/"/g, "&quot;"); // escape quotes for HTML
 
         buttons += `<button onclick="viewRecord(${safeRecord})">View</button>`;
-        buttons += `<button onclick="openWorkload(${safeRecord})">Workload</button>`;
-        buttons += `<button onclick="openhistory(${safeRecord})">History</button>`;
-
-
 
         if (
           userRole === "User" ||
@@ -562,15 +589,7 @@
         mode = "Edit";
         openModal(record);
       }
-      
-      function openWorkload(record) {
-        localStorage.setItem("selectedRecord", JSON.stringify(record));
-        window.location.href = "/pages/workload.html";
-      }
-      function openhistory(record) {
-        localStorage.setItem("selectedRecord", JSON.stringify(record));
-        window.location.href = "/pages/History.html";
-      }
+
       function approvedHeadRecord(record) {
         mode = "Approve Head";
         openModal(record);
@@ -630,6 +649,21 @@
         mode = "File";
         openModal(record);
       }
+
+          window.addEventListener("DOMContentLoaded", () => {
+    const data = JSON.parse(localStorage.getItem("selectedRecord"));
+    if (data) {
+      document.getElementById("HistoryTableBody").innerHTML = `
+        <tr>
+          <td>${data.service_request_no}</td>
+          <td>${data.date_requested}</td>
+          <td>${data.project}</td>
+          <td>${data.concern_type_bugs === "yes" ? "Bug" : ""}</td>
+          <td>${data.memo}</td>
+        </tr>
+      `;
+    }
+  });
 
       // ✅ Runs every 30 seconds
       // setInterval(() => {
