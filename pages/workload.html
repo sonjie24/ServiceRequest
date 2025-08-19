@@ -150,7 +150,7 @@
       async function loadMasterList() {
         try {
           const projectName = user.project;
-          const response = await fetch(`${API_BASE_URL}/get-all`, {
+          const response = await fetch(`${API_BASE_URL}/workload-all`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ user }),
