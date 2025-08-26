@@ -31,8 +31,10 @@
         <div class="menu-links">
           <!-- <button onclick="openModals()">Workloads</button> -->
 
-        <a href="/pages/workload.html" class="menu-link">Workloads</a>
-          <a href="/pages/History.html" class="menu-link">History</a>
+          <a onclick="openWork()" class="menu-link">Workloads</a>
+          <a onclick="openHistory()" class="menu-link">History</a>
+        <!-- <a href="/pages/workload.html" class="menu-link">Workloads</a> -->
+          <!-- <a href="/pages/History.html" class="menu-link">History</a> -->
           <a onclick="addRecord()" class="menu-link add-new">➕ Add New</a>
         </div>
       </div>
@@ -562,6 +564,19 @@
         mode = "Edit";
         openModal(record);
       }
+
+
+      function openWork(record) {
+      window.location.href = `${BASE_PATH}pages/workload.html`;
+
+      }
+
+      function openHistory(record) {
+      window.location.href = `${BASE_PATH}pages/History.html`;
+
+      }
+
+      
       
       function openWorkload(record) {
         localStorage.setItem("selectedRecord", JSON.stringify(record));
