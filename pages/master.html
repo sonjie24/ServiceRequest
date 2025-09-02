@@ -281,7 +281,7 @@
         }
 
         if (userRole === "Admin") {
-          if (record.cylix_status !== "For Filing") {
+          if (record.cylix_status !== "For Filing" || record.cylix_status !== "Completed") {
             buttons += `<button onclick="cancelRecord(${safeRecord})">Cancel</button>`;
           }
         }
@@ -364,7 +364,7 @@
         }
 
         if (userRole === "Admin") {
-          if (record.cylix_status === "For Filing") {
+          if (record.cylix_status === "For Filing" || record.cylix_status !== "Completed") {
             buttons += `<button onclick="fileRecord(${safeRecord})">File</button>`;
           }
         }
