@@ -21,7 +21,7 @@
     apiBaseUrl = "http://20.20.40.221:5678/webhook"; // Fallback
   } else {
     // GitHub Pages can't make backend calls directly unless it's public API or proxied
-    apiBaseUrl = "https://ceaf5e69a94b.ngrok-free.app/webhook"; // Replace with real prod endpoint
+    apiBaseUrl = "https://a8ddeba44d75.ngrok-free.app/webhook"; // Replace with real prod endpoint
   }
 
   // Expose API_BASE_URL to other scripts
