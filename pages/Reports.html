@@ -31,12 +31,13 @@
         </div>
 
         <div class="menu-links">
+
           <a href="master.html" class="menu-link"> ⬅ Back</a>
-          <a href="master.html" class="menu-link">PRINT</a>
+          <a onclick="openprintreport()" class="menu-link">PRINT</a>
 
         </div>
 
-   
+        
 
         <style>
 
@@ -82,7 +83,7 @@
           <th width="500px">Department/Office</th>
           <th width="120px">No. of Service Request</th>
           <th width="220px">Date Reported</th>
-          <th width="220px">User/Integrator/ Developer/ QA</th>
+          <!-- <th width="220px">User/Integrator/ Developer/ QA</th> -->
           <th width="500px">Nature of Concern</th>
           <th width="200px">Status</th>
           <th width="140px">Date Resolved</th>
@@ -206,7 +207,6 @@
             <td><div class="secondary-text">${
               record.date_requested || ""
             }</div></td>
-            <td id="user-${record.uuid}"></td>
    
             <td id="concern-${record.uuid}"></td>
             
@@ -228,7 +228,6 @@
             
 
 
-            <td class="action-buttons" id="actions-${record.uuid}"></td>
 
           `;
             tableBody.appendChild(row);
@@ -557,14 +556,24 @@
           });
         });
       }
+
+      
       function addRecord(record) {
         mode = "Add";
         openModal(record);
       }
+      
 
       function viewRecord(record) {
         mode = "View";
         openViewPrint(record);
+      }
+
+
+
+      function openprintreport(record) {
+        mode = "printrecord";
+        openViewPrintrecord(record);
       }
 
       function editRecord(record) {
@@ -631,6 +640,8 @@
         mode = "File";
         openModal(record);
       }
+
+      
 
         window.addEventListener("DOMContentLoaded", () => {
     const data = JSON.parse(localStorage.getItem("selectedRecord"));
@@ -761,6 +772,48 @@
         modal.style.display = "block";
         modalBody.innerHTML = "Loading...";
       }
+
+      function openViewPrintrecord(record = null, mode = "PrintRecord") {
+  const modal = document.getElementById("createModal");
+  const modalBody = document.getElementById("modalBody");
+  const pageTmp = "pages/view_printRecord.html";
+  const scriptFile = "js/printForm.js";
+
+  // Show modal
+  modal.style.display = "block";
+  modalBody.innerHTML = "Loading...";
+
+  // Fetch page content
+  fetch(`${BASE_PATH}${pageTmp}`)
+    .then((res) => res.text())
+    .then((html) => {
+      modalBody.innerHTML = html;
+
+      // Inject script
+      const script = document.createElement("script");
+      script.src = `${BASE_PATH}${scriptFile}`;
+      script.defer = true;
+
+      script.onload = () => {
+        const tryGetDefaults = setInterval(() => {
+          if (typeof getDefaults === "function") {
+            clearInterval(tryGetDefaults);
+            try {
+              getDefaults(record, mode); // ✅ safe call
+            } catch (err) {
+              console.error("⚠️ Failed to initialize form:", err);
+            }
+          }
+        }, 100);
+      };
+
+      modalBody.appendChild(script);
+    })
+    .catch((err) => {
+      console.error("⚠️ Failed to load the entry form:", err);
+      modalBody.innerHTML = "⚠️ Failed to load the entry form.";
+    });
+}
 
       function closeModal() {
         document.getElementById("createModal").style.display = "none";
