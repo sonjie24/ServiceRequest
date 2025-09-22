@@ -5,6 +5,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Workload</title>
     <link rel="stylesheet" href="../style/main.css" />
+
+    <style media="print">
+  body * {
+    visibility: hidden;
+  }
+  #masterTable, #masterTable * {
+    visibility: visible;
+  }
+  #masterTable {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+  #masterTable th, #masterTable td {
+    border: 1px solid #ccc;
+    padding: 6px;
+    text-align: left;
+  }
+</style>
   </head>
 
   <body>
@@ -33,7 +55,7 @@
         <div class="menu-links">
 
           <a href="master.html" class="menu-link"> ⬅ Back</a>
-          <a onclick="openprintreport()" class="menu-link">PRINT</a>
+          <a onclick="openprintreport()" class="menu-link">🖨 PRINT</a>
 
         </div>
 
@@ -562,13 +584,16 @@
         mode = "Add";
         openModal(record);
       }
+
+      function openprintreport() {
+          window.print();
+        }
       
 
       function viewRecord(record) {
         mode = "View";
         openViewPrint(record);
       }
-
 
 
       function openprintreport(record) {
@@ -640,8 +665,6 @@
         mode = "File";
         openModal(record);
       }
-
-      
 
         window.addEventListener("DOMContentLoaded", () => {
     const data = JSON.parse(localStorage.getItem("selectedRecord"));
