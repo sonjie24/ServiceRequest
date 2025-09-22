@@ -67,6 +67,22 @@
               <option value="City of Carcar">CCMIS</option>
               <option value="Municipality of Dumanjug">MDMIS</option>
             </select>
+
+            <select id="monthFilter" class="form-control">
+            <option value="">All Months</option>
+            <option value="01">January</option>
+            <option value="02">February</option>
+            <option value="03">March</option>
+            <option value="04">April</option>
+            <option value="05">May</option>
+            <option value="06">June</option>
+            <option value="07">July</option>
+            <option value="08">August</option>
+            <option value="09">September</option>
+            <option value="10">October</option>
+            <option value="11">November</option>
+            <option value="12">December</option>
+          </select>
           </div>
         </div>
 
@@ -584,45 +600,62 @@
         }
 
 
-            function applyFilters() {
-        const searchInput = document.getElementById("searchInput").value
-          .toLowerCase()
-          .trim();
-        const selectedProject = document
-          .getElementById("projectFilter")
-          .value.toLowerCase();
+        function applyFilters() {
+          const searchInput = document.getElementById("searchInput").value
+            .toLowerCase()
+            .trim();
+          const selectedProject = document
+            .getElementById("projectFilter")
+            .value.toLowerCase();
+          const selectedMonth = document.getElementById("monthFilter").value; // "01"..."12"
 
-        const filters = searchInput
-          ? searchInput.split(";").map((f) => f.trim()).filter((f) => f)
-          : [];
+          const filters = searchInput
+            ? searchInput.split(";").map((f) => f.trim()).filter((f) => f)
+            : [];
 
-        const rows = document.querySelectorAll("#masterTableBody tr");
+          const rows = document.querySelectorAll("#masterTableBody tr");
 
-        rows.forEach((row) => {
-          const cells = Array.from(row.cells);
-          const rowText = cells.map((c) => c.textContent.toLowerCase()).join(" ");
-          const projectText =
-            row.querySelector("td:nth-child(4)")?.textContent.toLowerCase() ||
-            "";
+          rows.forEach((row) => {
+            const cells = Array.from(row.cells);
+            const rowText = cells.map((c) => c.textContent.toLowerCase()).join(" ");
 
-          const matchesSearch =
-            !filters.length || filters.every((f) => rowText.includes(f));
-          const matchesProject =
-            !selectedProject || projectText.includes(selectedProject);
+            // ✅ Project column (4th col = index 3)
+            const projectText =
+              row.querySelector("td:nth-child(4)")?.textContent.toLowerCase() || "";
 
-          row.style.display = matchesSearch && matchesProject ? "" : "none";
-        });
+            // ✅ Date column (6th col = index 5)
+            const dateText =
+              row.querySelector("td:nth-child(6)")?.textContent.trim() || "";
+
+            // Extract month (MM) from YYYY-MM-DD
+            let rowMonth = "";
+            if (dateText && dateText.includes("-")) {
+              const parts = dateText.split("-");
+              if (parts.length >= 2) {
+                rowMonth = parts[1]; // e.g. "02" for February
+              }
+            }
+
+            const matchesSearch =
+              !filters.length || filters.every((f) => rowText.includes(f));
+            const matchesProject =
+              !selectedProject || projectText.includes(selectedProject);
+            const matchesMonth =
+              !selectedMonth || rowMonth === selectedMonth;
+
+            row.style.display =
+              matchesSearch && matchesProject && matchesMonth ? "" : "none";
+          });
+        }
+
+
+
+      function setupFilters() {
+        document.getElementById("searchInput").addEventListener("input", applyFilters);
+        document.getElementById("projectFilter").addEventListener("change", applyFilters);
+        document.getElementById("monthFilter").addEventListener("change", applyFilters);
       }
 
-
-            function setupFilters() {
-        document
-          .getElementById("searchInput")
-          .addEventListener("input", applyFilters);
-        document
-          .getElementById("projectFilter")
-          .addEventListener("change", applyFilters);
-      }
 
       // function setupSearch() {
       //   const searchInput = document.getElementById("searchInput");
