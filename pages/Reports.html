@@ -55,8 +55,19 @@
         <div class="menu-links">
 
           <a href="master.html" class="menu-link"> ⬅ Back</a>
+          
+          <div class="print-button" style="display: flex; gap: 10px; align-items: center;">
+
           <a onclick="openprintreport()" class="menu-link">🖨 PRINT</a>
 
+            <select id="projectFilter" class="form-control">
+              <option value="">All Projects</option>
+              <option value="City of Naga">CNIMS</option>
+              <option value="City of Bogo">CBMIS</option>
+              <option value="City of Carcar">CCMIS</option>
+              <option value="Municipality of Dumanjug">MDMIS</option>
+            </select>
+          </div>
         </div>
 
         
@@ -94,6 +105,7 @@
           id="searchInput"
           placeholder="Search by..."
         />
+
       </div>
     </div>
 
@@ -103,6 +115,8 @@
           <th width="160px" hidden>GUID</th>
           <th width="50px">No.</th>
           <th width="500px">Department/Office</th>
+          <th width="120px">Project</th>
+
           <th width="120px">No. of Service Request</th>
           <th width="220px">Date Reported</th>
           <!-- <th width="220px">User/Integrator/ Developer/ QA</th> -->
@@ -224,6 +238,7 @@
             <td><div class="secondary-text">${
               record.department || ""
             }</div></td>
+            <td id="prject_desc-${record.uuid}"></td>
 
             <td id="countx-${record.uuid}"></td>
             <td><div class="secondary-text">${
@@ -262,11 +277,12 @@
             //   generatePriorityType(record);
             // document.getElementById(`user-${record.uuid}`).innerHTML =
             //   generateUsers(record);
-            // document.getElementById(`prject_desc-${record.uuid}`).innerHTML =
-            //   generateProjectDesc(record);
+            document.getElementById(`prject_desc-${record.uuid}`).innerHTML =
+              generateProjectDesc(record);
           });
 
-          setupSearch();
+          setupFilters();
+
         } catch (error) {
           console.error("❌ Failed to load master list:", error);
         }
@@ -399,6 +415,9 @@
 
         return `<td class="action-buttons secondary-text">${buttons}</td>`;
       }
+
+
+
 
 
 
@@ -548,59 +567,105 @@
         return `<td>${buttons}</td>`;
       }
 
-      function generateProjectDesc(record) {
-        let buttons = "";
-        if (record.project?.toLowerCase() === "cnims") {
-          buttons = `<label class="secondary-text">
-                          City of Naga
-                    </label>`;
+        function generateProjectDesc(record) {
+          if (record.project?.toLowerCase() === "cnims") {
+            return `<label class="secondary-text">City of Naga</label>`;
+          }
+          if (record.project?.toLowerCase() === "cbmis") {
+            return `<label class="secondary-text">City of Bogo</label>`;
+          }
+          if (record.project?.toLowerCase() === "ccmis") {
+            return `<label class="secondary-text">City of Carcar</label>`;
+          }
+          if (record.project?.toLowerCase() === "mdmis") {
+            return `<label class="secondary-text">Municipality of Dumanjug</label>`;
+          }
+          return `<label class="secondary-text">${record.project || ""}</label>`;
         }
 
-        if (record.project?.toLowerCase() === "cbmis") {
-          buttons = `<label class="secondary-text">
-                          City of Bogo
-                    </label>`;
-        }
 
-        if (record.project?.toLowerCase() === "ccmis") {
-          buttons = `<label class="secondary-text">
-                          City of Carcar
-                    </label>`;
-        }
+            function applyFilters() {
+        const searchInput = document.getElementById("searchInput").value
+          .toLowerCase()
+          .trim();
+        const selectedProject = document
+          .getElementById("projectFilter")
+          .value.toLowerCase();
 
-        if (record.project?.toLowerCase() === "mdmis") {
-          buttons = `<label class="secondary-text">
-                          Municipality of Dumanjug
-                    </label>`;
-        }
+        const filters = searchInput
+          ? searchInput.split(";").map((f) => f.trim()).filter((f) => f)
+          : [];
 
-        return `<td>${buttons}</td>`;
+        const rows = document.querySelectorAll("#masterTableBody tr");
+
+        rows.forEach((row) => {
+          const cells = Array.from(row.cells);
+          const rowText = cells.map((c) => c.textContent.toLowerCase()).join(" ");
+          const projectText =
+            row.querySelector("td:nth-child(4)")?.textContent.toLowerCase() ||
+            "";
+
+          const matchesSearch =
+            !filters.length || filters.every((f) => rowText.includes(f));
+          const matchesProject =
+            !selectedProject || projectText.includes(selectedProject);
+
+          row.style.display = matchesSearch && matchesProject ? "" : "none";
+        });
       }
 
-      
 
-      function setupSearch() {
-        const searchInput = document.getElementById("searchInput");
+            function setupFilters() {
+        document
+          .getElementById("searchInput")
+          .addEventListener("input", applyFilters);
+        document
+          .getElementById("projectFilter")
+          .addEventListener("change", applyFilters);
+      }
 
-        searchInput.addEventListener("input", function () {
-          const filters = this.value
-            .toLowerCase()
-            .split(";")
-            .map((f) => f.trim())
-            .filter((f) => f);
+      // function setupSearch() {
+      //   const searchInput = document.getElementById("searchInput");
 
+      //   searchInput.addEventListener("input", function () {
+      //     const filters = this.value
+      //       .toLowerCase()
+      //       .split(";")
+      //       .map((f) => f.trim())
+      //       .filter((f) => f);
+
+      //     const rows = document.querySelectorAll("#masterTableBody tr");
+
+      //     rows.forEach((row) => {
+      //       const cells = Array.from(row.cells);
+
+      //       const matchesAll = filters.every((filter) =>
+      //         cells.some((cell) =>
+      //           cell.textContent.toLowerCase().includes(filter)
+      //         )
+      //       );
+
+      //       row.style.display = matchesAll ? "" : "none";
+      //     });
+      //   });
+      // }
+
+            function setupProjectFilter() {
+        const projectFilter = document.getElementById("projectFilter");
+
+        projectFilter.addEventListener("change", () => {
+          const selectedProject = projectFilter.value.toLowerCase();
           const rows = document.querySelectorAll("#masterTableBody tr");
 
           rows.forEach((row) => {
-            const cells = Array.from(row.cells);
+            const projectCell = row.cells[3]; // 👈 adjust index if Project column is in a different position
+            const projectText = projectCell ? projectCell.textContent.toLowerCase() : "";
 
-            const matchesAll = filters.every((filter) =>
-              cells.some((cell) =>
-                cell.textContent.toLowerCase().includes(filter)
-              )
-            );
-
-            row.style.display = matchesAll ? "" : "none";
+            if (!selectedProject || projectText.includes(selectedProject)) {
+              row.style.display = "";   // show
+            } else {
+              row.style.display = "none"; // hide
+            }
           });
         });
       }
