@@ -656,34 +656,7 @@
         document.getElementById("monthFilter").addEventListener("change", applyFilters);
       }
 
-
-      // function setupSearch() {
-      //   const searchInput = document.getElementById("searchInput");
-
-      //   searchInput.addEventListener("input", function () {
-      //     const filters = this.value
-      //       .toLowerCase()
-      //       .split(";")
-      //       .map((f) => f.trim())
-      //       .filter((f) => f);
-
-      //     const rows = document.querySelectorAll("#masterTableBody tr");
-
-      //     rows.forEach((row) => {
-      //       const cells = Array.from(row.cells);
-
-      //       const matchesAll = filters.every((filter) =>
-      //         cells.some((cell) =>
-      //           cell.textContent.toLowerCase().includes(filter)
-      //         )
-      //       );
-
-      //       row.style.display = matchesAll ? "" : "none";
-      //     });
-      //   });
-      // }
-
-            function setupProjectFilter() {
+      function setupProjectFilter() {
         const projectFilter = document.getElementById("projectFilter");
 
         projectFilter.addEventListener("change", () => {
@@ -709,86 +682,35 @@
         openModal(record);
       }
 
-      function openprintreport() {
-          window.print();
-        }
       
 
-      function viewRecord(record) {
-        mode = "View";
-        openViewPrint(record);
-      }
+
+      // function openprintreport() {
+      //   const modal = document.getElementById("createModal");
+      //   const modalBody = document.getElementById("modalBody");
+
+      //   const pageTmp = "pages/printReport.html";   // ✅ your saved report html
+
+      //   modal.style.display = "block";
+      //   modalBody.innerHTML = "Loading...";
+
+      //   fetch(`${BASE_PATH}${pageTmp}`)
+      //     .then((res) => res.text())
+      //     .then((html) => {
+      //       modalBody.innerHTML = html;
+      //     })
+      //     .catch((err) => {
+      //       console.error("⚠️ Failed to load print report:", err);
+      //       modalBody.innerHTML = "⚠️ Failed to load print report.";
+      //     });
+      // }
 
 
-      function openprintreport(record) {
-        mode = "printrecord";
-        openViewPrintrecord(record);
+      function openprintreport() {
+        const pageTmp = "pages/printReport.html";   // ✅ your saved report html
+        window.open(`${BASE_PATH}${pageTmp}`, "_blank");
       }
-
-      function editRecord(record) {
-        mode = "Edit";
-        openModal(record);
-      }
-
-      function approvedHeadRecord(record) {
-        mode = "Approve Head";
-        openModal(record);
-      }
-
-      function approvedITRecord(record) {
-        mode = "Approve IT";
-        openModal(record);
-      }
-
-      function cancelRecord(record) {
-        mode = "Cancel";
-        openModal(record);
-      }
-
-      function acceptRecord(record) {
-        mode = "Accept";
-        openModal(record);
-      }
-
-      function acceptAdminRecord(record) {
-        mode = "Accept Admin";
-        openModal(record);
-      }
-
-      function acceptDeveloperRecord(record) {
-        mode = "Accept Development";
-        openModal(record);
-      }
-
-      function doneDevelopentRecord(record) {
-        mode = "Done Development";
-        openModal(record);
-      }
-
-      function acceptQARecord(record) {
-        mode = "Accept QA";
-        openModal(record);
-      }
-
-      function doneQARecord(record) {
-        mode = "Done QA";
-        openModal(record);
-      }
-
-      function deployedRecord(record) {
-        mode = "Deploy";
-        openModal(record);
-      }
-
-      function doneFixedRecord(record) {
-        mode = "Done Fixed";
-        openModal(record);
-      }
-
-      function fileRecord(record) {
-        mode = "File";
-        openModal(record);
-      }
+       
 
         window.addEventListener("DOMContentLoaded", () => {
     const data = JSON.parse(localStorage.getItem("selectedRecord"));
@@ -882,6 +804,7 @@
         modalBody.innerHTML = "Loading...";
       }
 
+
       function openViewPrint(record = null) {
         const modal = document.getElementById("createModal");
         const modalBody = document.getElementById("modalBody");
@@ -919,6 +842,35 @@
         modal.style.display = "block";
         modalBody.innerHTML = "Loading...";
       }
+
+
+      function openPrintReport() {
+  const modal = document.getElementById("createModal");
+  const modalBody = document.getElementById("modalBody");
+
+  const pageTmp = "pages/printReport.html";   // ✅ your saved report html
+  const scriptFile = "js/printReport.js";     // optional script for it
+
+  modal.style.display = "block";
+  modalBody.innerHTML = "Loading...";
+
+  fetch(`${BASE_PATH}${pageTmp}`)
+    .then((res) => res.text())
+    .then((html) => {
+      modalBody.innerHTML = html;
+
+      // attach js if needed
+      const script = document.createElement("script");
+      script.src = `${BASE_PATH}${scriptFile}`;
+      script.defer = true;
+      modalBody.appendChild(script);
+    })
+    .catch((err) => {
+      console.error("⚠️ Failed to load print report:", err);
+      modalBody.innerHTML = "⚠️ Failed to load print report.";
+    });
+}
+
 
       function openViewPrintrecord(record = null, mode = "PrintRecord") {
   const modal = document.getElementById("createModal");
