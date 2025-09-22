@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Master List</title>
+    <title>Workload</title>
     <link rel="stylesheet" href="../style/main.css" />
   </head>
 
@@ -11,13 +11,15 @@
     <!-- <h1>SERVICE REQUEST</h1> -->
     <div class="header-bar">
       <div class="user-info-section">
-        <div class="user-details">
+
+
+        <d iv class="user-details">
           <span class="user-name"
             >👤 <strong id="employeeName">John Doe</strong></span
           >
           <span class="user-role" id="employeeRole">Integrator</span>
 
-          <div class="user-actions">
+          <!-- <div class="user-actions">
             <a href="change-password.html" class="user-action-link"
               >Change Password</a
             >
@@ -25,18 +27,40 @@
             <a href="#" id="logoutLink" class="user-action-link logout"
               >Logout</a
             >
-          </div>
+          </div> -->
         </div>
 
         <div class="menu-links">
-          <!-- <button onclick="openModals()">Workloads</button> -->
-          <a onclick="openReports()" class="menu-link">Reports</a>
-          <a onclick="openWork()" class="menu-link">Workloads</a>
-          <a onclick="openHistory()" class="menu-link">History</a>
-        <!-- <a href="/pages/workload.html" class="menu-link">Workloads</a> -->
-          <!-- <a href="/pages/History.html" class="menu-link">History</a> -->
-          <a onclick="addRecord()" class="menu-link add-new">➕ Add New</a>
+          <a href="master.html" class="menu-link"> ⬅ Back</a>
+          <a href="master.html" class="menu-link">PRINT</a>
+
         </div>
+
+   
+
+        <style>
+
+
+  /* Readonly (disabled) style */
+  .menu-link.readonly {
+    pointer-events: none;   /* disable clicking */
+    color: gray;            /* gray color */
+    cursor: default;        /* no hand cursor */
+    text-decoration: none;  /* no underline */
+    opacity: 0.6;           /* make it look faded */
+  }
+      /* Back button */
+    .back-button button {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+</style>
       </div>
 
       <!-- ✅ Search bar inside the same header -->
@@ -54,16 +78,14 @@
       <thead>
         <tr>
           <th width="160px" hidden>GUID</th>
-          <th onclick="sortTable(0)" width="160px">Request No ⬍</th>
-          <th width="90px">Requested Date</th>
-          <th width="120px">Project</th>
+          <th width="50px">No.</th>
+          <th width="500px">Department/Office</th>
+          <th width="120px">No. of Service Request</th>
+          <th width="220px">Date Reported</th>
           <th width="220px">User/Integrator/ Developer/ QA</th>
-          <th width="120px">Department/Module/Form</th>
-          <th width="220px">Concern Type/Priority</th>
-          <!-- <th width="250px">Priority</th> -->
-          <th width="500px">Concerns</th>
-          <th width="150px">Status</th>
-          <th width="40px">Action</th>
+          <th width="500px">Nature of Concern</th>
+          <th width="200px">Status</th>
+          <th width="140px">Date Resolved</th>
         </tr>
       </thead>
       <tbody id="masterTableBody">
@@ -173,46 +195,35 @@
               : "";
 
             row.innerHTML = `
-            <td hidden>${record.uuid || ""}</td>
+                 <td hidden>${record.uuid || ""}</td>
+            <td><div class="secondary-text">${tableBody.rows.length + 1}</div></td> <!-- row number -->
+
             <td><div class="secondary-text">${
-              record.service_request_no || "No Data"
+              record.department || ""
             }</div></td>
+
+            <td id="prject_desc-${record.uuid}"></td>
             <td><div class="secondary-text">${
               record.date_requested || ""
             }</div></td>
-            <td id="prject_desc-${record.uuid}"></td>
             <td id="user-${record.uuid}"></td>
-            <td>
-              <label class="secondary-text">►${
-                record.department.toUpperCase() || ""
-              }</label>
-              <label class="secondary-text">►${
-                record.module.toUpperCase() || ""
-              }</label>
-              <label class="secondary-text">►${
-                record.system_form_name.toUpperCase() || ""
-              }</label>
-            </td>
-            
+   
             <td id="concern-${record.uuid}"></td>
             
-            <td><div class="secondary-text">${detailsHTML} <br/> Attachemnet/s: ${filesHTML}  <br/>  Note/Memo: <br/>  ${
-              record.memo
-            } </div></td> 
             <td>
                 
                   <label class="secondary-text">
                         🏛️ ${record.req_status || ""}
                   </label>
-                  <label class="secondary-text"> 
-                        🏢 ${record.cylix_status || "N/A"}
+                 
+            </td>
+
+            <td>
+                
+                  <label class="secondary-text">
+                        🏛️ ${record.patch_date || ""}
                   </label>
-                  <label class="secondary-text"> 
-                        💻 ${record.dev_status || "N/A"}  
-                  </label>
-                  <label class="secondary-text"> 
-                        📅  ${record.patch_date || ""} 
-                  </label>
+                 
             </td>
             
 
@@ -247,10 +258,6 @@
         const safeRecord = JSON.stringify(record).replace(/"/g, "&quot;"); // escape quotes for HTML
 
         buttons += `<button onclick="viewRecord(${safeRecord})">View</button>`;
-        // buttons += `<button onclick="openWorkload(${safeRecord})">Workload</button>`;
-        // buttons += `<button onclick="openhistory(${safeRecord})">History</button>`;
-
-
 
         if (
           userRole === "User" ||
@@ -281,7 +288,7 @@
         }
 
         if (userRole === "Admin") {
-          if (record.cylix_status !== "For Filing" ) {
+          if (record.cylix_status !== "For Filing") {
             buttons += `<button onclick="cancelRecord(${safeRecord})">Cancel</button>`;
           }
         }
@@ -364,7 +371,7 @@
         }
 
         if (userRole === "Admin") {
-          if (record.cylix_status === "For Filing" || record.cylix_status === "Completed") {
+          if (record.cylix_status === "For Filing") {
             buttons += `<button onclick="fileRecord(${safeRecord})">File</button>`;
           }
         }
@@ -565,31 +572,6 @@
         openModal(record);
       }
 
-
-      function openReports(record) {
-      window.location.href = `${BASE_PATH}pages/Reports.html`;
-      }
-
-      function openWork(record) {
-      window.location.href = `${BASE_PATH}pages/workload.html`;
-
-      }
-
-      function openHistory(record) {
-      window.location.href = `${BASE_PATH}pages/History.html`;
-
-      }
-
-      
-      
-      function openWorkload(record) {
-        localStorage.setItem("selectedRecord", JSON.stringify(record));
-        window.location.href = "/pages/workload.html";
-      }
-      function openhistory(record) {
-        localStorage.setItem("selectedRecord", JSON.stringify(record));
-        window.location.href = "/pages/History.html";
-      }
       function approvedHeadRecord(record) {
         mode = "Approve Head";
         openModal(record);
@@ -649,6 +631,21 @@
         mode = "File";
         openModal(record);
       }
+
+        window.addEventListener("DOMContentLoaded", () => {
+    const data = JSON.parse(localStorage.getItem("selectedRecord"));
+    if (data) {
+      document.getElementById("workloadTableBody").innerHTML = `
+        <tr>
+          <td>${data.service_request_no}</td>
+          <td>${data.date_requested}</td>
+          <td>${data.project}</td>
+          <td>${data.concern_type_bugs === "yes" ? "Bug" : ""}</td>
+          <td>${data.memo}</td>
+        </tr>
+      `;
+    }
+  });
 
       // ✅ Runs every 30 seconds
       // setInterval(() => {
