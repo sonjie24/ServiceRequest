@@ -225,26 +225,21 @@
               record.department || ""
             }</div></td>
 
-            <td id="prject_desc-${record.uuid}"></td>
+            <td id="countx-${record.uuid}"></td>
             <td><div class="secondary-text">${
               record.date_requested || ""
             }</div></td>
    
             <td id="concern-${record.uuid}"></td>
-            
-            <td>
-                
-                  <label class="secondary-text">
-                        🏛️ ${record.req_status || ""}
-                  </label>
-                 
-            </td>
+
+            <td id="statusx-${record.uuid}"></td>
+
 
             <td>
                 
-                  <label class="secondary-text">
-                        🏛️ ${record.patch_date || ""}
-                  </label>
+            <label class="secondary-text">
+                🏛️ ${record.patch_date || ""}
+            </label>
                  
             </td>
             
@@ -254,16 +249,21 @@
           `;
             tableBody.appendChild(row);
             // Inject buttons based on role
-            document.getElementById(`actions-${record.uuid}`).innerHTML =
-              generateActionButtons(record);
+            // document.getElementById(`actions-${record.uuid}`).innerHTML =
+            //   generateActionButtons(record);
             document.getElementById(`concern-${record.uuid}`).innerHTML =
               generateConcernType(record);
+            document.getElementById(`countx-${record.uuid}`).innerHTML =
+              generatecount(record);
+
+            document.getElementById(`statusx-${record.uuid}`).innerHTML =
+              generateStatus(record);
             // document.getElementById(`priority-${record.uuid}`).innerHTML =
             //   generatePriorityType(record);
-            document.getElementById(`user-${record.uuid}`).innerHTML =
-              generateUsers(record);
-            document.getElementById(`prject_desc-${record.uuid}`).innerHTML =
-              generateProjectDesc(record);
+            // document.getElementById(`user-${record.uuid}`).innerHTML =
+            //   generateUsers(record);
+            // document.getElementById(`prject_desc-${record.uuid}`).innerHTML =
+            //   generateProjectDesc(record);
           });
 
           setupSearch();
@@ -398,6 +398,30 @@
         }
 
         return `<td class="action-buttons secondary-text">${buttons}</td>`;
+      }
+
+
+
+        function generatecount(record) {
+          let countYes = 0;
+
+          if (record.concern_type_new?.toLowerCase() === "yes") countYes++;
+          if (record.concern_type_rev?.toLowerCase() === "yes") countYes++;
+          if (record.concern_type_del?.toLowerCase() === "yes") countYes++;
+          if (record.concern_type_cos?.toLowerCase() === "yes") countYes++;
+          if (record.concern_type_data?.toLowerCase() === "yes") countYes++;
+          if (record.concern_type_bugs?.toLowerCase() === "yes") countYes++;
+
+          // ✅ Only return the number
+          return `<td class="secondary-text"><b>${countYes}</b></td>`;
+        }
+
+        function generateStatus(record) {
+        let statusText = record.req_status?.toLowerCase() === "approved"
+          ? "Resolved"
+          : "On-going";
+
+        return `<td class="secondary-text"><b>${statusText}</b></td>`;
       }
 
       function generateConcernType(record) {
@@ -552,6 +576,8 @@
 
         return `<td>${buttons}</td>`;
       }
+
+      
 
       function setupSearch() {
         const searchInput = document.getElementById("searchInput");
