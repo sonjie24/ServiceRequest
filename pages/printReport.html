@@ -177,11 +177,16 @@
 window.addEventListener("DOMContentLoaded", () => {
 
 
-    const monthInfo = JSON.parse(localStorage.getItem("printReportMonth"));
+  const monthInfo = JSON.parse(localStorage.getItem("printReportMonth"));
 
-  if (monthInfo && monthInfo.month) {
-    const headerMonth = document.querySelector(".header-text p.month-text");
-    headerMonth.textContent = `For the Month of ${monthInfo.text} ${monthInfo.year}`;
+  if (monthInfo) {
+    const headerMonth = document.querySelector(".month-text");
+
+    if (monthInfo.month) {
+      headerMonth.textContent = `For the Month of ${monthInfo.text} ${monthInfo.year}`;
+    } else {
+      headerMonth.textContent = `For the Year ${monthInfo.year}`;
+    }
   }
   
   const tableBody = document.querySelector("tbody");

@@ -739,7 +739,7 @@
         openModal(record);
       }
 
-function openprintreport() {
+        function openprintreport() {
   const rows = document.querySelectorAll("#masterTableBody tr");
   const exportData = [];
 
@@ -759,20 +759,25 @@ function openprintreport() {
     }
   });
 
-  // ✅ Capture selected month & year
+  // ✅ Get month & year from filters
   const monthSelect = document.getElementById("monthFilter");
   const monthValue = monthSelect.value; // "01", "02", etc.
   const monthText = monthSelect.options[monthSelect.selectedIndex].text; // "August"
-  const yearValue = new Date().getFullYear(); // or from your filter if you have year filter
+
+  const yearValue = document.getElementById("yearFilter").value || new Date().getFullYear();
 
   // Save to localStorage
   localStorage.setItem("printReportData", JSON.stringify(exportData));
-  localStorage.setItem("printReportMonth", JSON.stringify({ month: monthValue, text: monthText, year: yearValue }));
+  localStorage.setItem(
+    "printReportMonth",
+    JSON.stringify({ month: monthValue, text: monthText, year: yearValue })
+  );
 
-  // Open report
+  // Open print page
   const pageTmp = "pages/printReport.html";
   window.open(`${BASE_PATH}${pageTmp}`, "_blank");
 }
+
 
 
        
