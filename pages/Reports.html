@@ -24,6 +24,13 @@
     border-collapse: collapse;
     font-size: 14px;
   }
+  .year-input {
+  height: 100px;
+  width: 120px;      /* wider than default */
+  padding: 8px 12px; /* more padding */
+  font-size: 16px;   /* bigger text */
+  border-radius: 6px;
+}
   #masterTable th, #masterTable td {
     border: 1px solid #ccc;
     padding: 6px;
@@ -73,21 +80,30 @@
               <option value="Municipality of Dumanjug">MDMIS</option>
             </select>
 
-            <select id="monthFilter" class="form-control">
-            <option value="">All Months</option>
-            <option value="01">January</option>
-            <option value="02">February</option>
-            <option value="03">March</option>
-            <option value="04">April</option>
-            <option value="05">May</option>
-            <option value="06">June</option>
-            <option value="07">July</option>
-            <option value="08">August</option>
-            <option value="09">September</option>
-            <option value="10">October</option>
-            <option value="11">November</option>
-            <option value="12">December</option>
-          </select>
+              <select id="monthFilter" class="form-control">
+              <option value="">All Months</option>
+              <option value="01">January</option>
+              <option value="02">February</option>
+              <option value="03">March</option>
+              <option value="04">April</option>
+              <option value="05">May</option>
+              <option value="06">June</option>
+              <option value="07">July</option>
+              <option value="08">August</option>
+              <option value="09">September</option>
+              <option value="10">October</option>
+              <option value="11">November</option>
+              <option value="12">December</option>
+            </select>
+
+            <input 
+              type="number" 
+              id="yearFilter" 
+              class="form-control year-input" 
+              placeholder="Year" 
+              min="2000" 
+              max="2100" 
+            />
           </div>
         </div>
 
@@ -471,6 +487,14 @@
           return `<td class="secondary-text"><b>${countYes}</b></td>`;
         }
 
+
+          document.addEventListener("DOMContentLoaded", () => {
+          const yearFilter = document.getElementById("yearFilter");
+          const currentYear = new Date().getFullYear();
+          yearFilter.value = currentYear; // ✅ default to this year
+        });
+
+
         function generateStatus(record) {
           console.log("🔍 dev_status value:", record.dev_status, "length:", record.dev_status?.length);
 
@@ -625,53 +649,59 @@
         }
 
 
-        function applyFilters() {
-          const searchInput = document.getElementById("searchInput").value
-            .toLowerCase()
-            .trim();
-          const selectedProject = document
-            .getElementById("projectFilter")
-            .value.toLowerCase();
-          const selectedMonth = document.getElementById("monthFilter").value; // "01"..."12"
+    function applyFilters() {
+      const searchInput = document.getElementById("searchInput").value
+        .toLowerCase()
+        .trim();
+      const selectedProject = document
+        .getElementById("projectFilter")
+        .value.toLowerCase();
+      const selectedMonth = document.getElementById("monthFilter").value; // "01"..."12"
+      const selectedYear = document.getElementById("yearFilter").value.trim();
 
-          const filters = searchInput
-            ? searchInput.split(";").map((f) => f.trim()).filter((f) => f)
-            : [];
+      const filters = searchInput
+        ? searchInput.split(";").map((f) => f.trim()).filter((f) => f)
+        : [];
 
-          const rows = document.querySelectorAll("#masterTableBody tr");
+      const rows = document.querySelectorAll("#masterTableBody tr");
 
-          rows.forEach((row) => {
-            const cells = Array.from(row.cells);
-            const rowText = cells.map((c) => c.textContent.toLowerCase()).join(" ");
+      rows.forEach((row) => {
+        const cells = Array.from(row.cells);
+        const rowText = cells.map((c) => c.textContent.toLowerCase()).join(" ");
 
-            // ✅ Project column (4th col = index 3)
-            const projectText =
-              row.querySelector("td:nth-child(4)")?.textContent.toLowerCase() || "";
+        // ✅ Project column (4th col = index 3)
+        const projectText =
+          row.querySelector("td:nth-child(4)")?.textContent.toLowerCase() || "";
 
-            // ✅ Date column (6th col = index 5)
-            const dateText =
-              row.querySelector("td:nth-child(6)")?.textContent.trim() || "";
+        // ✅ Date column (6th col = index 5)
+        const dateText =
+          row.querySelector("td:nth-child(6)")?.textContent.trim() || "";
 
-            // Extract month (MM) from YYYY-MM-DD
-            let rowMonth = "";
-            if (dateText && dateText.includes("-")) {
-              const parts = dateText.split("-");
-              if (parts.length >= 2) {
-                rowMonth = parts[1]; // e.g. "02" for February
-              }
-            }
-
-            const matchesSearch =
-              !filters.length || filters.every((f) => rowText.includes(f));
-            const matchesProject =
-              !selectedProject || projectText.includes(selectedProject);
-            const matchesMonth =
-              !selectedMonth || rowMonth === selectedMonth;
-
-            row.style.display =
-              matchesSearch && matchesProject && matchesMonth ? "" : "none";
-          });
+        // Extract month & year from YYYY-MM-DD
+        let rowMonth = "";
+        let rowYear = "";
+        if (dateText && dateText.includes("-")) {
+          const parts = dateText.split("-"); // [YYYY, MM, DD]
+          if (parts.length >= 2) {
+            rowYear = parts[0];
+            rowMonth = parts[1];
+          }
         }
+
+        const matchesSearch =
+          !filters.length || filters.every((f) => rowText.includes(f));
+        const matchesProject =
+          !selectedProject || projectText.includes(selectedProject);
+        const matchesMonth =
+          !selectedMonth || rowMonth === selectedMonth;
+        const matchesYear =
+          !selectedYear || rowYear === selectedYear;
+
+        row.style.display =
+          matchesSearch && matchesProject && matchesMonth && matchesYear ? "" : "none";
+      });
+    }
+
 
 
 
@@ -679,6 +709,8 @@
         document.getElementById("searchInput").addEventListener("input", applyFilters);
         document.getElementById("projectFilter").addEventListener("change", applyFilters);
         document.getElementById("monthFilter").addEventListener("change", applyFilters);
+        document.getElementById("yearFilter").addEventListener("input", applyFilters);
+
       }
 
       function setupProjectFilter() {
@@ -707,41 +739,12 @@
         openModal(record);
       }
 
-      
-
-
-      // function openprintreport() {
-      //   const modal = document.getElementById("createModal");
-      //   const modalBody = document.getElementById("modalBody");
-
-      //   const pageTmp = "pages/printReport.html";   // ✅ your saved report html
-
-      //   modal.style.display = "block";
-      //   modalBody.innerHTML = "Loading...";
-
-      //   fetch(`${BASE_PATH}${pageTmp}`)
-      //     .then((res) => res.text())
-      //     .then((html) => {
-      //       modalBody.innerHTML = html;
-      //     })
-      //     .catch((err) => {
-      //       console.error("⚠️ Failed to load print report:", err);
-      //       modalBody.innerHTML = "⚠️ Failed to load print report.";
-      //     });
-      // }
-
-
-      // function openprintreport() {
-      //   const pageTmp = "pages/printReport.html";   // ✅ your saved report html
-      //   window.open(`${BASE_PATH}${pageTmp}`, "_blank");
-      // }
-
-      function openprintreport() {
+function openprintreport() {
   const rows = document.querySelectorAll("#masterTableBody tr");
   const exportData = [];
 
   rows.forEach((row, index) => {
-    if (row.style.display !== "none") { // ✅ Only visible (filtered) rows
+    if (row.style.display !== "none") {
       const cells = row.querySelectorAll("td");
       exportData.push({
         no: index + 1,
@@ -756,13 +759,21 @@
     }
   });
 
-  // ✅ Save to localStorage
-  localStorage.setItem("printReportData", JSON.stringify(exportData));
+  // ✅ Capture selected month & year
+  const monthSelect = document.getElementById("monthFilter");
+  const monthValue = monthSelect.value; // "01", "02", etc.
+  const monthText = monthSelect.options[monthSelect.selectedIndex].text; // "August"
+  const yearValue = new Date().getFullYear(); // or from your filter if you have year filter
 
-  // ✅ Open printReport.html
+  // Save to localStorage
+  localStorage.setItem("printReportData", JSON.stringify(exportData));
+  localStorage.setItem("printReportMonth", JSON.stringify({ month: monthValue, text: monthText, year: yearValue }));
+
+  // Open report
   const pageTmp = "pages/printReport.html";
   window.open(`${BASE_PATH}${pageTmp}`, "_blank");
 }
+
 
        
 
