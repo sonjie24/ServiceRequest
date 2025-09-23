@@ -472,14 +472,17 @@
         }
 
         function generateStatus(record) {
-            console.log("🔍 record content:", record);   // check all keys/values
+          console.log("🔍 dev_status value:", record.dev_status, "length:", record.dev_status?.length);
 
-        let statusText = record.dev_status?.toLowerCase() === "Deployed"
-          ? "Resolved"
-          : "On-going";
+          let cleanedStatus = record.dev_status?.trim().toLowerCase(); // normalize
 
-        return `<td class="secondary-text"><b>${statusText}</b></td>`;
-      }
+          let statusText = cleanedStatus === "deployed"
+            ? "Resolved"
+            : "On-going";
+
+          return `<td class="secondary-text"><b>${statusText}</b></td>`;
+        }
+
 
       function generateConcernType(record) {
         let buttons = "";
