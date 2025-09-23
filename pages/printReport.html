@@ -149,3 +149,37 @@
   </div>
 </body>
 </html>
+
+<script>
+  window.addEventListener("DOMContentLoaded", () => {
+    const tableBody = document.querySelector("tbody");
+    const rawData = localStorage.getItem("printReportData");
+    const records = rawData ? JSON.parse(rawData) : [];
+
+    // Clear any placeholder rows
+    tableBody.innerHTML = "";
+
+    // Fill rows
+    records.forEach((rec, idx) => {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td>${idx + 1}</td>
+        <td>${rec.department}</td>
+        <td>${rec.serviceCount}</td>
+        <td>${rec.dateReported}</td>
+        <td>${rec.concern}</td>
+        <td>${rec.status}</td>
+        <td>${rec.dateResolved}</td>
+      `;
+      tableBody.appendChild(tr);
+    });
+
+    // Add blank rows (up to 15)
+    for (let i = records.length + 1; i <= 15; i++) {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `<td>${i}</td><td></td><td></td><td></td><td></td><td></td><td></td>`;
+      tableBody.appendChild(tr);
+    }
+  });
+</script>
+

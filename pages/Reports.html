@@ -274,7 +274,7 @@
             <td>
                 
             <label class="secondary-text">
-                🏛️ ${record.patch_date || ""}
+                 ${record.patch_date || ""}
             </label>
                  
             </td>
@@ -472,7 +472,9 @@
         }
 
         function generateStatus(record) {
-        let statusText = record.req_status?.toLowerCase() === "approved"
+            console.log("🔍 record content:", record);   // check all keys/values
+
+        let statusText = record.dev_status?.toLowerCase() === "Deployed"
           ? "Resolved"
           : "On-going";
 
@@ -726,10 +728,39 @@
       // }
 
 
+      // function openprintreport() {
+      //   const pageTmp = "pages/printReport.html";   // ✅ your saved report html
+      //   window.open(`${BASE_PATH}${pageTmp}`, "_blank");
+      // }
+
       function openprintreport() {
-        const pageTmp = "pages/printReport.html";   // ✅ your saved report html
-        window.open(`${BASE_PATH}${pageTmp}`, "_blank");
-      }
+  const rows = document.querySelectorAll("#masterTableBody tr");
+  const exportData = [];
+
+  rows.forEach((row, index) => {
+    if (row.style.display !== "none") { // ✅ Only visible (filtered) rows
+      const cells = row.querySelectorAll("td");
+      exportData.push({
+        no: index + 1,
+        department: cells[2]?.innerText.trim() || "",
+        project: cells[3]?.innerText.trim() || "",
+        serviceCount: cells[4]?.innerText.trim() || "",
+        dateReported: cells[5]?.innerText.trim() || "",
+        concern: cells[6]?.innerText.trim() || "",
+        status: cells[7]?.innerText.trim() || "",
+        dateResolved: cells[8]?.innerText.trim() || "",
+      });
+    }
+  });
+
+  // ✅ Save to localStorage
+  localStorage.setItem("printReportData", JSON.stringify(exportData));
+
+  // ✅ Open printReport.html
+  const pageTmp = "pages/printReport.html";
+  window.open(`${BASE_PATH}${pageTmp}`, "_blank");
+}
+
        
 
         window.addEventListener("DOMContentLoaded", () => {
