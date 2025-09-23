@@ -6,6 +6,9 @@
     <title>Workload</title>
     <link rel="stylesheet" href="../style/main.css" />
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+
     <style media="print">
   body * {
     visibility: hidden;
@@ -59,6 +62,8 @@
           <div class="print-button" style="display: flex; gap: 10px; align-items: center;">
 
           <a onclick="openprintreport()" class="menu-link">🖨 PRINT</a>
+          <a onclick="exportToExcel()" class="menu-link">📑 EXPORT</a>
+
 
             <select id="projectFilter" class="form-control">
               <option value="">All Projects</option>
@@ -302,6 +307,21 @@
         } catch (error) {
           console.error("❌ Failed to load master list:", error);
         }
+      }
+
+      function exportToExcel() {
+        // Get the table
+        const table = document.getElementById("masterTable");
+
+        // Convert table to worksheet
+        const ws = XLSX.utils.table_to_sheet(table);
+
+        // Create a new workbook
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, "Workload");
+
+        // Export it
+        XLSX.writeFile(wb, "Workload_Report.xlsx");
       }
 
       function generateActionButtons(record) {
