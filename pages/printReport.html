@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Service Request Summary Report</title>
+  <style>
+    body {
+      font-family: Calibri, Arial, sans-serif;
+      margin: 20mm;
+      color: #000;
+    }
+    .header {
+      margin-bottom: 15px;
+      position: relative;
+    }
+    .header img {
+      position: absolute;
+      right: 0;
+      top: 0;
+      height: 60px;
+    }
+    .header-text {
+      text-align: center;
+      font-size: 14px;
+      line-height: 1.4;
+    }
+    .header-text h2 {
+      font-size: 16px;
+      margin: 2px 0;
+      font-weight: bold;
+    }
+    .header-text h3 {
+      font-size: 14px;
+      margin: 2px 0;
+      font-weight: normal;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      font-size: 13px;
+    }
+        th, td {
+          border: 1px solid #000;
+          padding: 6px;
+          text-align: center; /* default center */
+        }
+
+      tbody td:nth-child(2),
+      thead th:nth-child(2),
+      tbody td:nth-child(5),
+      thead th:nth-child(5) {
+        text-align: left;
+      }
+    th {
+      background: #f9f9f9;
+      font-weight: bold;
+    }
+    /* Row numbering */
+    tbody tr td:first-child {
+      text-align: center;
+    }
+    /* Footer */
+    .footer {
+      margin-top: 40px;
+      width: 100%;
+      font-size: 13px;
+    }
+      .footer .left {
+        width: 45%;
+        display: inline-block;
+        vertical-align: top;
+        text-align: center; /* keep center */
+      }
+
+      .footer .right {
+        width: 45%;
+        display: inline-block;
+        vertical-align: top;
+        text-align: center;   /* or right */
+      }
+    .line {
+      margin-top: 40px;
+      border-top: 1px solid #000;
+      width: 80%;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .header-text p {
+      font-size: 14px;
+      margin: 2px 0;       /* single spacing (minimal gap between lines) */
+      line-height: 1.2;    /* tighter line spacing */
+      text-align: center;  /* keep centered */
+    }
+
+    /* Print layout */
+    @page {
+      size: folio landscape;
+      margin: 15mm;
+    }
+    @media print {
+      body {
+        margin: 0;
+      }
+      .no-print {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+        <img src="../images/cylix.jpg" alt="Cylix Logo">
+      <div class="header-text">
+        <br/>
+        <br/>
+        <br/>
+
+        <p>CITY OF NAGA INTEGRATED MANAGEMENT INFORMATION SYSTEM - TECHNICAL SUPPORT AND SERVICE SUPPORT</p>
+        <p><strong>SERVICE REQUEST SUMMARY REPORT</strong></p>
+        <p class="month-text">For the Month of August 2025</p>
+      </div>
+
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Department/Office</th>
+        <th>No. of Service Request</th>
+        <th>Date Reported</th>
+        <th>Nature of Concern</th>
+        <th>Status</th>
+        <th>Date Resolved</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>1</td>
+        <td>CICRO</td><td>1</td><td>August 4, 2025</td><td>New (Function/Field/Entry/Column Row)</td><td>Resolved</td><td>August 13, 2025</td></tr>
+      <tr><td>2</td><td>HR</td><td>1</td><td>September 18, 2025</td><td>New (Function/Field/Entry/Column Row)</td><td>Ongoing</td><td></td></tr>
+      <!-- Add blank rows -->
+      <tr><td>3</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr><td>4</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr><td>5</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr><td>6</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr><td>7</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr><td>8</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr><td>9</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr><td>10</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr><td>11</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr><td>12</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr><td>13</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr><td>14</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr><td>15</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+    </tbody>
+  </table>
+
+  <div class="footer">
+    <div class="left">
+      <p>Submitted By:</p>
+      <div class="line"></div>
+    </div>
+    <div class="right">
+      <p>Noted By:</p>
+      <p><strong>ROMEO B. EMPLEO JR.</strong><br>IT HEAD</p>
+    </div>
+  </div>
+
+  <div class="no-print" style="text-align:center; margin-top:20px;">
+    <button onclick="window.print()">🖨️ Print</button>
+  </div>
+</body>
+</html>
+
+<script>
+window.addEventListener("DOMContentLoaded", () => {
+
+
+  const monthInfo = JSON.parse(localStorage.getItem("printReportMonth"));
+
+  if (monthInfo) {
+    const headerMonth = document.querySelector(".month-text");
+
+    if (monthInfo.month) {
+      headerMonth.textContent = `For the Month of ${monthInfo.text} ${monthInfo.year}`;
+    } else {
+      headerMonth.textContent = `For the Year ${monthInfo.year}`;
+    }
+  }
+  
+  const tableBody = document.querySelector("tbody");
+  const rawData = localStorage.getItem("printReportData");
+  const records = rawData ? JSON.parse(rawData) : [];
+
+  // Clear any placeholder rows
+  tableBody.innerHTML = "";
+
+  let totalServiceCount = 0;
+
+  // Fill rows
+  records.forEach((rec, idx) => {
+    const tr = document.createElement("tr");
+
+    // Handle multi-line concern
+    let concernText = "";
+    if (rec.concern) {
+      concernText = rec.concern
+        .split(/[,;]+/)       // split by comma or semicolon
+        .map(c => c.trim())
+        .join("<br>");
+    }
+
+    // Add to total (make sure it's a number)
+    const serviceCount = parseInt(rec.serviceCount, 10) || 0;
+    totalServiceCount += serviceCount;
+
+    tr.innerHTML = `
+      <td>${idx + 1}</td>
+      <td>${rec.department}</td>
+      <td>${serviceCount}</td>
+      <td>${rec.dateReported}</td>
+      <td>${concernText}</td>
+      <td>${rec.status}</td>
+      <td>${rec.dateResolved}</td>
+    `;
+    tableBody.appendChild(tr);
+  });
+
+  // Add blank rows (up to 15)
+  for (let i = records.length + 1; i <= 15; i++) {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `<td>${i}</td><td></td><td></td><td></td><td></td><td></td><td></td>`;
+    tableBody.appendChild(tr);
+  }
+
+  // ✅ Add TOTAL row
+  const totalRow = document.createElement("tr");
+  totalRow.innerHTML = `
+    <td colspan="2" style="text-align:right; font-weight:bold;">TOTAL</td>
+    <td style="font-weight:bold;">${totalServiceCount}</td>
+    <td colspan="4"></td>
+  `;
+  tableBody.appendChild(totalRow);
+});
+
+</script>
+
