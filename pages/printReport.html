@@ -116,8 +116,9 @@
         <br/>
         <br/>
 
-        <p>CITY OF NAGA INTEGRATED MANAGEMENT INFORMATION SYSTEM - TECHNICAL SUPPORT AND SERVICE SUPPORT</p>
-        <p><strong>SERVICE REQUEST SUMMARY REPORT</strong></p>
+        <div class="report-header">
+        <p id="reportTitle"></p>
+      </div>
         <p class="month-text">For the Month of August 2025</p>
       </div>
 
@@ -174,44 +175,62 @@
 </html>
 
 <script>
+
 window.addEventListener("DOMContentLoaded", () => {
-
-
+  // ✅ Handle Month / Year Header
   const monthInfo = JSON.parse(localStorage.getItem("printReportMonth"));
-
   if (monthInfo) {
     const headerMonth = document.querySelector(".month-text");
-
-    if (monthInfo.month) {
-      headerMonth.textContent = `For the Month of ${monthInfo.text} ${monthInfo.year}`;
-    } else {
-      headerMonth.textContent = `For the Year ${monthInfo.year}`;
+    if (headerMonth) {
+      if (monthInfo.month) {
+        headerMonth.textContent = `For the Month of ${monthInfo.text} ${monthInfo.year}`;
+      } else {
+        headerMonth.textContent = `For the Year ${monthInfo.year}`;
+      }
     }
   }
-  
+
+  // ✅ Handle Project Title
+  const projectText = JSON.parse(localStorage.getItem("projectFilterText")); // ← we saved text (CBMIS, CCMIS, etc.)
+  const projectTitles = {
+    "CNIMS": "CITY OF NAGA INTEGRATED MANAGEMENT INFORMATION SYSTEM - TECHNICAL SUPPORT AND SERVICE SUPPORT",
+    "CBMIS": "CITY OF BOGO MANAGEMENT INFORMATION SYSTEM - TECHNICAL SUPPORT AND SERVICE SUPPORT",
+    "CCMIS": "CITY OF CARCAR MANAGEMENT INFORMATION SYSTEM - TECHNICAL SUPPORT AND SERVICE SUPPORT",
+    "MDMIS": "MUNICIPALITY OF DUMANJUG MANAGEMENT INFORMATION SYSTEM - TECHNICAL SUPPORT AND SERVICE SUPPORT"
+  };
+
+  let titleText = "ALL PROJECTS - TECHNICAL SUPPORT AND SERVICE SUPPORT";
+  if (projectText && projectTitles[projectText]) {
+    titleText = projectTitles[projectText];
+  }
+
+  const reportTitle = document.getElementById("reportTitle");
+  if (reportTitle) {
+    reportTitle.innerHTML = `
+      ${titleText}<br>
+      <span style="font-weight:bold; font-size:16px;">SERVICE REQUEST SUMMARY REPORT</span>
+    `;
+  }
+
+  // ✅ Handle Table Data (unchanged)
   const tableBody = document.querySelector("tbody");
   const rawData = localStorage.getItem("printReportData");
   const records = rawData ? JSON.parse(rawData) : [];
 
-  // Clear any placeholder rows
   tableBody.innerHTML = "";
-
   let totalServiceCount = 0;
 
-  // Fill rows
   records.forEach((rec, idx) => {
     const tr = document.createElement("tr");
 
-    // Handle multi-line concern
     let concernText = "";
     if (rec.concern) {
       concernText = rec.concern
-        .split(/[,;]+/)       // split by comma or semicolon
+        .split(/[,;]+/)
         .map(c => c.trim())
         .join("<br>");
     }
 
-    // Add to total (make sure it's a number)
     const serviceCount = parseInt(rec.serviceCount, 10) || 0;
     totalServiceCount += serviceCount;
 
@@ -227,14 +246,12 @@ window.addEventListener("DOMContentLoaded", () => {
     tableBody.appendChild(tr);
   });
 
-  // Add blank rows (up to 15)
   for (let i = records.length + 1; i <= 15; i++) {
     const tr = document.createElement("tr");
     tr.innerHTML = `<td>${i}</td><td></td><td></td><td></td><td></td><td></td><td></td>`;
     tableBody.appendChild(tr);
   }
 
-  // ✅ Add TOTAL row
   const totalRow = document.createElement("tr");
   totalRow.innerHTML = `
     <td colspan="2" style="text-align:right; font-weight:bold;">TOTAL</td>
@@ -243,6 +260,10 @@ window.addEventListener("DOMContentLoaded", () => {
   `;
   tableBody.appendChild(totalRow);
 });
+
+
+
+
 
 </script>
 

@@ -24,6 +24,12 @@
     border-collapse: collapse;
     font-size: 14px;
   }
+    /* ✅ Hide Request No. column */
+  #masterTable th:nth-child(3),
+  #masterTable td:nth-child(3) {
+    display: none !important;
+  }
+
   .year-input {
   height: 100px;
   width: 120px;      /* wider than default */
@@ -151,13 +157,14 @@
         <tr>
           <th width="160px" hidden>GUID</th>
           <th width="50px">No.</th>
+          <th onclick="sortTable(0)" width="200px">Request No ⬍</th>
           <th width="500px">Department/Office</th>
           <th width="120px">Project</th>
 
           <th width="120px">No. of Service Request</th>
-          <th width="220px">Date Reported</th>
+          <th width="180px">Date Reported</th>
           <!-- <th width="220px">User/Integrator/ Developer/ QA</th> -->
-          <th width="500px">Nature of Concern</th>
+          <th width="300px">Nature of Concern</th>
           <th width="200px">Status</th>
           <th width="140px">Date Resolved</th>
         </tr>
@@ -271,7 +278,9 @@
             row.innerHTML = `
                  <td hidden>${record.uuid || ""}</td>
             <td><div class="secondary-text">${tableBody.rows.length + 1}</div></td> <!-- row number -->
-
+            <td><div class="secondary-text">${
+              record.service_request_no || "No Data"
+            }</div></td>
             <td><div class="secondary-text">${
               record.department || ""
             }</div></td>
@@ -496,7 +505,6 @@
 
 
         function generateStatus(record) {
-          console.log("🔍 dev_status value:", record.dev_status, "length:", record.dev_status?.length);
 
           let cleanedStatus = record.dev_status?.trim().toLowerCase(); // normalize
 
@@ -671,11 +679,11 @@
 
         // ✅ Project column (4th col = index 3)
         const projectText =
-          row.querySelector("td:nth-child(4)")?.textContent.toLowerCase() || "";
+          row.querySelector("td:nth-child(5)")?.textContent.toLowerCase() || "";
 
         // ✅ Date column (6th col = index 5)
         const dateText =
-          row.querySelector("td:nth-child(6)")?.textContent.trim() || "";
+          row.querySelector("td:nth-child(7)")?.textContent.trim() || "";
 
         // Extract month & year from YYYY-MM-DD
         let rowMonth = "";
@@ -739,48 +747,52 @@
         openModal(record);
       }
 
-        function openprintreport() {
-  const rows = document.querySelectorAll("#masterTableBody tr");
-  const exportData = [];
+      function openprintreport() {
+        const rows = document.querySelectorAll("#masterTableBody tr");
+        const exportData = [];
 
-  rows.forEach((row, index) => {
-    if (row.style.display !== "none") {
-      const cells = row.querySelectorAll("td");
-      exportData.push({
-        no: index + 1,
-        department: cells[2]?.innerText.trim() || "",
-        project: cells[3]?.innerText.trim() || "",
-        serviceCount: cells[4]?.innerText.trim() || "",
-        dateReported: cells[5]?.innerText.trim() || "",
-        concern: cells[6]?.innerText.trim() || "",
-        status: cells[7]?.innerText.trim() || "",
-        dateResolved: cells[8]?.innerText.trim() || "",
-      });
-    }
-  });
+        rows.forEach((row, index) => {
+          if (row.style.display !== "none") {
+            const cells = row.querySelectorAll("td");
+            exportData.push({
+              no: index + 1,
+              department: cells[3]?.innerText.trim() || "",
+              project: cells[4]?.innerText.trim() || "",
+              serviceCount: cells[5]?.innerText.trim() || "",
+              dateReported: cells[6]?.innerText.trim() || "",
+              concern: cells[7]?.innerText.trim() || "",
+              status: cells[8]?.innerText.trim() || "",
+              dateResolved: cells[9]?.innerText.trim() || "",
+            });
+          }
+        });
 
-  // ✅ Get month & year from filters
-  const monthSelect = document.getElementById("monthFilter");
-  const monthValue = monthSelect.value; // "01", "02", etc.
-  const monthText = monthSelect.options[monthSelect.selectedIndex].text; // "August"
+        // ✅ Get month & year
+        const monthSelect = document.getElementById("monthFilter");
+        const monthValue = monthSelect.value;
+        const monthText = monthSelect.options[monthSelect.selectedIndex].text;
+        const yearValue = document.getElementById("yearFilter").value || new Date().getFullYear();
 
-  const yearValue = document.getElementById("yearFilter").value || new Date().getFullYear();
+        // ✅ Get selected project filter
+        const projectSelect = document.getElementById("projectFilter");
+        const projectValue = projectSelect.value;   // CNIMS, CBMIS, CCMIS, MDMIS
+        const projectText  = projectSelect.options[projectSelect.selectedIndex].text;
 
-  // Save to localStorage
-  localStorage.setItem("printReportData", JSON.stringify(exportData));
-  localStorage.setItem(
-    "printReportMonth",
-    JSON.stringify({ month: monthValue, text: monthText, year: yearValue })
-  );
+          console.log("Selected project value:", projectValue);
+          console.log("Selected project text:", projectText);
 
-  // Open print page
-  const pageTmp = "pages/printReport.html";
-  window.open(`${BASE_PATH}${pageTmp}`, "_blank");
-}
+        // Save data
+        localStorage.setItem("printReportData", JSON.stringify(exportData));
+        localStorage.setItem("printReportMonth", JSON.stringify({ month: monthValue, text: monthText, year: yearValue }));
+        localStorage.setItem("projectFilterValue", JSON.stringify(projectValue));
+        localStorage.setItem("projectFilterText", JSON.stringify(projectText));
+        // Open print page
+        const pageTmp = "pages/printReport.html";
+        window.open(`${BASE_PATH}${pageTmp}`, "_blank");
+      }
 
 
 
-       
 
         window.addEventListener("DOMContentLoaded", () => {
     const data = JSON.parse(localStorage.getItem("selectedRecord"));
@@ -914,32 +926,46 @@
       }
 
 
-      function openPrintReport() {
-  const modal = document.getElementById("createModal");
-  const modalBody = document.getElementById("modalBody");
+        function openprintreport() {
+          const rows = document.querySelectorAll("#masterTableBody tr");
+          const exportData = [];
 
-  const pageTmp = "pages/printReport.html";   // ✅ your saved report html
-  const scriptFile = "js/printReport.js";     // optional script for it
+          rows.forEach((row, index) => {
+            if (row.style.display !== "none") {
+              const cells = row.querySelectorAll("td");
+              exportData.push({
+                no: index + 1,
+                department: cells[3]?.innerText.trim() || "",
+                project: cells[4]?.innerText.trim() || "",
+                serviceCount: cells[5]?.innerText.trim() || "",
+                dateReported: cells[6]?.innerText.trim() || "",
+                concern: cells[7]?.innerText.trim() || "",
+                status: cells[8]?.innerText.trim() || "",
+                dateResolved: cells[9]?.innerText.trim() || "",
+              });
+            }
+          });
 
-  modal.style.display = "block";
-  modalBody.innerHTML = "Loading...";
+          // ✅ Get month & year
+          const monthSelect = document.getElementById("monthFilter");
+          const monthValue = monthSelect.value;
+          const monthText = monthSelect.options[monthSelect.selectedIndex].text;
+          const yearValue = document.getElementById("yearFilter").value || new Date().getFullYear();
 
-  fetch(`${BASE_PATH}${pageTmp}`)
-    .then((res) => res.text())
-    .then((html) => {
-      modalBody.innerHTML = html;
+          // ✅ Get selected project TEXT (not value)
+          const projectSelect = document.getElementById("projectFilter");
+          const projectText  = projectSelect.options[projectSelect.selectedIndex].text; // ← use text!
 
-      // attach js if needed
-      const script = document.createElement("script");
-      script.src = `${BASE_PATH}${scriptFile}`;
-      script.defer = true;
-      modalBody.appendChild(script);
-    })
-    .catch((err) => {
-      console.error("⚠️ Failed to load print report:", err);
-      modalBody.innerHTML = "⚠️ Failed to load print report.";
-    });
-}
+          // Save data
+          localStorage.setItem("printReportData", JSON.stringify(exportData));
+          localStorage.setItem("printReportMonth", JSON.stringify({ month: monthValue, text: monthText, year: yearValue }));
+          localStorage.setItem("projectFilterText", JSON.stringify(projectText));
+
+          // Open print page
+          const pageTmp = "pages/printReport.html";
+          window.open(`${BASE_PATH}${pageTmp}`, "_blank");
+        }
+
 
 
       function openViewPrintrecord(record = null, mode = "PrintRecord") {
