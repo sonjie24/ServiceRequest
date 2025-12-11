@@ -30,6 +30,7 @@
 
         <div class="menu-links">
           <!-- <button onclick="openModals()">Workloads</button> -->
+          <a onclick="exportToExcel()" class="menu-link">📑 EXPORT</a>
           <a onclick="openReports()" class="menu-link">Reports</a>
           <a onclick="openWork()" class="menu-link">Workloads</a>
           <a onclick="openHistory()" class="menu-link">History</a>
@@ -239,6 +240,27 @@
           console.error("❌ Failed to load master list:", error);
         }
       }
+
+      function exportToExcel() {
+    // Get the table
+    var table = document.getElementById("masterTable");
+    var html = table.outerHTML;
+
+    // Replace special characters for Excel compatibility
+    html = html.replace(/ /g, '%20');
+
+    // File name
+    var filename = 'MasterList_' + new Date().toISOString().slice(0,10) + '.xls';
+
+    // Create download element
+    var downloadLink = document.createElement("a");
+
+    // Excel MIME type
+    downloadLink.href = 'data:application/vnd.ms-excel,' + html;
+    downloadLink.download = filename;
+
+    downloadLink.click();
+}
 
       function generateActionButtons(record) {
         console.log("✅ Async function executed silently after action");
